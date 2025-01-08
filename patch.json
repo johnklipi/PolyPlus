@@ -208,6 +208,7 @@
 		},
 		"aquatism": {
 			"improvementUnlocks": [
+				"customshouse"
 			]
 		},
 		"spiritualism": {
@@ -226,12 +227,10 @@
 				"bombership",
 				"rammership"
 			],
-			"improvementUnlocks": [
-				"customshouse"
-			],
 			"movementUnlocks": {
 				"ocean": 1
 			},
+			"improvementUnlocks": [],
 			"cost": 3
 		},
 		"fishing": {
@@ -246,7 +245,8 @@
 				"aquatism"
 			],
 			"improvementUnlocks": [
-				"aquafarm"
+				"aquafarm",
+				"port"
 			],
 			"unitUnlocks": [
 			],
@@ -256,8 +256,8 @@
 			"techUnlocks": [
 				"navigation"
 			],
-			"improvementUnlocks": [
-				"port"
+			"abilityUnlocks": [
+				"waterembark"
 			],
 			"unitUnlocks": [
 				"scoutship"
@@ -447,7 +447,8 @@
 			"unitAbilities": [
 				"escape",
 				"swim",
-				"polyplusstatic"
+				"polyplusstatic",
+				"autoflood"
 			]
 		},
 		"mooni": {
@@ -592,7 +593,8 @@
 	},
 	"improvementData": {
 		"port": {
-			"cost": 7
+			"cost": 5,
+			"improvementAbilities": []
 		},
 		"temple": {
 			"terrainRequirements": []
@@ -703,6 +705,12 @@
 		],
 		"technology_names_aquanavigation": [
 			"Navigation"
+		],
+		"player_abilities_waterembark": [
+			"Embark"
+		],
+		"tooltip_ability_waterembark": [
+			"Allows land units to move on water and to turn into boats."
 		]
 	}
 }
