@@ -1,0 +1,38 @@
+{
+	"building_names_aquafarm": {
+		"English": "Harvest Aquacrop",
+		"Russian": "Сбор водного урожая"
+	},
+	"building_names_fertilize": {
+		"English": "Fertilize",
+		"Russian": "Удобрить"
+	},
+	"technology_names_sailing2": {
+		"English": "Sailing",
+		"Russian": "Мореходство"
+	},
+	"unit_abilities_polyplusstatic": {
+		"English": "STATIC",
+		"Russian": "СТАТИЧЕСКИЙ"
+	},
+	"tooltip_ability_polyplusstatic": {
+		"English": "This unit cannot become a veteran.",
+		"Russian": "Этот отряд не может получить звание ветерана."
+	},
+	"polyplus_unit_veteran_static_progress": {
+		"English": "This unit has made {0} kills.",
+		"Russian": "Этот отряд совершил {0} убийств."
+	},
+	"technology_names_aquanavigation": {
+		"English": "Navigation",
+		"Russian": "Навигация"
+	},
+	"player_abilities_waterembark": {
+		"English": "Embark",
+		"Russian": "Спуск на воду"
+	},
+	"tooltip_ability_waterembark": {
+		"English": "Allows land units to move on water and to turn into boats.",
+		"Russian": "Позволяет сухопутным отрядам двигатся на воду и превращатся в лодки."
+	}
+}
