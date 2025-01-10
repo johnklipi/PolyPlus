@@ -470,6 +470,24 @@
 				"polyplusstatic"
 			]
 		},
+		
+		"hexapod": {
+			"unitAbilities": [
+				"dash",
+				"escape",
+				"creep",
+				"land"
+			]
+		},
+		"doomux": {
+			"unitAbilities": [
+				"dash",
+				"creep",
+				"sneak",
+				"explode",
+				"land"
+			]
+		},
 		"centipede": {
 			"unitAbilities": [
 				"dash",
@@ -582,7 +600,6 @@
 		},
 		"juggernaut": {
 			"unitAbilities": [
-				"stiff",
 				"stomp",
 				"swim",
 				"carry",
@@ -618,6 +635,14 @@
 				"consumed"
 			],
 			"maxLevel": 0
+		},
+		"fungi": {
+			"cost": 7
+		},
+		"algae": {
+			"improvementAbilities": [
+				"bridge"
+			]
 		},
 		"customshouse": {
 			"hidden": false,
