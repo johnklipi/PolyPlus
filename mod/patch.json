@@ -77,7 +77,8 @@
 			},
 			"techOverrides": {
 				"sailing": "sailing2"
-			}
+			},
+			"bonus": 3
 		},
 		"oumaji": {
 			"terrainModifier": {
