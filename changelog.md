@@ -32,6 +32,10 @@ Normal tribes/Elyrion
 Bardur
 - Increased forest rate to 1.5x
 
+Luxidoor
+- Returned capital level back to 1
+- Added Park reward to their capital (+250 score, +1 star per turn)
+
 Elyrion
 - Polytaurs now cost 3 instead of 2
 
