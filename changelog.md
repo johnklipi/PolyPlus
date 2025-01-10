@@ -26,6 +26,7 @@ Normal tribes/Elyrion
 - Knights have the "static" ability
 - Bombers no longer has the "splash" ability
   - They have 4 attack instead of 3
+- Juggernaunts no longer have the "stiff" ability
 
 
 Bardur
@@ -37,8 +38,7 @@ Elyrion
 Aquarion
 - Gains all relevant changes from normal tribes that aren't related to water, unique mechanics, or the fertilize ability
   - Organization does lead to their unique version of Riding. Riding does lead to their version of Chivalry
-  - Water access has been moved to thier version of "Sailing". Ocean access has been moved to their version of "Navigation"
-- Can now upgrade mind bended rafts
+- The sunken city ruins reward has been removed
 
 Polaris
 - Gains all relevant changes from normal tribes that aren't related to water, unique mechanics, or ice
@@ -54,6 +54,10 @@ Polaris
 Cymanti
 - Gains all relevant changes from normal tribes that aren't related to water or unique mechanics
   - Organization does still lead to their unique version of Riding. Riding does lead to their version of Chivalry
+- Fungi costs 7
+- Algae no longer blocks movement
+- Doomux now has the "sneak" ability
+- Hexapods no longer have the "sneak" ability
   
 Other
 - The "static" unit ability now also shows how many kills a unit has, besides just disallowing turning the unit into a veteran
