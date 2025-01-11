@@ -43,6 +43,7 @@ Aquarion
 - Gains all relevant changes from normal tribes that aren't related to water, unique mechanics, or the fertilize ability
   - Organization does lead to their unique version of Riding. Riding does lead to their version of Chivalry
 - The sunken city ruins reward has been removed
+- Atolls has been moved to Waterways from Aquaculture
 
 Polaris
 - Gains all relevant changes from normal tribes that aren't related to water, unique mechanics, or ice

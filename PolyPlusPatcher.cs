@@ -1,6 +1,4 @@
 ﻿using HarmonyLib;
-using Il2CppSystem.IO;
-using Newtonsoft.Json.Linq;
 using Polytopia.Data;
 using UnityEngine;
 
@@ -147,6 +145,22 @@ namespace PolyPlus {
                     gameState.ActionStack.Add(new EmbarkAction(__instance.PlayerId, worldCoordinates));
                 }
             }
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(ExamineRuinsAction), nameof(ExamineRuinsAction.ExecuteDefault))]
+        private static bool ExecuteDefault(ExamineRuinsAction __instance, GameState gameState)
+        {
+            if(__instance.Reward == RuinsReward.City)
+            {
+                RuinsReward[] excludedValues = new RuinsReward[]{ RuinsReward.None, RuinsReward.City, RuinsReward.SuperUnit, RuinsReward.Battleship, RuinsReward.Seamonster};
+                Array values = Enum.GetValues(typeof(RuinsReward));
+
+                var filteredValues = values.Cast<RuinsReward>().Where(v => !excludedValues.Contains(v)).ToArray();
+                System.Random random = new System.Random();
+                __instance.Reward = filteredValues[random.Next(filteredValues.Length)];
+            }
+            return true;
         }
     }
 }

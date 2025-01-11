@@ -362,6 +362,12 @@
 			],
 			"cost": 3,
 			"idx": -1
+		},
+		"waterways": {
+			"improvementUnlocks": [
+				"canal",
+				"atoll"
+			]
 		}
 	},
 	"unitData": {
