@@ -27,7 +27,8 @@ Normal tribes/Elyrion
 - Bombers no longer has the "splash" ability
   - They have 4 attack instead of 3
 - Juggernaunts no longer have the "stiff" ability
-
+- Market gains "halved" improvement ability: now market needs 2 levels of nearby level 3 improvement to gain one level, instead of 1
+- Starfish has been removed
 
 Bardur
 - Increased forest rate to 1.5x

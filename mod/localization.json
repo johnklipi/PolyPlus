@@ -1,38 +1,80 @@
 {
 	"building_names_aquafarm": {
 		"English": "Harvest Aquacrop",
-		"Russian": "Сбор водного урожая"
-	},
-	"building_names_fertilize": {
-		"English": "Fertilize",
-		"Russian": "Удобрить"
+		"Portuguese (Brazil)": "Colher Cultivo Marinho",
+		"Russian": "Сбор водного урожая",
+		"Italian (Italy)": "Raccolto Colture acquatiche",
+		"French (France)": "Récolte Culture aquatique",
+		"Spanish (Mexico)": "Cosecha Cultivo acuático"
 	},
 	"technology_names_sailing2": {
 		"English": "Sailing",
-		"Russian": "Мореходство"
+		"Portuguese (Brazil)": "Barco a Vela",
+		"Russian": "Мореходство",
+		"Italian (Italy)": "Velismo",
+		"French (France)": "Navigation",
+		"Spanish (Mexico)": "Nàutica",
+		"German (Germany)": "Segeln",
+		"Japanese": "航海",
+		"Korean": "배 타기",
+		"Indonesian": "Berlayar",
+		"Polish": "Żeglarstwo"
 	},
 	"unit_abilities_polyplusstatic": {
 		"English": "STATIC",
-		"Russian": "СТАТИЧЕСКИЙ"
+		"Portuguese (Brazil)": "ESTÁTICO",
+		"Russian": "СТАТИЧЕСКИЙ",
+		"Italian (Italy)": "STATICO",
+		"French (France)": "STATIQUE",
+		"Spanish (Mexico)": "ESTÁTICO",
+		"German (Germany)": "STATISCH",
+		"Indonesian": "STATIS",
+		"Malay": "STATIK",
+		"Polish": "STATYCZNY",
+		"Turkish": "STATİK"
 	},
 	"tooltip_ability_polyplusstatic": {
 		"English": "This unit cannot become a veteran.",
-		"Russian": "Этот отряд не может получить звание ветерана."
+		"Portuguese (Brazil)": "Esta unidade não pode se tornar veterana.",
+		"Russian": "Этот отряд не может получить звание ветерана.",
+		"Italian (Italy)": "Questa unità non può diventare veterana.",
+		"French (France)": "Cette unité ne peut pas devenir vétéran."
 	},
 	"polyplus_unit_veteran_static_progress": {
 		"English": "This unit has made {0} kills.",
-		"Russian": "Этот отряд совершил {0} убийств."
+		"Portuguese (Brazil)": "Esta unidade realizou {0} abates.",
+		"Russian": "Этот отряд совершил {0} убийств.",
+		"Italian (Italy)": "Questa unità ha effettuato {0} uccisioni.",
+		"French (France)": "Cette unité a effectué {0} éliminations.",
+		"Spanish (Mexico)": "Esta unidad ha realizado {0} asesinatos."
 	},
 	"technology_names_aquanavigation": {
 		"English": "Navigation",
-		"Russian": "Навигация"
+		"Portuguese (Brazil)": "Navegação",
+		"Russian": "Навигация",
+		"Italian (Italy)": "Navigazione",
+		"French (France)": "Navigation",
+		"Spanish (Mexico)": "Navegación",
+		"German (Germany)": "Navigation"
 	},
 	"player_abilities_waterembark": {
 		"English": "Embark",
-		"Russian": "Спуск на воду"
+		"Portuguese (Brazil)": "Embarcar",
+		"Russian": "Спуск на воду",
+		"Italian (Italy)": "Imbarcare",
+		"French (France)": "Embarquer",
+		"Spanish (Mexico)": "Embarcar"
 	},
 	"tooltip_ability_waterembark": {
 		"English": "Allows land units to move on water and to turn into boats.",
-		"Russian": "Позволяет сухопутным отрядам двигатся на воду и превращатся в лодки."
+		"Portuguese (Brazil)": "Permite que unidades terrestres se movam na água e se transformem em barcos.",
+		"Russian": "Позволяет сухопутным отрядам двигатся на воду и превращатся в лодки.",
+		"Italian (Italy)": "Permette alle unità terrestri di muoversi sull'acqua e trasformarsi in barche.",
+		"French (France)": "Permet aux unités terrestres de se déplacer sur l'eau et de se transformer en bateaux.",
+		"Spanish (Mexico)": "Permite que las unidades terrestres se muevan en el agua y se conviertan en barcos."
+	},
+	"building_ability_halved": {
+		"English": "Level of this building is halved and rounded down.",
+		"Russian": "Уровень этого здания уменьшен вдвое и округлен в меньшую сторону."
 	}
 }

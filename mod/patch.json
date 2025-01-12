@@ -361,7 +361,7 @@
 				"rammership"
 			],
 			"cost": 3,
-			"idx": -1
+			"idx": -1 
 		},
 		"waterways": {
 			"improvementUnlocks": [
@@ -696,6 +696,12 @@
 		},
 		"enchantanimal": {
 			"cost": 3
+		},
+		"market": {
+			"improvementAbilities": [
+				"limited",
+				"halved"
+			]
 		}
 	},
 	"resourceData": {

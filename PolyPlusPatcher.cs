@@ -5,19 +5,18 @@ using UnityEngine;
 namespace PolyPlus {
     public class PolyPlusPatcher
     {
-        private static string version = "0.0.12";
-        private static string branch = "waterembark";
-        internal static readonly string BASE_PATH = System.IO.Path.Combine(BepInEx.Paths.BepInExRootPath, "..");
         public static void Load()
         {
-            Console.WriteLine("Loading PolyPlus Polyscript of version " + version + " of branch " + branch + "...");
             CreateEnumCaches();
             Harmony.CreateAndPatchAll(typeof(PolyPlusPatcher));
-            Console.WriteLine("PolyPlus Polyscript Loaded!");
         }
 
         internal static void CreateEnumCaches()
         {
+            Console.Write("Created mapping for ImprovementAbility.Type with id waterembark and index " + PolyMod.ModLoader.autoidx);
+            EnumCache<ImprovementAbility.Type>.AddMapping("halved", (ImprovementAbility.Type)PolyMod.ModLoader.autoidx);
+			EnumCache<ImprovementAbility.Type>.AddMapping("halved", (ImprovementAbility.Type)PolyMod.ModLoader.autoidx);
+            PolyMod.ModLoader.autoidx++;
             Console.Write("Created mapping for PlayerAbility.Type with id waterembark and index " + PolyMod.ModLoader.autoidx);
             EnumCache<PlayerAbility.Type>.AddMapping("waterembark", (PlayerAbility.Type)PolyMod.ModLoader.autoidx);
 			EnumCache<PlayerAbility.Type>.AddMapping("waterembark", (PlayerAbility.Type)PolyMod.ModLoader.autoidx);
@@ -37,7 +36,8 @@ namespace PolyPlus {
 		[HarmonyPatch(typeof(UnitData), nameof(UnitData.getPromotionLimit))]
         private static void UnitData_getPromotionLimit(ref int __result, UnitData __instance, PlayerState player, GameState gameState)
 		{
-            if(__instance.unitAbilities.Contains(EnumCache<UnitAbility.Type>.GetType("polyplusstatic"))){
+            if(__instance.unitAbilities.Contains(EnumCache<UnitAbility.Type>.GetType("polyplusstatic")))
+            {
                 __result = 0;
             }
 		}
@@ -86,20 +86,6 @@ namespace PolyPlus {
             }
         }
 
-        //[HarmonyPostfix]
-        //[HarmonyPatch(typeof(PathFinderSettings), nameof(PathFinderSettings.CreateForUnit))]
-        private static void PathFinder_CreateForUnit(ref PathFinderSettings __result, UnitState unit, GameState gameState)
-	    {
-            PlayerState player;
-            if(gameState.TryGetPlayer(unit.owner, out player))
-            {
-                if(PlayerExtensions.HasAbility(player, EnumCache<PlayerAbility.Type>.GetType("waterembark"), gameState))
-                {
-                    __result.isRequiredToUsePortToGoIntoWater = false;
-                }
-            }
-        }
-
         [HarmonyPostfix]
         [HarmonyPatch(typeof(PathFinder), nameof(PathFinder.IsTileAccessible))]
         private static void PathFinder_IsTileAccessible(ref bool __result, TileData tile, TileData origin, PathFinderSettings settings)
@@ -109,11 +95,62 @@ namespace PolyPlus {
                 {
                     __result = true;
                 }
-                else
+            }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(PathFinder), nameof(PathFinder.GetMoveOptions))]
+        private static void PathFinder_GetMoveOptions(ref Il2CppSystem.Collections.Generic.List<WorldCoordinates> __result,  GameState gameState, WorldCoordinates start, int maxCost, UnitState unit)
+        {
+            PlayerState playerState;
+            TileData startTile = GameManager.GameState.Map.GetTile(start);
+            Il2CppSystem.Collections.Generic.List<WorldCoordinates> options = __result;
+            List<WorldCoordinates> toRemove = new List<WorldCoordinates>();
+            if(gameState.TryGetPlayer(unit.owner, out playerState))
+            {
+                if(PlayerExtensions.HasAbility(playerState, EnumCache<PlayerAbility.Type>.GetType("waterembark"), gameState))
                 {
-                    __result = false;
+                    foreach (WorldCoordinates destination in options)
+                    {
+                        if(!startTile.IsWater)
+                        {
+                            Il2CppSystem.Collections.Generic.List<WorldCoordinates> path = PathFinder.GetPath(gameState, start, destination, maxCost, unit);
+                            path.Reverse();
+                            bool hadWater = false;
+                            foreach (WorldCoordinates pathTile in path)
+                            {
+                                TileData tile = gameState.Map.GetTile(pathTile);
+                                if(hadWater)
+                                {
+                                    toRemove.Add(tile.coordinates);
+                                }
+                                if(tile.terrain == Polytopia.Data.TerrainData.Type.Water || tile.terrain == Polytopia.Data.TerrainData.Type.Ocean)
+                                {
+                                    if(tile.improvement != null)
+                                    {
+                                        if(gameState.GameLogicData.TryGetData(tile.improvement.type, out ImprovementData imrovementData))
+                                        {
+                                            if(!imrovementData.HasAbility(ImprovementAbility.Type.Bridge))
+                                            {
+                                                hadWater = true;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        hadWater = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
+            foreach (var item in toRemove)
+            {
+                options.Remove(item);
+            }
+            __result = options;
         }
 
         [HarmonyPostfix]
@@ -162,5 +199,23 @@ namespace PolyPlus {
             }
             return true;
         }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(ActionUtils), nameof(ActionUtils.CalculateImprovementLevel))]
+        private static void ActionUtils_CalculateImprovementLevel(ref int __result, GameState gameState, TileData tile)
+        {
+            if(tile.improvement != null)
+            {
+                if (gameState.GameLogicData.TryGetData(tile.improvement.type, out ImprovementData improvementData))
+                {
+                    if(improvementData.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("halved")))
+                    {
+                        __result = __result / 2;
+                        return;
+                    }
+                }
+            }
+        }
+
     }
 }
