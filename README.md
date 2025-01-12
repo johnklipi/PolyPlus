@@ -1,5 +1,5 @@
 ﻿# PolyPlus
-
+![](https://img.shields.io/github/downloads/johnklipi/PolyPlus/total)
 ## Requirements
 
 - Polymod
