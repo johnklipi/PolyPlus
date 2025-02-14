@@ -427,14 +427,6 @@
 				"polyplusstatic"
 			]
 		},
-		"shaman": {
-			"health": 100,
-			"defence": 10,
-			"attack": 15,
-			"promotionLimit": 3,
-			"unitAbilities": [
-				"boost"
-			],
 		"polytaur": {
 			"health": 150,
 			"defence": 10,
@@ -548,10 +540,12 @@
 			]
 		},
 		"shaman": {
+			"health": 100,
+			"defence": 10,
+			"attack": 15,
+			"promotionLimit": 3,
 			"unitAbilities": [
-				"convert",
-				"boost",
-				"polyplusstatic"
+				"boost"
 			]
 		},
 		"dagger": {
