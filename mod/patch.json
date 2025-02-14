@@ -6,7 +6,8 @@
 			},
 			"techOverrides": {
 				"sailing": "sailing2"
-			}
+			},
+			"startingUnit": "mindbender"
 		},
 		"aquarion": {
 			"unitOverrides": {
@@ -154,17 +155,22 @@
 			"resourceModifier": {
 				"aquacrop": 0.5
 			},
+			"unitOverrides": {
+				"mindbender": "mindbender"
+			},
 			"improvementOverrides": {
 				"port": "none",
 				"customshouse": "none"
 			},
 			"techOverrides": {
+				"roads": "cymroads",
 				"construction": "recycling",
 				"chivalry": "shock",
 				"aquaculture": "aquaculture",
 				"sailing": "hydrology",
 				"navigation": "pescetism"
-			}
+			},
+			"startingUnit": "warrior"
 		}
 	},
 	"techData": {
@@ -291,6 +297,18 @@
 			},
 			"cost": 1
 		},
+		"cymroads": {
+			"techUnlocks": [
+				"trade"
+			],
+			"unitUnlocks": [
+				"shaman"
+			],
+			"improvementUnlocks": [
+				"mycelium"
+			],
+			"cost": 2
+		},
 		"spearing": {
 			"abilityUnlocks": [
 				"destroy"
@@ -409,6 +427,14 @@
 				"polyplusstatic"
 			]
 		},
+		"shaman": {
+			"health": 100,
+			"defence": 10,
+			"attack": 15,
+			"promotionLimit": 3,
+			"unitAbilities": [
+				"boost"
+			],
 		"polytaur": {
 			"health": 150,
 			"defence": 10,
