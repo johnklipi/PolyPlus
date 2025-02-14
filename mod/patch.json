@@ -307,7 +307,8 @@
 			"improvementUnlocks": [
 				"mycelium"
 			],
-			"cost": 2
+			"cost": 2,
+			"idx": -1
 		},
 		"spearing": {
 			"abilityUnlocks": [
