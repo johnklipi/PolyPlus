@@ -20,6 +20,7 @@
 				"aquacrop": 0.5
 			},
 			"improvementOverrides": {
+				"fertilize": "aquafertilize",
 				"port": "none",
 				"customshouse": "none"
 			}
@@ -663,6 +664,24 @@
 				"consumed"
 			],
 			"maxLevel": 0
+		},
+		"aquafertilize": {
+			"cost": 5,
+			"terrainRequirements": [
+				{
+					"terrain": "wetland"
+				}
+			],
+			"creates": [
+				{
+					"resource": "crop"
+				}
+			],
+			"improvementAbilities": [
+				"consumed"
+			],
+			"maxLevel": 0,
+			"idx": -1
 		},
 		"fungi": {
 			"cost": 7
