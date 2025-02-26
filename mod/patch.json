@@ -6,7 +6,8 @@
 			},
 			"techOverrides": {
 				"sailing": "sailing2"
-			}
+			},
+			"startingUnit": "mindbender"
 		},
 		"aquarion": {
 			"unitOverrides": {
@@ -19,6 +20,7 @@
 				"aquacrop": 0.5
 			},
 			"improvementOverrides": {
+				"fertilize": "aquafertilize",
 				"port": "none",
 				"customshouse": "none"
 			}
@@ -154,17 +156,22 @@
 			"resourceModifier": {
 				"aquacrop": 0.5
 			},
+			"unitOverrides": {
+				"mindbender": "mindbender"
+			},
 			"improvementOverrides": {
 				"port": "none",
 				"customshouse": "none"
 			},
 			"techOverrides": {
+				"roads": "cymroads",
 				"construction": "recycling",
 				"chivalry": "shock",
 				"aquaculture": "aquaculture",
 				"sailing": "hydrology",
 				"navigation": "pescetism"
-			}
+			},
+			"startingUnit": "warrior"
 		}
 	},
 	"techData": {
@@ -290,6 +297,19 @@
 				"ocean": 0
 			},
 			"cost": 1
+		},
+		"cymroads": {
+			"techUnlocks": [
+				"trade"
+			],
+			"unitUnlocks": [
+				"shaman"
+			],
+			"improvementUnlocks": [
+				"mycelium"
+			],
+			"cost": 2,
+			"idx": -1
 		},
 		"spearing": {
 			"abilityUnlocks": [
@@ -522,10 +542,12 @@
 			]
 		},
 		"shaman": {
+			"health": 100,
+			"defence": 10,
+			"attack": 15,
+			"promotionLimit": 3,
 			"unitAbilities": [
-				"convert",
-				"boost",
-				"polyplusstatic"
+				"boost"
 			]
 		},
 		"dagger": {
@@ -642,6 +664,24 @@
 				"consumed"
 			],
 			"maxLevel": 0
+		},
+		"aquafertilize": {
+			"cost": 5,
+			"terrainRequirements": [
+				{
+					"terrain": "wetland"
+				}
+			],
+			"creates": [
+				{
+					"resource": "crop"
+				}
+			],
+			"improvementAbilities": [
+				"consumed"
+			],
+			"maxLevel": 0,
+			"idx": -1
 		},
 		"fungi": {
 			"cost": 7
