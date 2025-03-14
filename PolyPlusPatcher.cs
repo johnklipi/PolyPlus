@@ -224,5 +224,16 @@ namespace PolyPlus {
 		if(playerState.HasPeaceWith(otherPlayer.Id))
 			__result = __result / 2
 	}
+
+	[HarmonyPostfix]
+        [HarmonyPatch(typeof(TileData), nameof(TileData.GetMovementCost))]
+	private static void TileData_GetMovementCost(ref int __result, MapData map, TileData fromTile, PathFinderSettings settings)
+	{
+		UnitState unit = settings.unit;
+		if (unit != null && __result == 5 && settings.unitData.HasAbility(UnitAbility.Type.Skate))
+		{
+			__result = 10;
+		}
+	}
     }
 }
