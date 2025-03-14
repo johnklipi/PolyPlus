@@ -752,5 +752,8 @@
 				"ocean"
 			]
 		}
+	},
+	"diplomacyData":{
+		"embassyIncome": 1
 	}
 }
