@@ -217,5 +217,12 @@ namespace PolyPlus {
             }
         }
 
+	[HarmonyPostfix]
+        [HarmonyPatch(typeof(PlayerDiplomacyExtensions), nameof(PlayerDiplomacyExtensions.GetIncomeFromEmbassy))]
+	private static void PlayerDiplomacyExtensions_GetIncomeFromEmbassy(ref int __result, PlayerState playerState, PlayerState otherPlayer, GameState gameState)
+	{
+		if(playerState.HasPeaceWith(otherPlayer.Id))
+			__result = __result / 2
+	}
     }
 }
