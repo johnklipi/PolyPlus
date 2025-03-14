@@ -108,7 +108,7 @@ namespace PolyPlus {
             List<WorldCoordinates> toRemove = new List<WorldCoordinates>();
             if(gameState.TryGetPlayer(unit.owner, out playerState))
             {
-                if(PlayerExtensions.HasAbility(playerState, EnumCache<PlayerAbility.Type>.GetType("waterembark"), gameState))
+                if(PlayerExtensions.HasAbility(playerState, EnumCache<PlayerAbility.Type>.GetType("waterembark"), gameState) && !unit.HasAbility(UnitAbility.Type.Fly, gameState))
                 {
                     foreach (WorldCoordinates destination in options)
                     {
