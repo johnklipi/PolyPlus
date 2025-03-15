@@ -5,7 +5,7 @@
 				"aquacrop": 0.5
 			},
 			"techOverrides": {
-				"sailing": "sailing2"
+				"sailing": "embarksailing"
 			},
 			"startingUnit": "mindbender"
 		},
@@ -31,7 +31,7 @@
 				"aquacrop": 0.5
 			},
 			"techOverrides": {
-				"sailing": "sailing2"
+				"sailing": "embarksailing"
 			},
 			"terrainModifier": {
 				"forest": 1.5
@@ -42,7 +42,7 @@
 				"aquacrop": 0.5
 			},
 			"techOverrides": {
-				"sailing": "sailing2"
+				"sailing": "embarksailing"
 			}
 		},
 		"hoodrick": {
@@ -50,7 +50,7 @@
 				"aquacrop": 0.5
 			},
 			"techOverrides": {
-				"sailing": "sailing2"
+				"sailing": "embarksailing"
 			}
 		},
 		"imperius": {
@@ -58,7 +58,7 @@
 				"aquacrop": 0.5
 			},
 			"techOverrides": {
-				"sailing": "sailing2"
+				"sailing": "embarksailing"
 			}
 		},
 		"kickoo": {
@@ -66,7 +66,7 @@
 				"aquacrop": 0.5
 			},
 			"techOverrides": {
-				"sailing": "sailing2"
+				"sailing": "embarksailing"
 			},
 			"startingTech": [
 				"basic",
@@ -78,9 +78,12 @@
 				"aquacrop": 0.5
 			},
 			"techOverrides": {
-				"sailing": "sailing2"
+				"sailing": "embarksailing"
 			},
-			"bonus": 3
+			"bonus": 0,
+			"tribeAbilities": [
+				"citypark"
+			]
 		},
 		"oumaji": {
 			"terrainModifier": {
@@ -95,7 +98,7 @@
 				"aquacrop": 0.5
 			},
 			"techOverrides": {
-				"sailing": "sailing2"
+				"sailing": "embarksailing"
 			}
 		},
 		"quetzali": {
@@ -103,7 +106,7 @@
 				"aquacrop": 0.5
 			},
 			"techOverrides": {
-				"sailing": "sailing2"
+				"sailing": "embarksailing"
 			}
 		},
 		"vengir": {
@@ -111,7 +114,7 @@
 				"aquacrop": 0.5
 			},
 			"techOverrides": {
-				"sailing": "sailing2"
+				"sailing": "embarksailing"
 			}
 		},
 		"xinxi": {
@@ -119,7 +122,7 @@
 				"aquacrop": 0.5
 			},
 			"techOverrides": {
-				"sailing": "sailing2"
+				"sailing": "embarksailing"
 			}
 		},
 		"yadakk": {
@@ -127,7 +130,7 @@
 				"aquacrop": 0.5
 			},
 			"techOverrides": {
-				"sailing": "sailing2"
+				"sailing": "embarksailing"
 			}
 		},
 		"zebasi": {
@@ -135,7 +138,7 @@
 				"aquacrop": 0.5
 			},
 			"techOverrides": {
-				"sailing": "sailing2"
+				"sailing": "embarksailing"
 			}
 		},
 		"polaris": {
@@ -260,7 +263,7 @@
 			],
 			"cost": 2
 		},
-		"sailing2": {
+		"embarksailing": {
 			"techUnlocks": [
 				"navigation"
 			],
@@ -755,5 +758,25 @@
 	},
 	"diplomacyData":{
 		"embassyIncome": 1
+	},
+	"improvementAbility": {
+		"halved": {
+			"idx": -1
+		}
+	},
+	"playerAbility": {
+		"waterembark": {
+			"idx": -1
+		}
+	},
+	"unitAbility": {
+		"polyplusstatic": {
+			"idx": -1
+		}
+	},
+	"tribeAbility": {
+		"citypark": {
+			"idx": -1
+		}
 	}
 }

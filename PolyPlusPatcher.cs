@@ -7,29 +7,7 @@ namespace PolyPlus {
     {
         public static void Load()
         {
-            CreateEnumCaches();
             Harmony.CreateAndPatchAll(typeof(PolyPlusPatcher));
-        }
-
-        internal static void CreateEnumCaches()
-        {
-            Console.Write("Created mapping for ImprovementAbility.Type with id waterembark and index " + PolyMod.ModLoader.autoidx);
-            EnumCache<ImprovementAbility.Type>.AddMapping("halved", (ImprovementAbility.Type)PolyMod.ModLoader.autoidx);
-			EnumCache<ImprovementAbility.Type>.AddMapping("halved", (ImprovementAbility.Type)PolyMod.ModLoader.autoidx);
-            PolyMod.ModLoader.autoidx++;
-            Console.Write("Created mapping for PlayerAbility.Type with id waterembark and index " + PolyMod.ModLoader.autoidx);
-            EnumCache<PlayerAbility.Type>.AddMapping("waterembark", (PlayerAbility.Type)PolyMod.ModLoader.autoidx);
-			EnumCache<PlayerAbility.Type>.AddMapping("waterembark", (PlayerAbility.Type)PolyMod.ModLoader.autoidx);
-            PolyMod.ModLoader.autoidx++;
-            Console.Write("Created mapping for PlayerAbility.Type with id polyplusstatic and index " + PolyMod.ModLoader.autoidx);
-            EnumCache<UnitAbility.Type>.AddMapping("polyplusstatic", (UnitAbility.Type)PolyMod.ModLoader.autoidx);
-			EnumCache<UnitAbility.Type>.AddMapping("polyplusstatic", (UnitAbility.Type)PolyMod.ModLoader.autoidx);
-            PolyMod.ModLoader.autoidx++;
-            int tribeBonusAutoidx = (int)Enum.GetValues(typeof(TribeData.BonusEnum)).Cast<TribeData.BonusEnum>().Last();
-            tribeBonusAutoidx++;
-            Console.Write("Created mapping for TribeData.BonusEnum with id citypark and index " + tribeBonusAutoidx);
-            EnumCache<TribeData.BonusEnum>.AddMapping("citypark", (TribeData.BonusEnum)tribeBonusAutoidx);
-			EnumCache<TribeData.BonusEnum>.AddMapping("citypark", (TribeData.BonusEnum)tribeBonusAutoidx);
         }
 
 		[HarmonyPostfix]
@@ -77,7 +55,7 @@ namespace PolyPlus {
             TribeData tribeData;
             if (tile != null && gameState.GameLogicData.TryGetData(playerState.tribe, out tribeData))
             {
-                if (tribeData.bonus == EnumCache<TribeData.BonusEnum>.GetType("citypark"))
+                if (tribeData.tribeAbilities.Contains(EnumCache<TribeAbility.Type>.GetType("citypark")))
                 {
                     tile.improvement.production = 2;
                     tile.improvement.baseScore += 250;
@@ -222,7 +200,7 @@ namespace PolyPlus {
 	private static void PlayerDiplomacyExtensions_GetIncomeFromEmbassy(ref int __result, PlayerState playerState, PlayerState otherPlayer, GameState gameState)
 	{
 		if(playerState.HasPeaceWith(otherPlayer.Id))
-			__result = __result / 2
+			__result /= 2;
 	}
 
 	[HarmonyPostfix]

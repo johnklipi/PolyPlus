@@ -7,7 +7,7 @@
 		"French (France)": "Récolte Culture aquatique",
 		"Spanish (Mexico)": "Cosecha Cultivo acuático"
 	},
-	"technology_names_sailing2": {
+	"technology_names_embarksailing": {
 		"English": "Sailing",
 		"Portuguese (Brazil)": "Barco a Vela",
 		"Russian": "Мореходство",
@@ -19,6 +19,10 @@
 		"Korean": "배 타기",
 		"Indonesian": "Berlayar",
 		"Polish": "Żeglarstwo"
+	},
+	"technology_names_cymroads": {
+		"English": "Rootways",
+		"Russian": "Корневые пути"
 	},
 	"unit_abilities_polyplusstatic": {
 		"English": "STATIC",
@@ -39,6 +43,10 @@
 		"Russian": "Этот отряд не может получить звание ветерана.",
 		"Italian (Italy)": "Questa unità non può diventare veterana.",
 		"French (France)": "Cette unité ne peut pas devenir vétéran."
+	},
+	"tooltip_ability_skate": {
+		"English": "This unit gets is limited to 1 movement and all other abilities if not being on ice.",
+		"Russian": "Этот отряд теряет все способности и имеет пониженое передвижение до 1 клетки когда не находится на льду."
 	},
 	"polyplus_unit_veteran_static_progress": {
 		"English": "This unit has made {0} kills.",
