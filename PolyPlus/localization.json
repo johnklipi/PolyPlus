@@ -84,5 +84,33 @@
 	"building_ability_halved": {
 		"English": "Level of this building is halved and rounded down.",
 		"Russian": "Уровень этого здания уменьшен вдвое и округлен в меньшую сторону."
+	},
+	"technology_names_elyforestry": {
+		"English": "Forestry",
+		"Russian": "Лесное хозяйство"
+	},
+	"player_abilities_treehouse": {
+		"English": "Tree Houses",
+		"Russian": "Домики на Деревьях"
+	},
+	"tooltip_ability_treehouse": {
+		"English": "Land improvements can be built on forests.",
+		"Russian": "Строения для суши можно строить на лесах."
+	},
+	"technology_names_naturalharmony": {
+		"English": "Natural Harmony",
+		"Russian": "Природная гармония"
+	},
+	"unit_names_forestwarden": {
+		"English": "Sylvan Warden",
+		"Russian": "Хранитель Чащи"
+	},
+	"unit_abilitiess_foreststealth": {
+		"English": "Forest Stealth",
+		"Russian": "Скрытность в лесу"
+	},
+	"tooltip_ability_foreststealth": {
+		"English": "Unit turns invisible in forests.",
+		"Russian": "Отряд становится невидимым в лесах."
 	}
 }

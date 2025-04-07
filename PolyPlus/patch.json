@@ -42,7 +42,9 @@
 				"aquacrop": 0.5
 			},
 			"techOverrides": {
-				"sailing": "embarksailing"
+				"sailing": "embarksailing",
+				"forestry": "elyforestry",
+				"mathematics": "naturalharmony"
 			}
 		},
 		"hoodrick": {
@@ -211,6 +213,9 @@
 			],
 			"unitUnlocks": [
 				"mindbender"
+			],
+			"abilityUnlocks": [
+				"discipline"
 			]
 		},
 		"philosophy": {
@@ -391,9 +396,45 @@
 				"canal",
 				"atoll"
 			]
+		},
+		"elyforestry": {
+			"techUnlocks": [
+				"mathematics"
+			],
+			"improvementUnlocks": [
+				"sanctuary"
+			],
+			"abilityUnlocks": [
+				"treehouse"
+			],
+			"cost": 2,
+			"idx": -1
+		},
+		"naturalharmony": {
+			"unitUnlocks": [
+				"forestwarden"
+			],
+			"cost": 3,
+			"idx": -1
 		}
 	},
 	"unitData": {
+		"forestwarden": {
+			"health": 100,
+			"defence": 0,
+			"movement": 2,
+			"range": 2,
+			"attack": 40,
+			"cost": 8,
+			"weapon": 11,
+			"unitAbilities": [
+				"stiff",
+				"land",
+				"polyplusstatic",
+				"foreststealth"
+			],
+			"idx": -1
+		},
 		"mindbender": {
 			"health": 100,
 			"defence": 10,
@@ -771,6 +812,9 @@
 	},
 	"unitAbility": {
 		"polyplusstatic": {
+			"idx": -1
+		},
+		"foreststealth": {
 			"idx": -1
 		}
 	},

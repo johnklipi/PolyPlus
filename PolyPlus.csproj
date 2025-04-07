@@ -15,13 +15,4 @@
   <ItemGroup>
     <PackageReference Include="PolyMod" Version="1.1.1" />
   </ItemGroup>
-
-  <!-- <ItemGroup>
-      <ProjectReference Include="E:\dev\Polytopia\PolyMod\PolyMod.csproj" />
-  </ItemGroup>
-
-  <Target Name="AB" AfterTargets="AfterBuild">
-      <Exec Command="xcopy /y /s &quot;$(ProjectDir)PolyPlus&quot; &quot;E:\dev\Polytopia\TBOP\Mods\PolyPlus&quot;" />
-      <Exec Command="xcopy /y /s $(TargetPath) &quot;E:\dev\Polytopia\TBOP\Mods\PolyPlus&quot;&#xD;&#xA;start E:\dev\Polytopia\TBOP\Polytopia.exe" />
-  </Target> -->
 </Project>

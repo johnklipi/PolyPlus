@@ -195,23 +195,61 @@ namespace PolyPlus {
             }
         }
 
-	[HarmonyPostfix]
+        [HarmonyPostfix]
         [HarmonyPatch(typeof(PlayerDiplomacyExtensions), nameof(PlayerDiplomacyExtensions.GetIncomeFromEmbassy))]
-	private static void PlayerDiplomacyExtensions_GetIncomeFromEmbassy(ref int __result, PlayerState playerState, PlayerState otherPlayer, GameState gameState)
-	{
-		if(playerState.HasPeaceWith(otherPlayer.Id))
-			__result /= 2;
-	}
+        private static void PlayerDiplomacyExtensions_GetIncomeFromEmbassy(ref int __result, PlayerState playerState, PlayerState otherPlayer, GameState gameState)
+        {
+            if(playerState.HasPeaceWith(otherPlayer.Id))
+                __result /= 2;
+        }
 
-	[HarmonyPostfix]
+        [HarmonyPostfix]
         [HarmonyPatch(typeof(TileData), nameof(TileData.GetMovementCost))]
-	private static void TileData_GetMovementCost(ref int __result, MapData map, TileData fromTile, PathFinderSettings settings)
-	{
-		UnitState unit = settings.unit;
-		if (unit != null && __result == 5 && settings.unitData.HasAbility(UnitAbility.Type.Skate))
-		{
-			__result = 10;
-		}
-	}
+        private static void TileData_GetMovementCost(ref int __result, MapData map, TileData fromTile, PathFinderSettings settings)
+        {
+            UnitState unit = settings.unit;
+            if (unit != null && __result == 5 && settings.unitData.HasAbility(UnitAbility.Type.Skate))
+            {
+                __result = 10;
+            }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(MoveCommand), nameof(MoveCommand.Execute))]
+        private static void MoveCommand_Execute(MoveCommand __instance, GameState gameState)
+        {
+            UnitState unitState;
+            UnitData unitData;
+            if (gameState.TryGetUnit(__instance.UnitId, out unitState) && gameState.GameLogicData.TryGetData(unitState.type, out unitData))
+            {
+                Il2CppSystem.Collections.Generic.List<WorldCoordinates> path = gameState.GetPath(__instance.From, __instance.To, unitState.GetMovement(gameState), unitState);
+                if (path != null && path.Count >= 2)
+                {
+                    TileData tileTo = GameManager.GameState.Map.GetTile(__instance.To);
+                    TileData tileFrom = GameManager.GameState.Map.GetTile(__instance.From);
+                    if(tileTo.terrain == Polytopia.Data.TerrainData.Type.Forest && tileFrom.terrain != Polytopia.Data.TerrainData.Type.Forest)
+                    {
+                        if (unitState.HasAbility(EnumCache<UnitAbility.Type>.GetType("foreststealth"), gameState) && !unitState.HasEffect(UnitEffect.Invisible))
+                        {
+                            gameState.ActionStack.Add(new HideAction(__instance.PlayerId, __instance.From));
+                        }
+                    }
+                    else if(tileTo.terrain == Polytopia.Data.TerrainData.Type.Forest && tileFrom.terrain == Polytopia.Data.TerrainData.Type.Forest)
+                    {
+                        if (unitState.HasAbility(EnumCache<UnitAbility.Type>.GetType("foreststealth"), gameState) && !unitState.HasEffect(UnitEffect.Invisible))
+                        {
+                            gameState.ActionStack.Add(new HideAction(__instance.PlayerId, __instance.From));
+                        }
+                    }
+                    else if(tileTo.terrain != Polytopia.Data.TerrainData.Type.Forest && tileFrom.terrain == Polytopia.Data.TerrainData.Type.Forest)
+                    {
+                        if (unitState.HasAbility(EnumCache<UnitAbility.Type>.GetType("foreststealth"), gameState) && unitState.HasEffect(UnitEffect.Invisible))
+                        {
+                            gameState.ActionStack.Add(new RevealAction(__instance.PlayerId, __instance.From, false));
+                        }
+                    }
+                }
+            }
+        }
     }
 }
