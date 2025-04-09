@@ -84,5 +84,17 @@
 	"building_ability_halved": {
 		"English": "Level of this building is halved and rounded down.",
 		"Russian": "Уровень этого здания уменьшен вдвое и округлен в меньшую сторону."
+	},
+	"building_names_aquafertilize": {
+		"English": "Fertilize"
+	},
+	"tooltip.ability.embassy": {
+		"English": "Allow construction of Embassies in foreign capitals. Embassies provide income for both parties as long as they are not at war."
+	},
+	"diplomacy.establishedembassy.description": {
+		"English": "You have established an embassy in the {0} capital. It will give you both {1} stars per turn."
+	},
+	"diplomacy.establishedembassy.description2": {
+		"English": "{0} established an embassy in your capital. It will give you both {1} stars per turn."
 	}
 }

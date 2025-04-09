@@ -2,7 +2,7 @@
 	"tribeData": {
 		"aimo": {
 			"resourceModifier": {
-				"aquacrop": 0.5
+				"aquacrop": 1
 			},
 			"techOverrides": {
 				"sailing": "embarksailing"
@@ -17,7 +17,7 @@
 				"navigation": "aquanavigation"
 			},
 			"resourceModifier": {
-				"aquacrop": 0.5
+				"aquacrop": 1.5
 			},
 			"improvementOverrides": {
 				"fertilize": "aquafertilize",
@@ -28,7 +28,7 @@
 		"bardur": {
 			"resourceModifier": {
 				"crop": 0,
-				"aquacrop": 0.5
+				"aquacrop": 1
 			},
 			"techOverrides": {
 				"sailing": "embarksailing"
@@ -39,7 +39,7 @@
 		},
 		"elyrion": {
 			"resourceModifier": {
-				"aquacrop": 0.5
+				"aquacrop": 1
 			},
 			"techOverrides": {
 				"sailing": "embarksailing"
@@ -47,7 +47,7 @@
 		},
 		"hoodrick": {
 			"resourceModifier": {
-				"aquacrop": 0.5
+				"aquacrop": 1
 			},
 			"techOverrides": {
 				"sailing": "embarksailing"
@@ -55,7 +55,7 @@
 		},
 		"imperius": {
 			"resourceModifier": {
-				"aquacrop": 0.5
+				"aquacrop": 1
 			},
 			"techOverrides": {
 				"sailing": "embarksailing"
@@ -63,7 +63,7 @@
 		},
 		"kickoo": {
 			"resourceModifier": {
-				"aquacrop": 0.5
+				"aquacrop": 1
 			},
 			"techOverrides": {
 				"sailing": "embarksailing"
@@ -75,7 +75,7 @@
 		},
 		"luxidoor": {
 			"resourceModifier": {
-				"aquacrop": 0.5
+				"aquacrop": 1
 			},
 			"techOverrides": {
 				"sailing": "embarksailing"
@@ -95,7 +95,7 @@
 				"game": 1,
 				"crop": 0.5,
 				"fruit": 1.2,
-				"aquacrop": 0.5
+				"aquacrop": 1
 			},
 			"techOverrides": {
 				"sailing": "embarksailing"
@@ -103,7 +103,7 @@
 		},
 		"quetzali": {
 			"resourceModifier": {
-				"aquacrop": 0.5
+				"aquacrop": 1
 			},
 			"techOverrides": {
 				"sailing": "embarksailing"
@@ -111,7 +111,7 @@
 		},
 		"vengir": {
 			"resourceModifier": {
-				"aquacrop": 0.5
+				"aquacrop": 1
 			},
 			"techOverrides": {
 				"sailing": "embarksailing"
@@ -119,7 +119,7 @@
 		},
 		"xinxi": {
 			"resourceModifier": {
-				"aquacrop": 0.5
+				"aquacrop": 1
 			},
 			"techOverrides": {
 				"sailing": "embarksailing"
@@ -127,7 +127,7 @@
 		},
 		"yadakk": {
 			"resourceModifier": {
-				"aquacrop": 0.5
+				"aquacrop": 1
 			},
 			"techOverrides": {
 				"sailing": "embarksailing"
@@ -135,7 +135,7 @@
 		},
 		"zebasi": {
 			"resourceModifier": {
-				"aquacrop": 0.5
+				"aquacrop": 1
 			},
 			"techOverrides": {
 				"sailing": "embarksailing"
@@ -143,7 +143,7 @@
 		},
 		"polaris": {
 			"resourceModifier": {
-				"aquacrop": 0.5
+				"aquacrop": 1
 			},
 			"improvementOverrides": {
 				"customshouse": "none"
@@ -157,7 +157,7 @@
 		},
 		"cymanti": {
 			"resourceModifier": {
-				"aquacrop": 0.5
+				"aquacrop": 1
 			},
 			"unitOverrides": {
 				"mindbender": "mindbender"
@@ -185,6 +185,10 @@
 				"fishingsimple",
 				"hunting",
 				"freespirit"
+			],
+			"taskUnlocks": [
+				"wealth",
+				"genius"
 			]
 		},
 		"riding": {
@@ -211,10 +215,15 @@
 			],
 			"unitUnlocks": [
 				"mindbender"
+			],
+			"abilityUnlocks": [
+				"discipline"
 			]
 		},
 		"philosophy": {
 			"unitUnlocks": [
+			],
+			"taskUnlocks": [
 			]
 		},
 		"aquatism": {
@@ -391,6 +400,9 @@
 				"canal",
 				"atoll"
 			]
+		},
+		"trade": {
+			"taskUnlocks": []
 		}
 	},
 	"unitData": {
