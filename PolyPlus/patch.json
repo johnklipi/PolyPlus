@@ -151,7 +151,7 @@
 			"techOverrides": {
 				"sailing": "frostwork",
 				"navigation": "polarwarfare",
-				"aquatism": "polarism",
+				"aquatism2": "polarism",
 				"aquaculture" : "sledding"
 			}
 		},
@@ -226,10 +226,15 @@
 			"taskUnlocks": [
 			]
 		},
-		"aquatism": {
+		"aquatism2": {
 			"improvementUnlocks": [
 				"customshouse"
-			]
+			],
+			"abilityUnlocks": [
+				"dashembark"
+			],
+			"cost": 3,
+			"idx": -1
 		},
 		"spiritualism": {
 			"improvementUnlocks": [
@@ -262,7 +267,7 @@
 		},
 		"aquaculture": {
 			"techUnlocks": [
-				"aquatism"
+				"aquatism2"
 			],
 			"improvementUnlocks": [
 				"aquafarm",
@@ -581,7 +586,8 @@
 				"dash",
 				"scout",
 				"polyplusstatic"
-			]
+			],
+			"cost": 5
 		},
 		"cloak_boat": {
 			"unitAbilities": [
@@ -650,7 +656,6 @@
 				"polyplusstatic"
 			]
 		}
-
 	},
 	"improvementData": {
 		"port": {
@@ -778,6 +783,9 @@
 	},
 	"playerAbility": {
 		"waterembark": {
+			"idx": -1
+		},
+		"dashembark": {
 			"idx": -1
 		}
 	},

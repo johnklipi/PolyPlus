@@ -1,10 +1,14 @@
 ﻿using HarmonyLib;
 using Polytopia.Data;
+using UI.Popups;
 using UnityEngine;
 
 namespace PolyPlus {
-    public class PolyPlusPatcher
+    public static class PolyPlusPatcher
     {
+        private static bool unlockRoutes = false;
+        private static bool unrobCity = false;
+        private static bool denyCloakAttackIncome = false;
         public static void Load()
         {
             Harmony.CreateAndPatchAll(typeof(PolyPlusPatcher));
@@ -162,6 +166,24 @@ namespace PolyPlus {
             }
         }
 
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(EmbarkAction), nameof(EmbarkAction.Execute))]
+        private static void EmbarkAction_ExecuteDefault(EmbarkAction __instance, GameState gameState)
+	    {
+            PlayerState playerState;
+            if (gameState.TryGetPlayer(__instance.PlayerId, out playerState))
+            {
+                TileData tile = gameState.Map.GetTile(__instance.Coordinates);
+                UnitState unitState = tile.unit;
+                if(PlayerExtensions.HasAbility(playerState, EnumCache<PlayerAbility.Type>.GetType("dashembark"), gameState))
+                {
+                    unitState.moved = false;
+                    unitState.attacked = false;
+                    // LevelManager.GetClientInteraction().SelectUnit(MapRenderer.Current.GetUnitInstance(unitState.id)); // That did not work
+                }
+            }
+        }
+
         [HarmonyPrefix]
         [HarmonyPatch(typeof(ExamineRuinsAction), nameof(ExamineRuinsAction.ExecuteDefault))]
         private static bool ExecuteDefault(ExamineRuinsAction __instance, GameState gameState)
@@ -195,23 +217,144 @@ namespace PolyPlus {
             }
         }
 
-	[HarmonyPostfix]
+        [HarmonyPostfix]
         [HarmonyPatch(typeof(PlayerDiplomacyExtensions), nameof(PlayerDiplomacyExtensions.GetIncomeFromEmbassy))]
-	private static void PlayerDiplomacyExtensions_GetIncomeFromEmbassy(ref int __result, PlayerState playerState, PlayerState otherPlayer, GameState gameState)
-	{
-		if(playerState.HasPeaceWith(otherPlayer.Id))
-			__result /= 2;
-	}
+        private static void PlayerDiplomacyExtensions_GetIncomeFromEmbassy(ref int __result, PlayerState playerState, PlayerState otherPlayer, GameState gameState)
+        {
+            if(playerState.HasPeaceWith(otherPlayer.Id))
+                __result /= 2;
+        }
 
-	[HarmonyPostfix]
+        [HarmonyPostfix]
         [HarmonyPatch(typeof(TileData), nameof(TileData.GetMovementCost))]
-	private static void TileData_GetMovementCost(ref int __result, MapData map, TileData fromTile, PathFinderSettings settings)
-	{
-		UnitState unit = settings.unit;
-		if (unit != null && __result == 5 && settings.unitData.HasAbility(UnitAbility.Type.Skate))
-		{
-			__result = 10;
-		}
-	}
+        private static void TileData_GetMovementCost(ref int __result, MapData map, TileData fromTile, PathFinderSettings settings)
+        {
+            UnitState unit = settings.unit;
+            if (unit != null && __result == 5 && settings.unitData.HasAbility(UnitAbility.Type.Skate))
+            {
+                __result = 10;
+            }
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(MapDataExtensions), nameof(MapDataExtensions.UpdateRoutes))]
+        private static bool MapDataExtensions_UpdateRoutes_Prefix(GameState gameState, Il2CppSystem.Collections.Generic.List<TileData> changedTiles)
+        {
+            unlockRoutes = true;
+            return true;
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(GameLogicData), nameof(GameLogicData.GetMovementsWithUnlockedTeck))]
+        private static void GameLogicData_GetMovementsWithUnlockedTeck(ref Il2CppSystem.Collections.Generic.List<Polytopia.Data.TerrainData> __result, GameLogicData __instance, Il2CppSystem.Collections.Generic.List<TechData> tech)
+        {
+            if(unlockRoutes)
+            {
+                Array values = Enum.GetValues(typeof(Polytopia.Data.TerrainData.Type));
+                Il2CppSystem.Collections.Generic.List<Polytopia.Data.TerrainData> terrains = new Il2CppSystem.Collections.Generic.List<Polytopia.Data.TerrainData>();
+                foreach (var item in values)
+                {
+                    if(__instance.TryGetData((Polytopia.Data.TerrainData.Type)item, out Polytopia.Data.TerrainData data))
+                    {
+                        terrains.Add(data);
+                    }
+                }
+                __result = terrains;
+            }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(MapDataExtensions), nameof(MapDataExtensions.UpdateRoutes))]
+        private static void MapDataExtensions_UpdateRoutes_Postfix(GameState gameState, Il2CppSystem.Collections.Generic.List<TileData> changedTiles)
+        {
+            unlockRoutes = false;
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(UnitDataExtensions), nameof(UnitDataExtensions.GetAttackOptionsAtPosition))]
+        private static void GetAttackOptionsAtPosition(ref Il2CppSystem.Collections.Generic.List<WorldCoordinates> __result, GameState gameState, byte playerId, WorldCoordinates position, int range, bool includeHiddenTiles, UnitState customUnitState, bool ignoreDiplomacyRelation)
+        {
+            Il2CppSystem.Collections.Generic.List<WorldCoordinates> list = new Il2CppSystem.Collections.Generic.List<WorldCoordinates>();
+            UnitState unitState = customUnitState ?? gameState.Map.GetTile(position).unit;
+            Il2CppSystem.Collections.Generic.List<TileData> area = gameState.Map.GetArea(position, range, true, false);
+            if (unitState != null && unitState.HasAbility(UnitAbility.Type.Infiltrate, gameState) && gameState.TryGetPlayer(playerId, out PlayerState playerState))
+            {
+                if (area != null && area.Count > 0)
+                {
+                    list = new Il2CppSystem.Collections.Generic.List<WorldCoordinates>();
+                    for (int i = 0; i < area.Count; i++)
+                    {
+                        TileData tileData = area[i];
+                        if (tileData != null)
+                        {
+                            bool isInPeace;
+                            if (ignoreDiplomacyRelation != false) {
+                                isInPeace = false;
+                            }
+                            else
+                            {
+                                isInPeace = PlayerDiplomacyExtensions.HasPeaceWith(playerState, tileData.owner);
+                                if (!isInPeace) {
+                                    isInPeace = PlayerDiplomacyExtensions.HasBrokenPeaceWith(playerState, tileData.owner);
+                                }
+
+                            }
+
+                            if (tileData.HasImprovement(ImprovementData.Type.City) && tileData.owner != 0 && tileData.owner != unitState.owner && !isInPeace)
+                            {
+                                list.Add(tileData.coordinates);
+                            }
+                        }
+                    }
+                }
+                __result = list;
+            }
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(TileDataExtensions), nameof(TileDataExtensions.CalculateWork), typeof(TileData), typeof(GameState), typeof(int))]
+        public static bool TileDataExtensions_CalculateWork_Prefix(ref int __result, TileData tile, GameState gameState, int improvementLevel)
+        {
+            unrobCity = true;
+            return true;
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(ImprovementState), nameof(ImprovementState.HasEffect))]
+        public static void ImprovementState_HasEffect(ref bool __result, ImprovementState __instance, ImprovementEffect effect)
+        {
+            if(__result && effect == ImprovementEffect.robbed && unrobCity)
+                __result = false;
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(TileDataExtensions), nameof(TileDataExtensions.CalculateWork), typeof(TileData), typeof(GameState), typeof(int))]
+        public static void TileDataExtensions_CalculateWork_Postfix(ref int __result, TileData tile, GameState gameState, int improvementLevel)
+        {
+            unrobCity = false;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(InfiltrationRewardAction), nameof(InfiltrationRewardAction.ExecuteDefault))]
+        private static bool InfiltrationRewardAction_ExecuteDefault_Prefix(InfiltrationRewardAction __instance, GameState gameState)
+        {
+            denyCloakAttackIncome = true;
+            return true;
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(TileDataExtensions), nameof(TileDataExtensions.CalculateRawProduction))]
+        private static void TileDataExtensions_CalculateRawProduction(ref int __result, TileData tile, GameState gameState)
+        {
+            if(denyCloakAttackIncome)
+                __result = 0;
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(InfiltrationRewardAction), nameof(InfiltrationRewardAction.ExecuteDefault))]
+        private static void InfiltrationRewardAction_ExecuteDefault_Postfix(InfiltrationRewardAction __instance, GameState gameState)
+        {
+            denyCloakAttackIncome = false;
+        }
     }
 }

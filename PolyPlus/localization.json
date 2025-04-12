@@ -96,5 +96,40 @@
 	},
 	"diplomacy.establishedembassy.description2": {
 		"English": "{0} established an embassy in your capital. It will give you both {1} stars per turn."
+	},
+	"technology_names_aquatism2": {
+		"English": "Aquatism",
+		"Portuguese (Brazil)": "Aquatismo",
+		"Russian": "Акватизм",
+		"Italian (Italy)": "Acquatismo",
+		"French (France)": "Aqua-animisme",
+		"Spanish (Mexico)": "Acuatismo",
+		"German (Germany)": "Aquatismus",
+		"Japanese": "水中建築",
+		"Korean": "수생학",
+		"Hindi": "एक्वाटिज्म",
+		"Indonesian": "Aquatisme",
+		"Malay": "Akuatisme",
+		"Polish": "Akwatyzm",
+		"Thai": "วิถีแห่งสายน้ำ",
+		"Turkish": "Akuatizm",
+		"Vietnamese": "Thủy Sinh",
+		"Elyrion": "aπaŦaŋ"
+	},
+	"player_abilities_dashembark": {
+		"English": "Wavestride",
+		"Russian": "Волнорез"
+	},
+	"tooltip_ability_dashembark": {
+		"English": "Allows units immidiately move and attack after embarking.",
+		"Russian": "Позволяет отрядам моментально двигаться и атаковать после спуска на воду."
+	},
+	"tooltip.tile.riot": {
+		"English": "There are riots in this city!",
+		"Russian": "Город бунтует!"
+	},
+	"world.rebellion.attackerdescription": {
+		"English": "You started a riot in {0}!",
+		"Russian": "Вы подняли мятеж в городе {0}!"
 	}
 }
