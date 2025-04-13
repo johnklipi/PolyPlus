@@ -14,7 +14,8 @@
 				"rammership": "none"
 			},
 			"techOverrides": {
-				"navigation": "aquanavigation"
+				"navigation": "aquanavigation",
+				"aquatism2": "aquatism"
 			},
 			"resourceModifier": {
 				"aquacrop": 1.5
@@ -80,6 +81,7 @@
 			"techOverrides": {
 				"sailing": "embarksailing"
 			},
+			"startingResource": [],
 			"bonus": 0,
 			"tribeAbilities": [
 				"citypark"
@@ -172,7 +174,8 @@
 				"chivalry": "shock",
 				"aquaculture": "aquaculture",
 				"sailing": "hydrology",
-				"navigation": "pescetism"
+				"navigation": "pescetism",
+				"aquatism2": "aquatism"
 			},
 			"startingUnit": "warrior"
 		}
@@ -198,6 +201,10 @@
 			"cost": 2
 		},
 		"freespirit": {
+			"improvementUnlocks": [
+				"temple",
+				"guild"
+			],
 			"techUnlocks": [
 				"roads",
 				"shields"
@@ -224,6 +231,11 @@
 			"unitUnlocks": [
 			],
 			"taskUnlocks": [
+			]
+		},
+		"aquatism": {
+			"improvementUnlocks": [
+				"customshouse"
 			]
 		},
 		"aquatism2": {
@@ -802,6 +814,30 @@
 				"limited",
 				"halved"
 			]
+		},
+		"guild": {
+			"cost": 7,
+			"rewards": [
+				{
+					"population": 2
+				}
+			],
+			"terrainRequirements": [
+				{
+					"terrain": "field"
+				},
+				{
+					"terrain": "forest"
+				},
+				{
+					"terrain": "mountain"
+				}
+			],
+			"improvementAbilities": [
+				"limited"
+			],
+			"maxLevel": 0,
+			"idx": -1
 		}
 	},
 	"resourceData": {

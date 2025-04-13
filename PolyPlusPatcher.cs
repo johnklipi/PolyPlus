@@ -229,13 +229,13 @@ namespace PolyPlus {
         [HarmonyPatch(typeof(TileData), nameof(TileData.GetMovementCost))]
         private static void TileData_GetMovementCost(ref int __result, TileData __instance, MapData map, TileData fromTile, PathFinderSettings settings)
         {
-            var unit = settings.unit;
+            UnitState unit = settings.unit;
             if (unit != null && __result == 5 && settings.unitData.HasAbility(UnitAbility.Type.Skate))
             {
                 __result = 10;
             }
             if (unit != null &&
-                __instance.terrain == TerrainData.Type.Ice &&
+                __instance.terrain == Polytopia.Data.TerrainData.Type.Ice &&
                 settings.unitData.HasAbility(EnumCache<UnitAbility.Type>.GetType("glide")))
             {
                 __result = 5;
