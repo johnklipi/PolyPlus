@@ -227,12 +227,18 @@ namespace PolyPlus {
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(TileData), nameof(TileData.GetMovementCost))]
-        private static void TileData_GetMovementCost(ref int __result, MapData map, TileData fromTile, PathFinderSettings settings)
+        private static void TileData_GetMovementCost(ref int __result, TileData __instance, MapData map, TileData fromTile, PathFinderSettings settings)
         {
-            UnitState unit = settings.unit;
+            var unit = settings.unit;
             if (unit != null && __result == 5 && settings.unitData.HasAbility(UnitAbility.Type.Skate))
             {
                 __result = 10;
+            }
+            if (unit != null &&
+                __instance.terrain == TerrainData.Type.Ice &&
+                settings.unitData.HasAbility(EnumCache<UnitAbility.Type>.GetType("glide")))
+            {
+                __result = 5;
             }
         }
 
