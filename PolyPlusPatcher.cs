@@ -1,7 +1,11 @@
-﻿using HarmonyLib;
+﻿using System.Globalization;
+using HarmonyLib;
+using Il2CppSystem.Diagnostics;
 using Polytopia.Data;
 using UI.Popups;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using static PopupBase;
 
 namespace PolyPlus {
     public static class PolyPlusPatcher
@@ -362,5 +366,91 @@ namespace PolyPlus {
         {
             denyCloakAttackIncome = false;
         }
-    }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(InfiltrationRewardReaction), nameof(InfiltrationRewardReaction.Execute))]
+        private static bool InfiltrationRewardReaction_Execute(InfiltrationRewardReaction __instance, Il2CppSystem.Action onComplete)
+        {
+            TileData tileData = GameManager.GameState.Map.GetTile(__instance.action.Coordinates);
+            Tile tile = MapRenderer.Current.GetTileInstance(__instance.action.Coordinates);
+            if (tile.IsHidden)
+            {
+                onComplete?.Invoke();
+                return false;
+            }
+            AudioManager.PlaySFX(SFXTypes.Explode, SkinType.Default, 1f, 1f, 0f);
+            tile.SpawnExplosion();
+            tile.SpawnDarkPuff();
+            tile.SpawnEmbers(1f);
+            tile.Improvement.UpdateObject();
+            if (tile.Unit != null)
+            {
+                tile.Unit.Sway();
+                tile.Unit.UpdateObject();
+            }
+            //if (GameManager.IsPlayerViewing(__instance.action.PlayerId))
+            //{
+            //    ReactionUtils.CameraFocusIfExplored(GameManager.LocalPlayer.Id, tile.Coordinates, false, 0.8f, (Il2CppSystem.Action)odin);
+            //    // ShowAttackerPopup
+            //    return false;
+            //}
+            //if (!GameManager.IsPlayerViewing(tileData.owner))
+            //{
+            //    GameManager.DelayCall(100, onComplete);
+            //    return false;
+            //}
+            //PlayerState playerState;
+            string rebellionDescription;
+            TextInfo myTI = new CultureInfo("en-US",false).TextInfo;
+            GameManager.GameState.TryGetPlayer(__instance.action.PlayerId, out PlayerState playerState);
+            if(GameManager.LocalPlayer.Id == __instance.action.PlayerId)
+            {
+                rebellionDescription = Localization.Get("world.rebellion.attackerdescription", new Il2CppSystem.Object[]
+                {
+                    tileData.improvement.name
+                });
+            }
+            else if(GameManager.LocalPlayer.Id == tileData.owner)
+            {
+                rebellionDescription = Localization.Get("world.rebellion.description", new Il2CppSystem.Object[]
+                {
+                    myTI.ToTitleCase( EnumCache<UnitData.Type>.GetName(__instance.action.UnitType) ),
+                    myTI.ToTitleCase( EnumCache<TribeData.Type>.GetName(playerState.tribe) ),
+                    tileData.improvement.name
+                });
+            }
+            else
+            {
+            //     rebellionDescription = Localization.Get("world.rebellion.description", new Il2CppSystem.Object[]
+            //     {
+            //         myTI.ToUpper( EnumCache<UnitData.Type>.GetName(__instance.action.UnitType) ),
+            //         myTI.ToUpper( EnumCache<TribeData.Type>.GetName(playerState.tribe) ),
+            //         tileData.improvement.name
+            //     });
+            //     NotificationManager.Notify(rebellionDescription, Localization.Get("world.rebellion.title"), null, null);  
+                onComplete?.Invoke();
+                return false;
+            }
+            // ReactionUtils.CameraFocusIfExplored(GameManager.LocalPlayer.Id, tile.Coordinates, false, 0.8f, (Il2CppSystem.Action)dva);4
+            BasicPopup popup = PopupManager.GetBasicPopup();
+            popup.Header = Localization.Get("world.rebellion.title", new Il2CppSystem.Object[]
+			{
+                tileData.improvement.name
+			});;
+            popup.Description = rebellionDescription;
+            List<PopupButtonData> popupButtons = new()
+            {
+                new(Localization.Get("buttons.ok"), PopupButtonData.States.None, (UIButtonBase.ButtonAction)OnOkInfiltrationClicked, -1, true, null)
+            };
+            popup.buttonData = popupButtons.ToArray();
+            popup.IsUnskippable = true;
+            popup.Show();
+            return false;
+
+			void OnOkInfiltrationClicked(int buttonId, BaseEventData eventData)
+			{
+                onComplete?.Invoke();
+			}
+        }
+	}
 }

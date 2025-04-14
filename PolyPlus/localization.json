@@ -164,12 +164,15 @@
 		"English": "There are riots in this city!",
 		"Russian": "Город бунтует!"
 	},
-	"world_rebellion_attackerdescription": {
-		"English": "You started a riot in {0}!",
-		"Russian": "Вы подняли мятеж в городе {0}!"
-	},
 	"building_names_guild": {
 		"English": "Guild",
 		"Russian": "Гильдия"
+	},
+	"world_rebellion_description": {
+		"English": "{0} from the {1} tribe has infiltrated the city of {2} and incited a revolt against you!"
+	},
+	"world_rebellion_attackerdescription": {
+		"English": "You started a riot in {0}!",
+		"Russian": "Вы подняли мятеж в городе {0}!"
 	}
 }
