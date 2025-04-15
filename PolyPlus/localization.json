@@ -1,5 +1,5 @@
 {
-	"building_names_aquafarm": {
+	"building_names_harvestaquacrop": {
 		"English": "Harvest Aquacrop",
 		"Portuguese (Brazil)": "Colher Cultivo Marinho",
 		"Russian": "Сбор водного урожая",
@@ -30,7 +30,7 @@
 		"English": "Rootways",
 		"Russian": "Корневые пути"
 	},
-	"unit_abilities_polyplusstatic": {
+	"unit_abilities_staticplus": {
 		"English": "STATIC",
 		"Portuguese (Brazil)": "ESTÁTICA",
 		"Russian": "СТАТИЧНЫЙ",
@@ -49,7 +49,7 @@
 		"Vietnamese": "TĨNH",
 		"Elyrion": "ţ!∑ţ"
 	},
-	"tooltip_ability_polyplusstatic": {
+	"tooltip_ability_staticplus": {
 		"English": "This unit cannot become a veteran.",
 		"Portuguese (Brazil)": "Esta unidade não pode se tornar veterana.",
 		"Russian": "Этот отряд не может получить звание ветерана.",
@@ -131,7 +131,7 @@
 	"diplomacy_establishedembassy_description2": {
 		"English": "{0} established an embassy in your capital. It will give you both {1} stars per turn."
 	},
-	"technology_names_aquatism2": {
+	"technology_names_embarquatism": {
 		"English": "Aquatism",
 		"Portuguese (Brazil)": "Aquatismo",
 		"Russian": "Акватизм",
@@ -172,5 +172,9 @@
 	"world_rebellion_attackerdescription": {
 		"English": "You started a riot in {0}!",
 		"Russian": "Вы подняли мятеж в городе {0}!"
+	},
+	"unit_names_yuukwi": {
+		"English": "Yuukwi",
+		"Russian": "Юкви"
 	}
 }
