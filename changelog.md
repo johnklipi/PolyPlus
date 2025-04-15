@@ -37,6 +37,7 @@
 - **Wavestride Ability**: Units can **move and attack immediately after attacking**
 - **Sailing** now unlocks **Embark Ability**:  
   - All units who step on water turn into **rafts**, **no port needed**
+- **Juggernaunts** no longer have the **Stiff** ability
 - **Scout** cost changed: **5 → 3 stars**
 - **Deep Water Movement** moved to **Navigation**
 - **Navigation** unlocks:
@@ -75,7 +76,7 @@
   - Grants **+1 STP** and **250 score**
 - **Starting resource**: **Removed**
 
-## Aquarion
+### Aquarion
 - Gains all relevant changes from normal tribes that **aren't related to**:
   - Water
   - Unique mechanics
@@ -85,10 +86,10 @@
 - Sunken city ruins reward **removed**
 - **Atolls** moved **Aquaculture → Waterways**
 
-## Elyrion
+### Elyrion
 - **Polytaurs** cost icreased: **2 → 3 stars**
 
-## Polaris
+### Polaris
 - Gains all relevant changes from normal tribes that **aren't related to**:
   - Water
   - Unique mechanics
@@ -102,7 +103,7 @@
  - Lost **Auto Freeze** ability
  - Now has **Freeze Area** ability
  
-## Cymanti
+### Cymanti
 - Gains all relevant changes from normal tribes that **aren't related to**:
   - Water
   - Unique mechanics
@@ -122,3 +123,7 @@
 - **Algae** no longer blocks movement
 - **Doomux** gains the **Sneak** ability
 - **Hexapods** no longer have the **Sneak** ability
+
+## Other
+### UI
+- The **Static** unit ability now also shows how many kills a unit has, besides just disallowing unit promotion
