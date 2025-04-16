@@ -396,7 +396,7 @@ namespace PolyPlus
             if (
                 unit != null
                 && __instance.terrain == Polytopia.Data.TerrainData.Type.Ice
-                && settings.unitData.HasAbility(EnumCache<UnitAbility.Type>.GetType("glide"))
+                && settings.unitData.HasAbility(EnumCache<UnitAbility.Type>.GetType("slide"))
             )
             {
                 __result = 5;

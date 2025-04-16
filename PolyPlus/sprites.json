@@ -8,5 +8,13 @@
 	"guild__": {
 		"pixelsPerUnit": 976,
         "pivot": [0.5, 0.2]
+	},
+	"body_yuukwi__": {
+		"pixelsPerUnit": 7964,
+        "pivot": [0.5, 0.5]
+	},
+	"body_yuukwi_outline__": {
+		"pixelsPerUnit":7168,
+        "pivot": [0.5, 0.5]
 	}
 }

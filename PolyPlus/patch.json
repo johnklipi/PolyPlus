@@ -434,7 +434,7 @@
 				"staticplus",
 				"stiff",
 				"freezearea",
-				"glide"
+				"slide"
 			]
 		},
 		"gaami": {
@@ -442,7 +442,7 @@
 				"autofreeze",
 				"freezearea",
 				"staticplus",
-				"glide"
+				"slide"
 			]
 		},
 		"yuukwi": {
@@ -461,7 +461,7 @@
 			],
 			"weapon": 7,
 			"promotionLimit": 3,
-			"prefab": "mooni",
+			"prefab": "warrior",
 			"idx": -1
 		},
 		"icefortress": {
@@ -778,7 +778,7 @@
 		"staticplus": {
 			"idx": -1
 		},
-		"glide": {
+		"slide": {
 			"idx": -1
 		}
 	},
