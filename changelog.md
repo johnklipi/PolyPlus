@@ -1,69 +1,130 @@
-All tribes
-- Can now make use of aquacrops
-  - No longer uses a building. Instead functions similarly to other tier 1 resources
-  - Is avalible on Aquaculture and any of the tech's replacements
 
-Normal tribes/Elyrion
-- Tech tree has been reorganized
-  - "Organization" now leads to "Riding" and "Farming". "Riding" now leads to "Chivalry"
-  - "Free Spirit" is now a tier 1 tech. It leads to "Roads" and "Strategy"
-- Mind benders has been moved from "Philosophy" to "Meditation"
-- Temples have been removed from "Aquatism", "Meditation", and "Spiritualism"
-  -  Once you buy "Free Spirit", you can place temples on any terrain, including on water
-- Burn forest has been removed
-  - Has been replaced with the fertilize ability. Unlike for Aqaurion, this can be placed on any land terrain, not just flooded tiles
-- Rammers has been moved to Navigation
-- Embarkation has been changed significantly
-  - It no long needs a port. You can move to any water tile you have unlocked movement for and it will embark as if you moved to a port tile
-  - You can embark onto tiles not within your borders
-  - All other limitations still applies. You still can only upgrade within your own borders. Your units still use their movement embarking. They still become rafts
-  - Unlocked by buying "Sailing"
-- Water access has now been moved to "Sailing". Ocean access has been moved to "Navigation"
-- Ports have been moved to "Aquaculture". Costs 5 stars instead of 7
-- Customs houses has been added to "Aquatism"
-  - Costs 10 stars
-  - Provides 1 stars per turn for every port next to it
-- Knights have the "static" ability
-- Bombers no longer has the "splash" ability
-  - They have 4 attack instead of 3
-- Juggernaunts no longer have the "stiff" ability
-- Market gains "halved" improvement ability: now market needs 2 levels of nearby level 3 improvement to gain one level, instead of 1
-- Starfish has been removed
+# PolyPlus Changelog
 
-Bardur
-- Increased forest rate to 1.5x
+## General Changes (All Tribes)
 
-Luxidoor
-- Returned capital level back to 1
-- Added Park reward to their capital (+250 score, +1 star per turn)
+- **Wealth** and **Genius** tasks no longer require a tech.
+- **Free Spirit** is now a **Tier 1** tech and leads to **Roads** and **Strategy**.
+- **Guild** added to Free Spirit tech:  
+  - Can be built on any **field**, **mountain**, or **forest**  
+  - Costs **7 stars**  
+  - **Only one** per city
+- **Temples**:
+  - Regular temples can now be built on **any terrain**
+  - Other temple variations **removed**
+- **Riding** is no longer a T1 tech:
+  - **Organization** now leads to **Riding** and **Farming**
+  - **Riding** now leads to **Chivalry**
+- **Knights** now have a **static ability** and **cannot promote**
+- **Burn Forest** replaced with **Fertilize**:
+  - Allows **Crop** to be placed on **any field tile**
+  - Costs **5 stars**
+- **Fishing** no longer unlocks **Ports** or **Water Movement**
+- **Ramming** replaced with **Aquaculture** tech
+- **Aquaculture** unlocks:
+  - **Harvest Aquacrop**
+  - **Port**
+- **Port** changes:
+  - No longer used to **embark units**
+  - Only connects **cities on water**
+  - Costs **5 stars**
+- **Aquatism** now unlocks:
+  - **Customshouse**
+  - **Wavestride** ability
+- **Customshouse**:
+  - Costs **10 stars**
+  - Provides **1 star** per **nearby port**
+- **Wavestride Ability**: Units can **move and attack immediately after attacking**
+- **Sailing** now unlocks **Embark Ability**:  
+  - All units who step on water turn into **rafts**, **no port needed**
+- **Juggernaunts** no longer have the **Stiff** ability
+- **Scout** cost changed: **5 → 3 stars**
+- **Deep Water Movement** moved to **Navigation**
+- **Navigation** unlocks:
+  - **Rammer**
+  - **Bomber**
+- **Bomber** changes:
+  - **Splash ability removed**
+  - **Attack** increased: **3 → 4**
+  - **Cost** reduced: **15 → 10 stars**
+- **Starfish** removed
+- **Mindbender** moved from **Philosophy → Meditation**
+- **Meditation** now unlocks **Discipline Ability**:  
+  - All units need **only 2 kills** to promote
+- **Embassy** changes:
+  - Income: **2 → 1 star**
+  - No longer multiplies income after signing a peace treaty
+- **Cloaks**:
+  - No longer steal **city stars** or deny **income**
+  - Can attack **cities under siege**
+  - Can attack the **same city multiple times per turn**
+  - **Cost** reduced: **8 → 5 stars**
+- **Markets**:
+  - **Halved Ability**: Now require **two levels** of nearby **Sawmill / Forge / Farm** (instead of one) to level up
 
-Elyrion
-- Polytaurs now cost 3 instead of 2
+## Tribe-Specific Changes
 
-Aquarion
-- Gains all relevant changes from normal tribes that aren't related to water, unique mechanics, or the fertilize ability
-  - Organization does lead to their unique version of Riding. Riding does lead to their version of Chivalry
-- The sunken city ruins reward has been removed
-- Atolls has been moved to Waterways from Aquaculture
+### Aimo
+- Starting unit: **Warrior → Mindbender**
 
-Polaris
-- Gains all relevant changes from normal tribes that aren't related to water, unique mechanics, or ice
-- Temples have been removed from "Polarism"
-- Fishing branch changed to more closely match normal tribes
-  - "Fishing" has been moved to the tier 1 slot and now leads to "Frostworks" a new tech called "Sledding"
-  - "Sledding" now leads to "Polarism", effectively replacing the normal tribe tech "Aquaculture"
-  - Starting tech has remained as "Frostworks"
-- Sleds has been moved to "Sledding"
-- Mooni lost the "auto freeze" ability
-  - They instead have the "freeze area" ability
+### Bardur
+- **Forest spawn rate**: **0.8 → 1.5**
 
-Cymanti
-- Gains all relevant changes from normal tribes that aren't related to water or unique mechanics
-  - Organization does still lead to their unique version of Riding. Riding does lead to their version of Chivalry
-- Fungi costs 7
-- Algae no longer blocks movement
-- Doomux now has the "sneak" ability
-- Hexapods no longer have the "sneak" ability
-  
-Other
-- The "static" unit ability now also shows how many kills a unit has, besides just disallowing turning the unit into a veteran
+### Luxidoor
+- **Capital starting level**: **2 → 1**
+- **Capital** starts with a **Park** city reward:
+  - Grants **+1 STP** and **250 score**
+- **Starting resource**: **Removed**
+
+### Aquarion
+- Gains all relevant changes from normal tribes that **aren't related to**:
+  - Water
+  - Unique mechanics
+  - Fertilize ability
+- Organization leads to their **unique Riding**
+- Riding leads to their **version of Chivalry**
+- Sunken city ruins reward **removed**
+- **Atolls** moved **Aquaculture → Waterways**
+
+### Elyrion
+- **Polytaurs** cost icreased: **2 → 3 stars**
+
+### Polaris
+- Gains all relevant changes from normal tribes that **aren't related to**:
+  - Water
+  - Unique mechanics
+  - Ice
+- **Fishing branch** adjusted:
+  - **Fishing** is now Tier 1 and leads to: **Frostworks**
+  - **Sledding** leads to **Polarism** replacing Aquaculture
+  - **Frostworks** replaces Sailing
+  - **Aquatism** still has water defence bonuses instead of **Wavestride**
+- **Mooni** changes:
+ - Lost **Auto Freeze** ability
+ - Now has **Freeze Area** ability
+ 
+### Cymanti
+- Gains all relevant changes from normal tribes that **aren't related to**:
+  - Water
+  - Unique mechanics
+- **Organization** leads to their **unique Riding**
+- Riding leads to their **version of Chivalry**
+- Starting unit: **Shaman → Warrior**
+- **Rootways** tech replaces **Roads** tech and unlocks **Mycelium** and **Shaman**
+  - **Mindbender** returned
+  - **Shaman** loses its **Convert** ability
+  - **Shaman** attack increased **1 → 1.5**
+- **Fishing branch** adjusted:
+  - **Hydrology** replaces **Sailing**
+  - **Raichi** moved to **Pescetism (Navigation)**
+  - **Aquatism** still has water defence bonuses instead of **Wavestride**
+  - **Raichi** moved to **Pescetism (Navigation)**
+  - **Clathrus** now replaces **Customshouse**, **Market** returned to **Trade**
+- **Fungi** cost: **7** stars
+- **Algae** no longer blocks movement
+- **Doomux** gains the **Sneak** ability
+- **Hexapods** no longer have the **Sneak** ability
+
+## Other
+### UI
+- The **Static** unit ability now also shows how many kills a unit has, besides just disallowing unit promotion
