@@ -68,9 +68,25 @@
 		"Vietnamese": "Đơn vị này không thể trở thành cựu binh",
 		"Elyrion": "ȱȱŋa mm!Δ# VraȱaπΔ."
 	},
+	"unit_abilities_skate": {
+		"English": "SKATE",
+		"Russian": "КОНЬКИ"
+	},
 	"tooltip_ability_skate": {
-		"English": "This unit gets is limited to 1 movement and all other abilities if not being on ice.",
-		"Russian": "Этот отряд теряет все способности и имеет пониженое передвижение до 1 клетки когда не находится на льду."
+		"English": "This unit loses all abilities and has reduced movement to 1 tile when not on ice.",
+		"Russian": "Этот отряд теряет все способности и имеет пониженное передвижение до 1 клетки когда не находится на льду."
+	},
+	"unit_abilities_slide": {
+		"English": "SLIDE",
+		"Russian": "СКОЛЬЖЕНИЕ"
+	},
+	"tooltip_ability_slide": {
+		"English": "This unit gets an extra move when moving on ice.",
+		"Russian": "Этот отряд получает одно дополнительное передвижение на льду."
+	},
+	"tooltip_ability_glide": {
+		"English": "All non-skating and non-sliding units get an extra move when moving on ice.",
+		"Russian": "Все отряды которые не могут скользить и не имеют коньков получат одно дополнительное передвижение на льду."
 	},
 	"polyplus_unit_veteran_static_progress": {
 		"English": "This unit has made {0} kills.",
@@ -120,7 +136,23 @@
 		"Russian": "Уровень этого здания уменьшен вдвое и округлен в меньшую сторону."
 	},
 	"building_names_aquafertilize": {
-		"English": "Fertilize"
+		"English": "Fertilize",
+		"Portuguese (Brazil)": "Fertilizar",
+		"Russian": "Удобрить",
+		"Italian (Italy)": "Concimazione",
+		"French (France)": "Fertiliser",
+		"Spanish (Mexico)": "Fertilizar",
+		"German (Germany)": "Bepflanzung",
+		"Japanese": "肥料を与える",
+		"Korean": "비료 주기",
+		"Hindi": "फर्टिलाइज़ करें",
+		"Indonesian": "Suburkan",
+		"Malay": "Membaja",
+		"Polish": "Użyźnij",
+		"Thai": "ปุ๋ย",
+		"Turkish": "Gübreleme",
+		"Vietnamese": "Bón phân",
+		"Elyrion": "ŋȱr §rȱ∑Ŧ§a"
 	},
 	"tooltip_ability_embassy": {
 		"English": "Allow construction of Embassies in foreign capitals. Embassies provide income for both parties as long as they are not at war."

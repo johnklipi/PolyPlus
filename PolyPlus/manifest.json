@@ -5,8 +5,8 @@
     "dependencies": [
         {
             "id": "polytopia",
-            "min": "2.12.2",
-            "max": "2.13.0"
+            "min": "2.12.3",
+            "max": "2.12.4"
         }
     ]
 }
