@@ -10,6 +10,8 @@ namespace PolyPlus
         private static bool unlockRoutes = false;
         private static bool unrobCity = false;
         private static bool denyCloakAttackIncome = false;
+        private static MoveAction.MoveReason? lastEmbarkReason = null;
+        private static bool hasAttackedPrePush = false;
 
         public static void Load()
         {
@@ -199,23 +201,46 @@ namespace PolyPlus
                         gameState
                     )
                 )
+                {
+                    lastEmbarkReason = __instance.Reason;
                     gameState.ActionStack.Add(new EmbarkAction(__instance.PlayerId, worldCoordinates));
+                }
             }
         }
 
-        [HarmonyPostfix]
+        [HarmonyPrefix]
         [HarmonyPatch(typeof(EmbarkAction), nameof(EmbarkAction.Execute))]
-        private static void EmbarkAction_ExecuteDefault(EmbarkAction __instance, GameState gameState)
+        private static bool EmbarkAction_ExecuteDefault_Prefix(EmbarkAction __instance, GameState gameState)
         {
             PlayerState playerState;
             if (gameState.TryGetPlayer(__instance.PlayerId, out playerState))
             {
                 TileData tile = gameState.Map.GetTile(__instance.Coordinates);
                 UnitState unitState = tile.unit;
-                if (PlayerExtensions.HasAbility(playerState, EnumCache<PlayerAbility.Type>.GetType("dashembark"), gameState))
+                hasAttackedPrePush = unitState.attacked;
+            }
+            return true;
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(EmbarkAction), nameof(EmbarkAction.Execute))]
+        private static void EmbarkAction_ExecuteDefault_Postfix(EmbarkAction __instance, GameState gameState)
+        {
+            PlayerState playerState;
+            if (gameState.TryGetPlayer(__instance.PlayerId, out playerState))
+            {
+                TileData tile = gameState.Map.GetTile(__instance.Coordinates);
+                UnitState unitState = tile.unit;
+                if (PlayerExtensions.HasAbility(playerState, EnumCache<PlayerAbility.Type>.GetType("dashembark"), gameState)
+                    && lastEmbarkReason != MoveAction.MoveReason.Attack && lastEmbarkReason != null)
                 {
-                    unitState.moved = false;
-                    unitState.attacked = false;
+                    if (!(lastEmbarkReason == MoveAction.MoveReason.Push && hasAttackedPrePush))
+                    {
+                        lastEmbarkReason = null;
+                        hasAttackedPrePush = false;
+                        unitState.moved = false;
+                        unitState.attacked = false;
+                    }
                 }
             }
         }
