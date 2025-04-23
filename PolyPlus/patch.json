@@ -664,7 +664,15 @@
 			"idx": -1
 		},
 		"fungi": {
-			"cost": 7
+			"cost": 7,
+			"terrainRequirements": [
+				{
+					"resource": "spores"
+				},
+				{
+					"resource": "crop"
+				}
+			]
 		},
 		"algae": {
 			"improvementAbilities": [
