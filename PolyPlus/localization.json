@@ -1,5 +1,5 @@
 {
-	"building_names_aquafarm": {
+	"building_names_harvestaquacrop": {
 		"English": "Harvest Aquacrop",
 		"Portuguese (Brazil)": "Colher Cultivo Marinho",
 		"Russian": "Сбор водного урожая",
@@ -13,40 +13,80 @@
 		"Russian": "Мореходство",
 		"Italian (Italy)": "Velismo",
 		"French (France)": "Navigation",
-		"Spanish (Mexico)": "Nàutica",
+		"Spanish (Mexico)": "Náutica",
 		"German (Germany)": "Segeln",
 		"Japanese": "航海",
 		"Korean": "배 타기",
+		"Hindi": "सेल करना",
 		"Indonesian": "Berlayar",
-		"Polish": "Żeglarstwo"
+		"Malay": "Belayar",
+		"Polish": "Żeglarstwo",
+		"Thai": "การล่องเรือ",
+		"Turkish": "Yelkencilik",
+		"Vietnamese": "Đi Thuyền",
+		"Elyrion": "ƒiŋŋa"
 	},
 	"technology_names_cymroads": {
 		"English": "Rootways",
 		"Russian": "Корневые пути"
 	},
-	"unit_abilities_polyplusstatic": {
+	"unit_abilities_staticplus": {
 		"English": "STATIC",
-		"Portuguese (Brazil)": "ESTÁTICO",
-		"Russian": "СТАТИЧЕСКИЙ",
-		"Italian (Italy)": "STATICO",
+		"Portuguese (Brazil)": "ESTÁTICA",
+		"Russian": "СТАТИЧНЫЙ",
+		"Italian (Italy)": "STATICITÀ",
 		"French (France)": "STATIQUE",
 		"Spanish (Mexico)": "ESTÁTICO",
 		"German (Germany)": "STATISCH",
+		"Japanese" : "静止",
+		"Korean": "고정",
+		"Hindi": "고정",
 		"Indonesian": "STATIS",
 		"Malay": "STATIK",
 		"Polish": "STATYCZNY",
-		"Turkish": "STATİK"
+		"Thai": "อยู่กับที่",
+		"Turkish": "SABİT",
+		"Vietnamese": "TĨNH",
+		"Elyrion": "ţ!∑ţ"
 	},
-	"tooltip_ability_polyplusstatic": {
+	"tooltip_ability_staticplus": {
 		"English": "This unit cannot become a veteran.",
 		"Portuguese (Brazil)": "Esta unidade não pode se tornar veterana.",
 		"Russian": "Этот отряд не может получить звание ветерана.",
-		"Italian (Italy)": "Questa unità non può diventare veterana.",
-		"French (France)": "Cette unité ne peut pas devenir vétéran."
+		"Italian (Italy)": "Questa unità non può diventare un veterano.",
+		"French (France)": "Cette unité ne peut pas devenir vétéran.",
+		"Spanish (Mexico)": "Esta unidad no puede ser veterana.",
+		"German (Germany)": "Diese Einheit kann kein Veteran werden.",
+		"Japanese": "このユニットはベテランになれない",
+		"Korean": "이 유닛은 베테랑이 될 수 없습니다",
+		"Hindi": "यह यूनिट वेटरन नहीं बन सकती है",
+		"Indonesian": "Unit ini tidak bisa menjadi veteran",
+		"Malay": "Unit ini tidak boleh menjadi veteran",
+		"Polish": "Ta jednostka nie może zostać weteranem",
+		"Thai": "ยูนิตนี้ไม่สามารถเป็นทหารผ่านศึกได้",
+		"Turkish": "Bu birim, kıdemli olamaz",
+		"Vietnamese": "Đơn vị này không thể trở thành cựu binh",
+		"Elyrion": "ȱȱŋa mm!Δ# VraȱaπΔ."
+	},
+	"unit_abilities_skate": {
+		"English": "SKATE",
+		"Russian": "КОНЬКИ"
 	},
 	"tooltip_ability_skate": {
-		"English": "This unit gets is limited to 1 movement and all other abilities if not being on ice.",
-		"Russian": "Этот отряд теряет все способности и имеет пониженое передвижение до 1 клетки когда не находится на льду."
+		"English": "This unit loses all abilities and has reduced movement to 1 tile when not on ice.",
+		"Russian": "Этот отряд теряет все способности и имеет пониженное передвижение до 1 клетки когда не находится на льду."
+	},
+	"unit_abilities_slide": {
+		"English": "SLIDE",
+		"Russian": "СКОЛЬЖЕНИЕ"
+	},
+	"tooltip_ability_slide": {
+		"English": "This unit gets an extra move when moving on ice.",
+		"Russian": "Этот отряд получает одно дополнительное передвижение на льду."
+	},
+	"tooltip_ability_glide": {
+		"English": "All non-skating and non-sliding units get an extra move when moving on ice.",
+		"Russian": "Все отряды которые не могут скользить и не имеют коньков получат одно дополнительное передвижение на льду."
 	},
 	"polyplus_unit_veteran_static_progress": {
 		"English": "This unit has made {0} kills.",
@@ -61,9 +101,19 @@
 		"Portuguese (Brazil)": "Navegação",
 		"Russian": "Навигация",
 		"Italian (Italy)": "Navigazione",
-		"French (France)": "Navigation",
+		"French (France)": "Cabotage",
 		"Spanish (Mexico)": "Navegación",
-		"German (Germany)": "Navigation"
+		"German (Germany)": "Navigation",
+		"Japanese": "ナビゲーション",
+		"Korean": "항해",
+		"Hindi": "नेविगेशन",
+		"Indonesian": "Navigasi",
+		"Malay": "Navigasi",
+		"Polish": "Nawigacja",
+		"Thai": "การนำทาง",
+		"Turkish": "Gemicilik",
+		"Vietnamese": "Hàng Hải",
+		"Elyrion": "ȓ∫iŋa"
 	},
 	"player_abilities_waterembark": {
 		"English": "Embark",
@@ -86,15 +136,77 @@
 		"Russian": "Уровень этого здания уменьшен вдвое и округлен в меньшую сторону."
 	},
 	"building_names_aquafertilize": {
-		"English": "Fertilize"
+		"English": "Fertilize",
+		"Portuguese (Brazil)": "Fertilizar",
+		"Russian": "Удобрить",
+		"Italian (Italy)": "Concimazione",
+		"French (France)": "Fertiliser",
+		"Spanish (Mexico)": "Fertilizar",
+		"German (Germany)": "Bepflanzung",
+		"Japanese": "肥料を与える",
+		"Korean": "비료 주기",
+		"Hindi": "फर्टिलाइज़ करें",
+		"Indonesian": "Suburkan",
+		"Malay": "Membaja",
+		"Polish": "Użyźnij",
+		"Thai": "ปุ๋ย",
+		"Turkish": "Gübreleme",
+		"Vietnamese": "Bón phân",
+		"Elyrion": "ŋȱr §rȱ∑Ŧ§a"
 	},
-	"tooltip.ability.embassy": {
+	"tooltip_ability_embassy": {
 		"English": "Allow construction of Embassies in foreign capitals. Embassies provide income for both parties as long as they are not at war."
 	},
-	"diplomacy.establishedembassy.description": {
+	"diplomacy_establishedembassy_description": {
 		"English": "You have established an embassy in the {0} capital. It will give you both {1} stars per turn."
 	},
-	"diplomacy.establishedembassy.description2": {
+	"diplomacy_establishedembassy_description2": {
 		"English": "{0} established an embassy in your capital. It will give you both {1} stars per turn."
+	},
+	"technology_names_embarquatism": {
+		"English": "Aquatism",
+		"Portuguese (Brazil)": "Aquatismo",
+		"Russian": "Акватизм",
+		"Italian (Italy)": "Acquatismo",
+		"French (France)": "Aqua-animisme",
+		"Spanish (Mexico)": "Acuatismo",
+		"German (Germany)": "Aquatismus",
+		"Japanese": "水中建築",
+		"Korean": "수생학",
+		"Hindi": "एक्वाटिज्म",
+		"Indonesian": "Aquatisme",
+		"Malay": "Akuatisme",
+		"Polish": "Akwatyzm",
+		"Thai": "วิถีแห่งสายน้ำ",
+		"Turkish": "Akuatizm",
+		"Vietnamese": "Thủy Sinh",
+		"Elyrion": "aπaŦaŋ"
+	},
+	"player_abilities_dashembark": {
+		"English": "Wavestride",
+		"Russian": "Волнорез"
+	},
+	"tooltip_ability_dashembark": {
+		"English": "Allows units immidiately move and attack after embarking.",
+		"Russian": "Позволяет отрядам моментально двигаться и атаковать после спуска на воду."
+	},
+	"tooltip_tile_riot": {
+		"English": "There are riots in this city!",
+		"Russian": "Город бунтует!"
+	},
+	"building_names_guild": {
+		"English": "Guild",
+		"Russian": "Гильдия"
+	},
+	"world_rebellion_description": {
+		"English": "{0} from the {1} tribe has infiltrated the city of {2} and incited a revolt against you!"
+	},
+	"world_rebellion_attackerdescription": {
+		"English": "You started a riot in {0}!",
+		"Russian": "Вы подняли мятеж в городе {0}!"
+	},
+	"unit_names_yuukwi": {
+		"English": "Yuukwi",
+		"Russian": "Юкви"
 	}
 }
