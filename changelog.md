@@ -120,7 +120,7 @@
   - **Aquatism** still has water defence bonuses instead of **Wavestride**
   - **Raichi** moved to **Pescetism (Navigation)**
   - **Clathrus** now replaces **Customshouse**, **Market** returned to **Trade**
-- **Fungi** cost: **7** stars
+- **Fungi** cost: **7** stars, can be built on **crop**
 - **Algae** no longer blocks movement
 - **Doomux** gains the **Sneak** ability
 - **Hexapods** no longer have the **Sneak** ability
