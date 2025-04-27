@@ -99,9 +99,18 @@
   - **Sledding** leads to **Polarism** replacing Aquaculture
   - **Frostworks** replaces Sailing
   - **Aquatism** still has water defence bonuses instead of **Wavestride**
+- **Slide** unit ability: unit movement is **doubled** on **ice**, but they still can use roads
 - **Mooni** changes:
  - Lost **Auto Freeze** ability
- - Now has **Freeze Area** ability
+ - Now has **Freeze Area** and **Slide** abilities
+- **Gaami** now has **Slide** ability as well
+- New unit called **Yuukwi**:
+  - Unlocked in **Polar Warfare**
+  - 10 hp
+  - Costs **8 stars**
+  - 2 movement
+  - 0 defence and attack
+  - Has **Auto Freeze**, **Skate**, **Freeze Area**
  
 ### Cymanti
 - Gains all relevant changes from normal tribes that **aren't related to**:
