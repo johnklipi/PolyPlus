@@ -76,6 +76,10 @@
 		"English": "This unit loses all abilities and has reduced movement to 1 tile when not on ice.",
 		"Russian": "Этот отряд теряет все способности и имеет пониженное передвижение до 1 клетки когда не находится на льду."
 	},
+	"tooltip_ability_skate__magma": {
+		"English": "This unit loses all abilities and has reduced movement to 1 tile when not on lava.",
+		"Russian": "Этот отряд теряет все способности и имеет пониженное передвижение до 1 клетки когда не находится на лаве."
+	},
 	"unit_abilities_slide": {
 		"English": "SLIDE",
 		"Russian": "СКОЛЬЖЕНИЕ"
@@ -84,9 +88,17 @@
 		"English": "This unit gets an extra move when moving on ice.",
 		"Russian": "Этот отряд получает одно дополнительное передвижение на льду."
 	},
+	"tooltip_ability_slide__magma": {
+		"English": "This unit gets an extra move when moving on lava.",
+		"Russian": "Этот отряд получает одно дополнительное передвижение на лаве."
+	},
 	"tooltip_ability_glide": {
 		"English": "All non-skating and non-sliding units get an extra move when moving on ice.",
 		"Russian": "Все отряды которые не могут скользить и не имеют коньков получат одно дополнительное передвижение на льду."
+	},
+	"tooltip_ability_glide__magma": {
+		"English": "All non-rolling and non-sliding units get an extra move when moving on lava.",
+		"Russian": "Все отряды которые не могут скользить и не катаются получат одно дополнительное передвижение на лаве."
 	},
 	"polyplus_unit_veteran_static_progress": {
 		"English": "This unit has made {0} kills.",
