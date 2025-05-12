@@ -54,7 +54,7 @@ namespace PolyPlus
                     )
                 );
             string unitProgressText;
-            int killCount = (int)(__instance.Unit ? __instance.Unit.UnitState.xp : 0);
+            int killCount = (int)(__instance.Unit ? __instance.Unit!.UnitState.xp : 0);
             if (
                 UIManager.Instance.CurrentScreen != UIConstants.Screens.TechTree
                 && __instance.unit != null
@@ -77,7 +77,7 @@ namespace PolyPlus
         private static void MapGenerator_SetTileAsCapital(GameState gameState, PlayerState playerState, TileData tile)
         {
             TribeData tribeData;
-            if (tile != null&& gameState.GameLogicData.TryGetData(playerState.tribe, out tribeData))
+            if (tile != null && gameState.GameLogicData.TryGetData(playerState.tribe, out tribeData))
             {
                 if (tribeData.HasAbility(EnumCache<TribeAbility.Type>.GetType("citypark")))
                 {
@@ -515,5 +515,159 @@ namespace PolyPlus
             onComplete?.Invoke();
             return false;
         }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(UnitDataExtensions), nameof(UnitDataExtensions.GetDefenceBonus))]
+        private static void UnitDataExtensions_GetDefenceBonus(ref int __result, UnitState unit, GameState gameState)
+        {
+            if (__result == 15 && !unit.HasAbility(UnitAbility.Type.Fortify))
+            {
+                __result = 10;
+            }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(GameLogicData), nameof(GameLogicData.CanBuild))]
+        private static void GameLogicData_CanBuild(ref bool __result, GameLogicData __instance, GameState gameState, TileData tile, PlayerState playerState, ImprovementData improvement)
+        {
+            if (tile.unit == null)
+                return;
+
+            if (!__instance.TryGetData(tile.unit.type, out UnitData tileUnit))
+                return;
+
+            var embarkActionType = EnumCache<ImprovementAbility.Type>.GetType("embarkmanual");
+            if (!improvement.HasAbility(embarkActionType))
+                return;
+
+            bool isLandBound = tileUnit.IsLandBound();
+            bool canWaterEmbark = playerState.HasAbility(EnumCache<PlayerAbility.Type>.GetType("waterembark"), gameState);
+
+            if (__result)
+            {
+                if (!isLandBound || !canWaterEmbark)
+                {
+                    __result = false;
+                }
+            }
+            else if (tile.improvement != null && __instance.TryGetData(tile.improvement.type, out ImprovementData tileImprovement))
+            {
+                bool hasBridge = tileImprovement.HasAbility(ImprovementAbility.Type.Bridge);
+                bool isFlooded = tile.HasEffect(TileData.EffectType.Flooded);
+
+                if (isLandBound && canWaterEmbark && (hasBridge || isFlooded))
+                {
+                    __result = true;
+                }
+            }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(BuildAction), nameof(BuildAction.Execute))]
+        private static void BuildAction_Execute(BuildAction __instance, GameState gameState)
+        {
+            if (gameState.GameLogicData.TryGetData(__instance.Type, out ImprovementData improvementData))
+            {
+                if (improvementData.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("embarkmanual")))
+                {
+                    gameState.ActionStack.Add(new EmbarkAction(__instance.PlayerId, __instance.Coordinates));
+                }
+            }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(CommandUtils), nameof(CommandUtils.GetUnitActions))]
+        private static void CommandUtils_GetUnitActions(ref Il2CppSystem.Collections.Generic.List<CommandBase> __result, GameState gameState, PlayerState player, TileData tile, bool includeUnavailable)
+        {
+            UnitState unit = tile.unit;
+            if (unit == null)
+            {
+                return;
+            }
+            if (unit.owner != player.Id)
+            {
+                return;
+            }
+            UnitData unitData;
+            if (gameState.GameLogicData.TryGetData(unit.type, out unitData))
+            {
+                foreach (ImprovementData improvementData in gameState.GameLogicData.GetUnlockedImprovements(player))
+                {
+                    if (improvementData.HasAbility(ImprovementAbility.Type.Manual)
+                        && !unit.CanBuild()
+                        && !unit.CanDisembark(gameState)
+                        && gameState.GameLogicData.CanBuild(gameState, tile, player, improvementData)
+                        && improvementData.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("embarkmanual")))
+                    {
+                        List<CommandBase> reversedStack = new(gameState.CommandStack.ToArray());
+                        reversedStack.Reverse();
+                        foreach (CommandBase command in reversedStack)
+                        {
+                            if (command.GetCommandType() == CommandType.Disembark)
+                            {
+                                DisembarkCommand disembarkCommand = command.Cast<DisembarkCommand>();
+                                if (disembarkCommand.Coordinates == tile.coordinates)
+                                {
+                                    return;
+                                }
+                            }
+                            else if (command.GetCommandType() == CommandType.EndTurn)
+                            {
+                                CommandUtils.AddCommand(gameState, __result, new BuildCommand(player.Id, improvementData.type, tile.coordinates), includeUnavailable);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(UnitDataExtensions), nameof(UnitDataExtensions.CanDisembark))]
+        private static void UnitDataExtensions_CanDisembark(ref bool __result, UnitState unitState, GameState state)
+        {
+            if (__result)
+            {
+                List<CommandBase> reversedStack = new(state.CommandStack.ToArray());
+                reversedStack.Reverse();
+                foreach (CommandBase command in reversedStack)
+                {
+                    if (command.GetCommandType() == CommandType.Build)
+                    {
+                        BuildCommand buildCommand = command.Cast<BuildCommand>();
+                        if (buildCommand.Coordinates == unitState.coordinates)
+                        {
+                            if (state.GameLogicData.TryGetData(buildCommand.Type, out ImprovementData improvementData))
+                            {
+                                if (improvementData.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("embarkmanual")))
+                                {
+                                    __result = false;
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                    else if (command.GetCommandType() == CommandType.EndTurn)
+                    {
+                        return;
+                    }
+                }
+            }
+        }
+
+        // [HarmonyPrefix]
+        // [HarmonyPatch(typeof(StartMatchAction), nameof(StartMatchAction.ExecuteDefault))]
+        // private static bool StartMatchAction_ExecuteDefault(StartMatchAction __instance) // Will be used for changing player currency amount based on the tribe, disabled for now
+        // {
+        //     if (GameManager.Client.clientType == ClientBase.ClientType.Local || GameManager.Client.clientType == ClientBase.ClientType.PassAndPlay)
+        //     {
+        //         foreach (PlayerState playerState in GameManager.GameState.PlayerStates)
+        //         {
+        //             if (playerState.tribe == TribeData.Type.Luxidoor)
+        //                 playerState.Currency = 10;
+        //         }
+        //     }
+        //     return true;
+        // }
     }
 }

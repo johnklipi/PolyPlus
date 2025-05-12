@@ -224,5 +224,32 @@
 	"unit_names_yuukwi__magma": {
 		"English": "Julwi",
 		"Russian": "Джулви"
+	},
+	"technology_defence_info": {
+		"English": "gives your units with Fortify ability extra strength when defending in {0}",
+		"Portuguese (Brazil)": "proporciona à sua unidade força extra ao defender em {0}",
+		"Russian": "повышает защиту ваших отрядов с способностью Укрепление ({0})",
+		"Italian (Italy)": "dona forza extra alla tua unità quando difende in: {0}",
+		"French (France)": "renforce votre unité lorsqu’elle défend dans : {0}",
+		"Spanish (Mexico)": "le da más fuerza a tu soldado cuando se defiende en {0}",
+		"German (Germany)": "gibt deiner Einheit zusätzliche Stärke beim Verteidigen in: {0}",
+		"Japanese": "{0} での防御時にユニットの力が上昇します",
+		"Korean": "{0}에서 방어할 때 당신의 유닛에게 더 큰 힘을 제공합니다",
+		"Hindi": "{0} की रक्षा करते हुए आपकी यूनिट को अतिरिक्त ताकत देती है",
+		"Indonesian": "memberi kekuatan ekstra kepada unitmu saat bertahan di {0}",
+		"Malay": "memberi unit anda kekuatan tambahan apabila mempertahankan dalam {0}",
+		"Polish": "zapewnia twojej jednostce dodatkową siłę podczas obrony na terenie typu „{0}”",
+		"Thai": "มอบความแข็งแกร่งเพิ่มเติมให้กับยูนิต ในขณะที่ป้องกันอยู่ใน {0}",
+		"Turkish": "birimine {0} savunması sırasında ek güç verir",
+		"Vietnamese": "cung cấp cho đơn vị của bạn thêm sinh lực khi phòng thủ trong {0}",
+		"Elyrion": "₺ţţ‡∫∑# ₺r ȱȱŋa ₼a₼a ȱƒaŋ#a π∑∑Ŧƒa ∑ŋ {0}"
+	},
+	"building_names_instantembark": {
+		"English": "Embark",
+		"Portuguese (Brazil)": "Embarcar",
+		"Russian": "Спуск на воду",
+		"Italian (Italy)": "Imbarcare",
+		"French (France)": "Embarquer",
+		"Spanish (Mexico)": "Embarcar"
 	}
 }
