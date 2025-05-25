@@ -15,8 +15,10 @@
 			"improvementOverrides": {
 				"fertilize": "aquafertilize",
 				"port": "none",
-				"customshouse": "none"
-			}
+				"customshouse": "none",
+				"landfill": "canal"
+			},
+			"tribeAbilities": []
 		},
 		"bardur": {
 			"terrainModifier": {
@@ -332,7 +334,6 @@
 		},
 		"waterways": {
 			"improvementUnlocks": [
-				"canal",
 				"atoll"
 			]
 		},
