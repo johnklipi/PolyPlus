@@ -32,5 +32,17 @@
 	"field_aquarion_": {
 		"pixelsPerUnit": 265,
 		"pivot": [0.5, 0]
+	},
+	"mountain_aquarion_": {
+		"pixelsPerUnit": 239,
+		"pivot": [0.6, -0.6]
+	},
+	"field_swamp_": {
+		"pixelsPerUnit": 265,
+		"pivot": [0.5, 0]
+	},
+	"mountain_swamp_": {
+		"pixelsPerUnit": 239,
+		"pivot": [0.6, -0.6]
 	}
 }
