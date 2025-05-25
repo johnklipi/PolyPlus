@@ -247,7 +247,7 @@ namespace PolyPlus
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(ExamineRuinsAction), nameof(ExamineRuinsAction.ExecuteDefault))]
-        private static bool ExecuteDefault(ExamineRuinsAction __instance, GameState gameState)
+        private static bool ExamineRuinsAction_ExecuteDefault(ExamineRuinsAction __instance, GameState gameState)
         {
             if (__instance.Reward == RuinsReward.City)
             {
@@ -265,7 +265,7 @@ namespace PolyPlus
                     .Cast<RuinsReward>()
                     .Where(v => !excludedValues.Contains(v))
                     .ToArray();
-                System.Random random = new System.Random();
+                System.Random random = new System.Random(gameState.Seed);
                 __instance.Reward = filteredValues[random.Next(filteredValues.Length)];
             }
             return true;
@@ -333,15 +333,9 @@ namespace PolyPlus
                         terrains.Add(data);
                     }
                 }
+                unlockRoutes = false;
                 __result = terrains;
             }
-        }
-
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(MapDataExtensions), nameof(MapDataExtensions.UpdateRoutes))]
-        private static void MapDataExtensions_UpdateRoutes_Postfix(GameState gameState, Il2CppSystem.Collections.Generic.List<TileData> changedTiles)
-        {
-            unlockRoutes = false;
         }
 
         [HarmonyPostfix]
@@ -423,15 +417,12 @@ namespace PolyPlus
         [HarmonyPatch(typeof(ImprovementState), nameof(ImprovementState.HasEffect))]
         public static void ImprovementState_HasEffect(ref bool __result, ImprovementState __instance, ImprovementEffect effect)
         {
-            if (__result && effect == ImprovementEffect.robbed && unrobCity)
-                __result = false;
-        }
-
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(TileDataExtensions), nameof(TileDataExtensions.CalculateWork), typeof(TileData), typeof(GameState), typeof(int))]
-        public static void TileDataExtensions_CalculateWork_Postfix(ref int __result, TileData tile, GameState gameState, int improvementLevel)
-        {
-            unrobCity = false;
+            if (unrobCity)
+            {
+                if (__result && effect == ImprovementEffect.robbed)
+                    __result = false;
+                unrobCity = false;
+            }
         }
 
         [HarmonyPrefix]
@@ -447,14 +438,10 @@ namespace PolyPlus
         private static void TileDataExtensions_CalculateRawProduction(ref int __result, TileData tile, GameState gameState)
         {
             if (denyCloakAttackIncome)
+            {
+                denyCloakAttackIncome = false;
                 __result = 0;
-        }
-
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(InfiltrationRewardAction), nameof(InfiltrationRewardAction.ExecuteDefault))]
-        private static void InfiltrationRewardAction_ExecuteDefault_Postfix(InfiltrationRewardAction __instance, GameState gameState)
-        {
-            denyCloakAttackIncome = false;
+            }
         }
 
         [HarmonyPrefix]
@@ -589,32 +576,36 @@ namespace PolyPlus
                 return;
             }
             UnitData unitData;
-            if (gameState.GameLogicData.TryGetData(unit.type, out unitData))
+            if (!gameState.GameLogicData.TryGetData(unit.type, out unitData))
             {
-                foreach (ImprovementData improvementData in gameState.GameLogicData.GetUnlockedImprovements(player))
+                return;
+            }
+            foreach (ImprovementData improvementData in gameState.GameLogicData.GetUnlockedImprovements(player))
+            {
+                if (improvementData.HasAbility(ImprovementAbility.Type.Manual)
+                    && !unit.CanBuild()
+                    && !unit.CanDisembark(gameState)
+                    && gameState.GameLogicData.CanBuild(gameState, tile, player, improvementData)
+                    && improvementData.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("embarkmanual")))
                 {
-                    if (improvementData.HasAbility(ImprovementAbility.Type.Manual)
-                        && !unit.CanBuild()
-                        && !unit.CanDisembark(gameState)
-                        && gameState.GameLogicData.CanBuild(gameState, tile, player, improvementData)
-                        && improvementData.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("embarkmanual")))
+                    var stack = gameState.CommandStack;
+                    for (int i = stack.Count - 1; i >= 0; i--)
                     {
-                        List<CommandBase> reversedStack = new(gameState.CommandStack.ToArray());
-                        reversedStack.Reverse();
-                        foreach (CommandBase command in reversedStack)
+                        var command = stack[i];
+                        var commandType = command.GetCommandType();
+
+                        if (commandType == CommandType.EndTurn)
                         {
-                            if (command.GetCommandType() == CommandType.Disembark)
+                            CommandUtils.AddCommand(gameState, __result, new BuildCommand(player.Id, improvementData.type, tile.coordinates), includeUnavailable);
+                            return;
+                        }
+
+                        if (command.GetCommandType() == CommandType.Disembark)
+                        {
+                            DisembarkCommand disembarkCommand = command.Cast<DisembarkCommand>();
+                            if (disembarkCommand.Coordinates == tile.coordinates)
                             {
-                                DisembarkCommand disembarkCommand = command.Cast<DisembarkCommand>();
-                                if (disembarkCommand.Coordinates == tile.coordinates)
-                                {
-                                    return;
-                                }
-                            }
-                            else if (command.GetCommandType() == CommandType.EndTurn)
-                            {
-                                CommandUtils.AddCommand(gameState, __result, new BuildCommand(player.Id, improvementData.type, tile.coordinates), includeUnavailable);
-                                break;
+                                return;
                             }
                         }
                     }
@@ -626,29 +617,29 @@ namespace PolyPlus
         [HarmonyPatch(typeof(UnitDataExtensions), nameof(UnitDataExtensions.CanDisembark))]
         private static void UnitDataExtensions_CanDisembark(ref bool __result, UnitState unitState, GameState state)
         {
-            if (__result)
+            if (!__result) return;
+
+            var stack = state.CommandStack;
+            for (int i = stack.Count - 1; i >= 0; i--)
             {
-                List<CommandBase> reversedStack = new(state.CommandStack.ToArray());
-                reversedStack.Reverse();
-                foreach (CommandBase command in reversedStack)
+                var command = stack[i];
+                var commandType = command.GetCommandType();
+
+                if (commandType == CommandType.EndTurn)
                 {
-                    if (command.GetCommandType() == CommandType.Build)
+                    return;
+                }
+
+                if (commandType == CommandType.Build)
+                {
+                    var buildCommand = command.Cast<BuildCommand>();
+
+                    if (buildCommand.Coordinates != unitState.coordinates) continue;
+
+                    if (state.GameLogicData.TryGetData(buildCommand.Type, out var improvementData) &&
+                        improvementData.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("embarkmanual")))
                     {
-                        BuildCommand buildCommand = command.Cast<BuildCommand>();
-                        if (buildCommand.Coordinates == unitState.coordinates)
-                        {
-                            if (state.GameLogicData.TryGetData(buildCommand.Type, out ImprovementData improvementData))
-                            {
-                                if (improvementData.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("embarkmanual")))
-                                {
-                                    __result = false;
-                                    return;
-                                }
-                            }
-                        }
-                    }
-                    else if (command.GetCommandType() == CommandType.EndTurn)
-                    {
+                        __result = false;
                         return;
                     }
                 }
