@@ -1,23 +1,16 @@
 {
 	"tribeData": {
 		"aimo": {
-			"resourceModifier": {
-				"aquacrop": 0.5
-			},
-			"techOverrides": {
-				"sailing": "embarksailing"
-			},
 			"startingUnit": "mindbender"
 		},
 		"aquarion": {
-			"unitOverrides": {
-				"rammership": "none"
-			},
 			"techOverrides": {
-				"navigation": "aquanavigation"
+				"navigation": "aquanavigation",
+				"embarquatism": "aquatism",
+				"embarksailing": "marinelife"
 			},
 			"resourceModifier": {
-				"aquacrop": 0.5
+				"aquacrop": 1.5
 			},
 			"improvementOverrides": {
 				"fertilize": "aquafertilize",
@@ -26,62 +19,25 @@
 			}
 		},
 		"bardur": {
-			"resourceModifier": {
-				"crop": 0,
-				"aquacrop": 0.5
-			},
-			"techOverrides": {
-				"sailing": "embarksailing"
-			},
 			"terrainModifier": {
 				"forest": 1.5
 			}
 		},
 		"elyrion": {
-			"resourceModifier": {
-				"aquacrop": 0.5
-			},
 			"techOverrides": {
 				"sailing": "embarksailing",
 				"forestry": "elyforestry",
 				"mathematics": "naturalharmony"
 			}
 		},
-		"hoodrick": {
-			"resourceModifier": {
-				"aquacrop": 0.5
-			},
-			"techOverrides": {
-				"sailing": "embarksailing"
-			}
-		},
-		"imperius": {
-			"resourceModifier": {
-				"aquacrop": 0.5
-			},
-			"techOverrides": {
-				"sailing": "embarksailing"
-			}
-		},
 		"kickoo": {
-			"resourceModifier": {
-				"aquacrop": 0.5
-			},
-			"techOverrides": {
-				"sailing": "embarksailing"
-			},
 			"startingTech": [
 				"basic",
 				"fishingsimple"
 			]
 		},
 		"luxidoor": {
-			"resourceModifier": {
-				"aquacrop": 0.5
-			},
-			"techOverrides": {
-				"sailing": "embarksailing"
-			},
+			"startingResource": [],
 			"bonus": 0,
 			"tribeAbilities": [
 				"citypark"
@@ -96,85 +52,45 @@
 			"resourceModifier": {
 				"game": 1,
 				"crop": 0.5,
-				"fruit": 1.2,
-				"aquacrop": 0.5
-			},
-			"techOverrides": {
-				"sailing": "embarksailing"
-			}
-		},
-		"quetzali": {
-			"resourceModifier": {
-				"aquacrop": 0.5
-			},
-			"techOverrides": {
-				"sailing": "embarksailing"
-			}
-		},
-		"vengir": {
-			"resourceModifier": {
-				"aquacrop": 0.5
-			},
-			"techOverrides": {
-				"sailing": "embarksailing"
-			}
-		},
-		"xinxi": {
-			"resourceModifier": {
-				"aquacrop": 0.5
-			},
-			"techOverrides": {
-				"sailing": "embarksailing"
-			}
-		},
-		"yadakk": {
-			"resourceModifier": {
-				"aquacrop": 0.5
-			},
-			"techOverrides": {
-				"sailing": "embarksailing"
-			}
-		},
-		"zebasi": {
-			"resourceModifier": {
-				"aquacrop": 0.5
-			},
-			"techOverrides": {
-				"sailing": "embarksailing"
+				"fruit": 1.2
 			}
 		},
 		"polaris": {
-			"resourceModifier": {
-				"aquacrop": 0.5
-			},
 			"improvementOverrides": {
 				"customshouse": "none"
 			},
 			"techOverrides": {
-				"sailing": "frostwork",
+				"embarksailing": "frostwork",
 				"navigation": "polarwarfare",
-				"aquatism": "polarism",
+				"embarquatism": "polarism",
 				"aquaculture" : "sledding"
-			}
+			},
+			"preview": [
+				{
+					"x": 0,
+					"y": -2,
+					"terrainType": "ice",
+					"unitType": "yuukwi"
+				}
+			]
 		},
 		"cymanti": {
-			"resourceModifier": {
-				"aquacrop": 0.5
-			},
 			"unitOverrides": {
 				"mindbender": "mindbender"
 			},
 			"improvementOverrides": {
+				"market": "market",
 				"port": "none",
-				"customshouse": "none"
+				"customshouse": "clathrus"
 			},
 			"techOverrides": {
 				"roads": "cymroads",
 				"construction": "recycling",
 				"chivalry": "shock",
 				"aquaculture": "aquaculture",
-				"sailing": "hydrology",
-				"navigation": "pescetism"
+				"embarksailing": "hydrology",
+				"navigation": "pescetism",
+				"embarquatism": "aquatism"
 			},
 			"startingUnit": "warrior"
 		}
@@ -187,7 +103,20 @@
 				"fishingsimple",
 				"hunting",
 				"freespirit"
-			]
+			],
+			"taskUnlocks": [
+				"wealth",
+				"genius"
+			],
+			"improvementUnlocks": [
+				"city",
+				"ruin",
+				"landfill",
+				"instantembark"
+			],
+			"movementUnlocks": {
+				"water": 1
+			}
 		},
 		"riding": {
 			"techUnlocks": [
@@ -196,6 +125,10 @@
 			"cost": 2
 		},
 		"freespirit": {
+			"improvementUnlocks": [
+				"temple",
+				"guild"
+			],
 			"techUnlocks": [
 				"roads",
 				"shields"
@@ -220,12 +153,24 @@
 		},
 		"philosophy": {
 			"unitUnlocks": [
+			],
+			"taskUnlocks": [
 			]
 		},
 		"aquatism": {
 			"improvementUnlocks": [
 				"customshouse"
 			]
+		},
+		"embarquatism": {
+			"improvementUnlocks": [
+				"customshouse"
+			],
+			"abilityUnlocks": [
+				"dashembark"
+			],
+			"cost": 3,
+			"idx": -1
 		},
 		"spiritualism": {
 			"improvementUnlocks": [
@@ -258,10 +203,10 @@
 		},
 		"aquaculture": {
 			"techUnlocks": [
-				"aquatism"
+				"embarquatism"
 			],
 			"improvementUnlocks": [
-				"aquafarm",
+				"harvestaquacrop",
 				"port"
 			],
 			"unitUnlocks": [
@@ -278,9 +223,6 @@
 			"unitUnlocks": [
 				"scoutship"
 			],
-			"movementUnlocks": {
-				"water": 1
-			},
 			"cost": 2,
 			"idx": -1
 		},
@@ -336,7 +278,7 @@
 				"battlesled"
 			],
 			"improvementUnlocks": [
-				"aquafarm"
+				"harvestaquacrop"
 			],
 			"cost": 2
 		},
@@ -353,6 +295,10 @@
 			"cost": 2
 		},
 		"polarwarfare": {
+			"unitUnlocks": [
+				"icefortress",
+				"yuukwi"
+			],
 			"improvementUnlocks": [
 			]
 		},
@@ -374,8 +320,9 @@
 			}
 		},
 		"fishingsimple": {
-			"improvementUnlocks": [
-				"fishing"
+			"techUnlocks": [
+				"embarksailing",
+				"aquaculture"
 			]
 		},
 		"marinelife": {
@@ -385,8 +332,7 @@
 		},
 		"aquanavigation": {
 			"unitUnlocks": [
-				"bombership",
-				"rammership"
+				"bombership"
 			],
 			"cost": 3,
 			"idx": -1 
@@ -416,6 +362,9 @@
 			],
 			"cost": 3,
 			"idx": -1
+		},
+		"trade": {
+			"taskUnlocks": []
 		}
 	},
 	"unitData": {
@@ -459,18 +408,19 @@
 			"unitAbilities": [
 				"dash",
 				"persist",
-				"polyplusstatic"
+				"staticplus"
 			]
 		},
 		"scout": {
+			"cost": 5,
 			"unitAbilities": [
 				"dash",
-				"polyplusstatic"
+				"staticplus"
 			]
 		},
 		"giant": {
 			"unitAbilities": [
-				"polyplusstatic"
+				"staticplus"
 			]
 		},
 		"polytaur": {
@@ -485,14 +435,14 @@
 				"dash",
 				"fortify",
 				"independent",
-				"polyplusstatic"
+				"staticplus"
 			]
 		},
 		"dragonegg": {
 			"unitAbilities": [
 				"grow",
 				"fortify",
-				"polyplusstatic"
+				"staticplus"
 			]
 		},
 		"babydragon": {
@@ -502,7 +452,7 @@
 				"fly",
 				"escape",
 				"scout",
-				"polyplusstatic"
+				"staticplus"
 			]
 		},
 		"firedragon": {
@@ -511,37 +461,71 @@
 				"fly",
 				"splash",
 				"scout",
-				"polyplusstatic"
+				"staticplus"
 			]
 		},
 		"crab": {
 			"unitAbilities": [
 				"escape",
 				"swim",
-				"polyplusstatic",
+				"staticplus",
 				"autoflood"
 			]
 		},
 		"mooni": {
 			"health": 100,
-			"defence": 10,
+			"defence": 20,
 			"movement": 1,
 			"range": 1,
 			"attack": 0,
-			"cost": 5,
+			"cost": 3,
 			"unitAbilities": [
-				"skate",
-				"freezearea"
+				"staticplus",
+				"stiff",
+				"freezearea",
+				"slide"
 			]
 		},
 		"gaami": {
 			"unitAbilities": [
 				"autofreeze",
 				"freezearea",
-				"polyplusstatic"
+				"staticplus",
+				"slide"
 			]
 		},
-		
+		"yuukwi": {
+			"health": 100,
+			"defence": 0,
+			"movement": 2,
+			"range": 1,
+			"attack": 0,
+			"cost": 8,
+			"unitAbilities": [
+				"skate",
+				"freezearea",
+				"autofreeze",
+				"stiff",
+				"staticplus"
+			],
+			"weapon": 7,
+			"promotionLimit": 3,
+			"prefab": "warrior",
+			"idx": -1
+		},
+		"icefortress": {
+			"health": 200,
+			"defence": 30,
+			"movement": 1,
+			"range": 2,
+			"attack": 40,
+			"cost": 10,
+			"unitAbilities": [
+				"skate",
+				"scout",
+				"dash"
+			]
+		},
 		"hexapod": {
 			"unitAbilities": [
 				"dash",
@@ -564,7 +548,7 @@
 				"dash",
 				"eat",
 				"creep",
-				"polyplusstatic"
+				"staticplus"
 			]
 		},
 		"segment": {
@@ -572,7 +556,7 @@
 				"independent",
 				"creep",
 				"explode",
-				"polyplusstatic"
+				"staticplus"
 			]
 		},
 		"raychi": {
@@ -582,7 +566,7 @@
 				"navigate",
 				"explode",
 				"creep",
-				"polyplusstatic"
+				"staticplus"
 			]
 		},
 		"shaman": {
@@ -599,7 +583,7 @@
 				"dash",
 				"surprise",
 				"independent",
-				"polyplusstatic"
+				"staticplus"
 			]
 		},
 		"cloak": {
@@ -609,8 +593,9 @@
 				"infiltrate",
 				"dash",
 				"scout",
-				"polyplusstatic"
-			]
+				"staticplus"
+			],
+			"cost": 5
 		},
 		"cloak_boat": {
 			"unitAbilities": [
@@ -620,7 +605,7 @@
 				"scout",
 				"infiltrate",
 				"dash",
-				"polyplusstatic"
+				"staticplus"
 			]
 		},
 		"pirate": {
@@ -629,7 +614,7 @@
 				"swim",
 				"carry",
 				"surprise",
-				"polyplusstatic"
+				"staticplus"
 			]
 		},
 		"bombership": {
@@ -637,30 +622,31 @@
 			"movement": 2,
 			"range": 3,
 			"attack": 40,
-			"cost": 15,
+			"cost": 10,
 			"hidden": true,
 			"upgradesFrom": "transportship",
 			"unitAbilities": [
 				"carry",
 				"swim",
 				"stiff",
-				"polyplusstatic"
+				"staticplus"
 			]
 		},
 		"scoutship": {
+			"cost": 3,
 			"unitAbilities": [
 				"dash",
 				"carry",
 				"swim",
 				"scout",
-				"polyplusstatic"
+				"staticplus"
 			]
 		},
 		"transportship": {
 			"unitAbilities": [
 				"carry",
 				"swim",
-				"polyplusstatic"
+				"staticplus"
 			]
 		},
 		"rammership": {
@@ -668,7 +654,7 @@
 				"dash",
 				"swim",
 				"carry",
-				"polyplusstatic"
+				"staticplus"
 			]
 		},
 		"juggernaut": {
@@ -676,10 +662,9 @@
 				"stomp",
 				"swim",
 				"carry",
-				"polyplusstatic"
+				"staticplus"
 			]
 		}
-
 	},
 	"improvementData": {
 		"port": {
@@ -728,7 +713,15 @@
 			"idx": -1
 		},
 		"fungi": {
-			"cost": 7
+			"cost": 7,
+			"terrainRequirements": [
+				{
+					"resource": "spores"
+				},
+				{
+					"resource": "crop"
+				}
+			]
 		},
 		"algae": {
 			"improvementAbilities": [
@@ -760,7 +753,8 @@
 			"maxLevel": 8,
 			"idx": 4
 		},
-		"aquafarm": {
+		"harvestaquacrop": {
+			"idx": -1,
 			"cost": 5,
 			"terrainRequirements": [
 				{
@@ -786,6 +780,45 @@
 				"limited",
 				"halved"
 			]
+		},
+		"guild": {
+			"cost": 7,
+			"rewards": [
+				{
+					"population": 2
+				}
+			],
+			"terrainRequirements": [
+				{
+					"terrain": "field"
+				},
+				{
+					"terrain": "forest"
+				},
+				{
+					"terrain": "mountain"
+				}
+			],
+			"improvementAbilities": [
+				"limited"
+			],
+			"maxLevel": 0,
+			"idx": -1
+		},
+		"instantembark": {
+			"idx": -1,
+			"cost": 0,
+			"terrainRequirements": [
+				{
+					"terrain": "wetland"
+				}
+			],
+			"improvementAbilities": [
+				"discrete",
+				"embarkmanual",
+				"manual",
+				"freelance"
+			]
 		}
 	},
 	"resourceData": {
@@ -803,15 +836,24 @@
 	"improvementAbility": {
 		"halved": {
 			"idx": -1
+		},
+		"embarkmanual": {
+			"idx": -1
 		}
 	},
 	"playerAbility": {
 		"waterembark": {
 			"idx": -1
+		},
+		"dashembark": {
+			"idx": -1
 		}
 	},
 	"unitAbility": {
-		"polyplusstatic": {
+		"staticplus": {
+			"idx": -1
+		},
+		"slide": {
 			"idx": -1
 		},
 		"foreststealth": {
