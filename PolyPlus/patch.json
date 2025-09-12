@@ -1,7 +1,8 @@
 {
 	"tribeData": {
 		"aimo": {
-			"startingUnit": "mindbender"
+			"startingUnit": "mindbender",
+			"startingStars": 5
 		},
 		"aquarion": {
 			"techOverrides": {
@@ -16,18 +17,30 @@
 				"fertilize": "aquafertilize",
 				"port": "none",
 				"customshouse": "none"
-			}
+			},
+			"startingStars": 5
 		},
 		"bardur": {
 			"terrainModifier": {
 				"forest": 1.5
-			}
+			},
+			"startingStars": 3
+		},
+		"elyrion": {
+			"startingStars": 5
+		},
+		"hoodrick": {
+			"startingStars": 5
+		},
+		"imperius": {
+			"startingStars": 3
 		},
 		"kickoo": {
 			"startingTech": [
 				"basic",
 				"fishingsimple"
-			]
+			],
+			"startingStars": 3
 		},
 		"luxidoor": {
 			"startingResource": [],
@@ -35,6 +48,7 @@
 			"tribeAbilities": [
 				"citypark"
 			]
+			"startingStars": 5
 		},
 		"oumaji": {
 			"terrainModifier": {
@@ -46,7 +60,23 @@
 				"game": 1,
 				"crop": 0.5,
 				"fruit": 1.2
-			}
+			},
+			"startingStars": 5
+		},
+		"quetzali": {
+			"startingStars": 5
+		},
+		"vengir": {
+			"startingStars": 5
+		},
+		"xinxi": {
+			"startingStars": 5
+		},
+		"yadakk": {
+			"startingStars": 5
+		},
+		"zebasi": {
+			"startingStars": 3
 		},
 		"polaris": {
 			"improvementOverrides": {
@@ -65,7 +95,8 @@
 					"terrainType": "ice",
 					"unitType": "yuukwi"
 				}
-			]
+			],
+			"startingStars": 5
 		},
 		"cymanti": {
 			"unitOverrides": {
@@ -85,7 +116,8 @@
 				"navigation": "pescetism",
 				"embarquatism": "aquatism"
 			},
-			"startingUnit": "warrior"
+			"startingUnit": "warrior",
+			"startingStars": 5
 		}
 	},
 	"techData": {
@@ -341,19 +373,11 @@
 		}
 	},
 	"unitData": {
-		"mindbender": {
-			"health": 100,
-			"defence": 10,
-			"movement": 1,
-			"range": 1,
-			"attack": 0,
+		"scout": {
 			"cost": 5,
 			"unitAbilities": [
-				"heal",
-				"convert"
-			],
-			"weapon": 4,
-			"promotionLimit": 3
+				"+staticplus"
+			]
 		},
 		"knight": {
 			"health":100,
@@ -363,70 +387,55 @@
 			"range": 1,
 			"cost": 8,
 			"unitAbilities": [
-				"dash",
-				"persist",
-				"staticplus"
+				"-fortify",
+				"+staticplus"
 			]
 		},
-		"scout": {
-			"cost": 5,
-			"unitAbilities": [
-				"dash",
-				"staticplus"
-			]
-		},
-		"giant": {
-			"unitAbilities": [
-				"staticplus"
-			]
-		},
-		"polytaur": {
-			"health": 150,
+		"mindbender": {
+			"health": 100,
 			"defence": 10,
 			"movement": 1,
 			"range": 1,
-			"attack": 30,
-			"cost": 3,
-			"hidden": true,
+			"attack": 0,
+			"cost": 5,
+			"weapon": 4,
+			"promotionLimit": 3
+		},
+		"giant": {
 			"unitAbilities": [
-				"dash",
-				"fortify",
-				"independent",
-				"staticplus"
+				"-static",
+				"+staticplus"
+			]
+		},
+		"polytaur": {
+			"cost": 3,
+			"unitAbilities": [
+				"-static"
+				"+staticplus"
 			]
 		},
 		"dragonegg": {
 			"unitAbilities": [
-				"grow",
-				"fortify",
-				"staticplus"
+				"-static"
+				"+staticplus"
 			]
 		},
 		"babydragon": {
 			"unitAbilities": [
-				"grow",
-				"dash",
-				"fly",
-				"escape",
-				"scout",
-				"staticplus"
+				"-static"
+				"+staticplus"
 			]
 		},
 		"firedragon": {
 			"unitAbilities": [
-				"dash",
-				"fly",
-				"splash",
-				"scout",
-				"staticplus"
+				"-static"
+				"+staticplus"
 			]
 		},
 		"crab": {
 			"unitAbilities": [
-				"escape",
-				"swim",
-				"staticplus",
-				"autoflood"
+				"-static"
+				"+staticplus"
 			]
 		},
 		"mooni": {
@@ -437,18 +446,15 @@
 			"attack": 0,
 			"cost": 3,
 			"unitAbilities": [
-				"staticplus",
-				"stiff",
-				"freezearea",
-				"slide"
+				"-autofreeze",
+				"+staticplus",
+				"+freezearea"
 			]
 		},
 		"gaami": {
 			"unitAbilities": [
-				"autofreeze",
-				"freezearea",
-				"staticplus",
-				"slide"
+				"-static"
+				"+staticplus"
 			]
 		},
 		"yuukwi": {
@@ -478,52 +484,40 @@
 			"attack": 40,
 			"cost": 10,
 			"unitAbilities": [
-				"skate",
-				"scout",
-				"dash"
+				"-escape",
+				"-static",
+				"+staticplus"
+				"+dash"
 			]
 		},
 		"hexapod": {
 			"unitAbilities": [
-				"dash",
-				"escape",
-				"creep",
-				"land"
+				"-sneak"
 			]
 		},
 		"doomux": {
 			"unitAbilities": [
-				"dash",
-				"creep",
-				"sneak",
-				"explode",
-				"land"
+				"+sneak"
 			]
 		},
 		"centipede": {
 			"unitAbilities": [
-				"dash",
-				"eat",
-				"creep",
-				"staticplus"
+				"-static",
+				"+staticplus"
 			]
 		},
 		"segment": {
 			"unitAbilities": [
-				"independent",
-				"creep",
-				"explode",
-				"staticplus"
+				"-static",
+				"+staticplus"
 			]
 		},
 		"raychi": {
 			"unitAbilities": [
+				"staticplus",
 				"dash",
 				"swim",
-				"navigate",
-				"explode",
-				"creep",
-				"staticplus"
+				"amphibious"
 			]
 		},
 		"shaman": {
@@ -532,46 +526,38 @@
 			"attack": 15,
 			"promotionLimit": 3,
 			"unitAbilities": [
-				"boost"
+				"-convert",
+				"-static"
 			]
 		},
 		"dagger": {
 			"unitAbilities": [
-				"dash",
-				"surprise",
-				"independent",
-				"staticplus"
+				"-static",
+				"+staticplus"
 			]
 		},
 		"cloak": {
 			"unitAbilities": [
-				"hide",
-				"creep",
-				"infiltrate",
-				"dash",
-				"scout",
-				"staticplus"
+				"+staticplus"
+			],
+			"cost": 5
+		},
+		"mermaidcloak": {
+			"unitAbilities": [
+				"+staticplus"
 			],
 			"cost": 5
 		},
 		"cloak_boat": {
 			"unitAbilities": [
-				"carry",
-				"swim",
-				"hide",
-				"scout",
-				"infiltrate",
-				"dash",
-				"staticplus"
+				"-static",
+				"+staticplus"
 			]
 		},
 		"pirate": {
 			"unitAbilities": [
-				"dash",
-				"swim",
-				"carry",
-				"surprise",
-				"staticplus"
+				"-static",
+				"+staticplus"
 			]
 		},
 		"bombership": {
@@ -583,43 +569,35 @@
 			"hidden": true,
 			"upgradesFrom": "transportship",
 			"unitAbilities": [
-				"carry",
-				"swim",
-				"stiff",
-				"staticplus"
+				"-splash",
+				"-static",
+				"+staticplus"
 			]
 		},
 		"scoutship": {
 			"cost": 3,
 			"unitAbilities": [
-				"dash",
-				"carry",
-				"swim",
-				"scout",
-				"staticplus"
+				"-static",
+				"+staticplus"
 			]
 		},
 		"transportship": {
 			"unitAbilities": [
-				"carry",
-				"swim",
-				"staticplus"
+				"-static",
+				"+staticplus"
 			]
 		},
 		"rammership": {
 			"unitAbilities": [
-				"dash",
-				"swim",
-				"carry",
-				"staticplus"
+				"-static",
+				"+staticplus"
 			]
 		},
 		"juggernaut": {
 			"unitAbilities": [
-				"stomp",
-				"swim",
-				"carry",
-				"staticplus"
+				"-stiff",
+				"-static",
+				"+staticplus"
 			]
 		}
 	},
