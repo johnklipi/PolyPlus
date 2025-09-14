@@ -47,7 +47,7 @@
 			"bonus": 0,
 			"tribeAbilities": [
 				"citypark"
-			]
+			],
 			"startingStars": 5
 		},
 		"oumaji": {
@@ -111,9 +111,9 @@
 				"roads": "cymroads",
 				"construction": "recycling",
 				"chivalry": "shock",
-				"aquaculture": "aquaculture",
-				"embarksailing": "hydrology",
-				"navigation": "pescetism",
+				"aquaculture": "hydrology",
+				"embarksailing": "pescetism",
+				"navigation": "oceanology",
 				"embarquatism": "aquatism"
 			},
 			"startingUnit": "warrior",
@@ -324,23 +324,36 @@
 				"icefortress",
 				"yuukwi"
 			],
-			"improvementUnlocks": [
-			]
+			"improvementUnlocks": []
 		},
 		"polarism": {
-			"improvementUnlocks": [
-			]
+			"improvementUnlocks": []
 		},
 		"hydrology": {
 			"techUnlocks": [
-				"navigation"
+				"aquatism"
+			],
+			"improvementUnlocks":[
+				"+harvestaquacrop"
 			]
 		},
 		"pescetism": {
-			"techUnlocks": [
+			"unitUnlocks": [
+				"-raychi",
+				"+boomchi"
 			],
 			"movementUnlocks": {
-				"water": 1,
+				"water": 1
+			}
+		},
+		"oceanology": {
+			"unitUnlocks": [
+				"raichi"
+			],
+			"improvementUnlocks": [
+				"-starfishing"
+			],
+			"movementUnlocks": {
 				"ocean": 1
 			}
 		},
@@ -410,31 +423,31 @@
 		"polytaur": {
 			"cost": 3,
 			"unitAbilities": [
-				"-static"
+				"-static",
 				"+staticplus"
 			]
 		},
 		"dragonegg": {
 			"unitAbilities": [
-				"-static"
+				"-static",
 				"+staticplus"
 			]
 		},
 		"babydragon": {
 			"unitAbilities": [
-				"-static"
+				"-static",
 				"+staticplus"
 			]
 		},
 		"firedragon": {
 			"unitAbilities": [
-				"-static"
+				"-static",
 				"+staticplus"
 			]
 		},
 		"crab": {
 			"unitAbilities": [
-				"-static"
+				"-static",
 				"+staticplus"
 			]
 		},
@@ -453,7 +466,7 @@
 		},
 		"gaami": {
 			"unitAbilities": [
-				"-static"
+				"-static",
 				"+staticplus"
 			]
 		},
@@ -473,7 +486,7 @@
 			],
 			"weapon": 7,
 			"promotionLimit": 3,
-			"prefab": "warrior",
+			"prefab": "yuukwi",
 			"idx": -1
 		},
 		"icefortress": {
@@ -486,7 +499,7 @@
 			"unitAbilities": [
 				"-escape",
 				"-static",
-				"+staticplus"
+				"+staticplus",
 				"+dash"
 			]
 		},
@@ -510,14 +523,6 @@
 			"unitAbilities": [
 				"-static",
 				"+staticplus"
-			]
-		},
-		"raychi": {
-			"unitAbilities": [
-				"staticplus",
-				"dash",
-				"swim",
-				"amphibious"
 			]
 		},
 		"shaman": {
@@ -599,6 +604,44 @@
 				"-static",
 				"+staticplus"
 			]
+		},
+		"boomchi": {
+			"idx": -1,
+			"cost": 5,
+			"health": 100,
+			"defence": 20,
+			"movement": 2,
+			"weapon": 7,
+			"range": 0,
+			"attack": 30,
+			"promotionLimit": 0,
+			"unitAbilities": [
+				"dash",
+				"swim",
+				"amphibious",
+				"explode",
+				"staticplus",
+				"stiff"
+			],
+			"prefab": "boomchi"
+		},
+		"raichi": {
+			"idx": -1,
+			"cost": 8,
+			"health": 150,
+			"defence": 20,
+			"movement": 3,
+			"weapon": 7,
+			"range": 1,
+			"attack": 30,
+			"promotionLimit": 0,
+			"unitAbilities": [
+				"staticplus",
+				"dash",
+				"swim",
+				"amphibious"
+			],
+			"prefab": "raichi"
 		}
 	},
 	"improvementData": {

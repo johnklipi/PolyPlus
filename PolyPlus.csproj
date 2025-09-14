@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <PackageReference Include="PolyMod" Version="1.2.0-pre.1" />
+    <PackageReference Include="TheBattleOfPolytopia" Version="2.14.1.14597" />
   </ItemGroup>
 
 </Project>

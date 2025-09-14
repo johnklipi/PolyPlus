@@ -218,7 +218,7 @@
 		"Russian": "Вы подняли мятеж в городе {0}!"
 	},
 	"unit_names_yuukwi": {
-		"English": "Yuukwi",
+		"English": "Yuukui",
 		"Russian": "Юкви"
 	},
 	"unit_names_yuukwi__magma": {
@@ -251,5 +251,13 @@
 		"Italian (Italy)": "Imbarcare",
 		"French (France)": "Embarquer",
 		"Spanish (Mexico)": "Embarcar"
+	},
+	"unit_names_boomchi": {
+		"English": "Boomchi",
+		"Russian": "Бумчи"
+	},
+	"unit_names_raichi": {
+		"English": "Raychi",
+		"Russian": "Райчи"
 	}
 }

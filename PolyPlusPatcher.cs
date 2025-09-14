@@ -2,6 +2,7 @@
 using HarmonyLib;
 using Polytopia.Data;
 using UnityEngine;
+using PolytopiaBackendBase.Common;
 
 namespace PolyPlus
 {
@@ -645,20 +646,5 @@ namespace PolyPlus
                 }
             }
         }
-
-        // [HarmonyPrefix]
-        // [HarmonyPatch(typeof(StartMatchAction), nameof(StartMatchAction.ExecuteDefault))]
-        // private static bool StartMatchAction_ExecuteDefault(StartMatchAction __instance) // Will be used for changing player currency amount based on the tribe, disabled for now
-        // {
-        //     if (GameManager.Client.clientType == ClientBase.ClientType.Local || GameManager.Client.clientType == ClientBase.ClientType.PassAndPlay)
-        //     {
-        //         foreach (PlayerState playerState in GameManager.GameState.PlayerStates)
-        //         {
-        //             if (playerState.tribe == TribeData.Type.Luxidoor)
-        //                 playerState.Currency = 10;
-        //         }
-        //     }
-        //     return true;
-        // }
     }
 }

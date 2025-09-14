@@ -1,0 +1,22 @@
+{
+	"type": 0,
+	"name": "Raichi",
+	"visualParts": [
+		{
+			"gameObjectName": "Body",
+			"baseName": "body",
+			"coordinates": [0, 0.2],
+			"rotation": 0,
+			"scale": [1, 1],
+			"tintable": false
+		},
+		{
+			"gameObjectName": "Body_Tint",
+			"baseName": "body_tint",
+			"coordinates": [0, 0.2],
+			"rotation": 0,
+			"scale": [1, 1],
+			"tintable": true
+		}
+	]
+}

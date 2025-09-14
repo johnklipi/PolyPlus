@@ -28,5 +28,33 @@
 	"body_yuukwi_outline_magma_": {
 		"pixelsPerUnit":1950,
         "pivot": [0.5, 0.5]
+	},
+	"body_boomchi__": {
+		"pixelsPerUnit":218,
+        "pivot": [0.5, 0.5]
+	},
+	"body_boomchi_outline__": {
+		"pixelsPerUnit":100,
+        "pivot": [0.5, 0.5]
+	},
+	"body_tint_boomchi__": {
+		"pixelsPerUnit":218,
+        "pivot": [0.5, 0.5]
+	},
+	"body_raichi__": {
+		"pixelsPerUnit":314,
+        "pivot": [0.5, 0.65]
+	},
+	"body_raichi_outline__": {
+		"pixelsPerUnit":100,
+        "pivot": [0.5, 0.62]
+	},
+	"body_tint_raichi__": {
+		"pixelsPerUnit":314,
+        "pivot": [0.5, 0.65]
+	},
+	"body_tint_raichi_outline__": {
+		"pixelsPerUnit":100,
+        "pivot": [0.5, 0.62]
 	}
 }
