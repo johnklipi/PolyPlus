@@ -130,14 +130,11 @@
 				"freespirit"
 			],
 			"taskUnlocks": [
-				"wealth",
-				"genius"
+				"+wealth",
+				"+genius"
 			],
 			"improvementUnlocks": [
-				"city",
-				"ruin",
-				"landfill",
-				"instantembark"
+				"+instantembark"
 			],
 			"movementUnlocks": {
 				"water": 1
@@ -151,8 +148,7 @@
 		},
 		"freespirit": {
 			"improvementUnlocks": [
-				"temple",
-				"guild"
+				"+guild"
 			],
 			"techUnlocks": [
 				"roads",
@@ -162,24 +158,27 @@
 		},
 		"organization": {
 			"techUnlocks": [
-				"farming",
-				"riding"
+				"-shields",
+				"+riding"
 			]
 		},
 		"meditation": {
 			"improvementUnlocks": [
+				"-mountaintemple"
 			],
 			"unitUnlocks": [
-				"mindbender"
+				"+mindbender"
 			],
 			"abilityUnlocks": [
-				"discipline"
+				"+discipline"
 			]
 		},
 		"philosophy": {
 			"unitUnlocks": [
+				"-mindbender"
 			],
 			"taskUnlocks": [
+				"-genius"
 			]
 		},
 		"aquatism": {
@@ -199,13 +198,13 @@
 		},
 		"spiritualism": {
 			"improvementUnlocks": [
-				"growforest"
+				"-foresttemple"
 			]
 		},
 		"construction": {
 			"improvementUnlocks": [
-				"windmill",
-				"fertilize"
+				"-burnforest",
+				"+fertilize"
 			]
 		},
 		"navigation": {
@@ -216,15 +215,17 @@
 			"movementUnlocks": {
 				"ocean": 1
 			},
-			"improvementUnlocks": [],
+			"improvementUnlocks": [
+				"-starfishing",
+				"-watertemple"
+			],
 			"cost": 3
 		},
 		"fishing": {
 			"improvementUnlocks": [
-				"fishing"
+				"-port"
 			],
-			"movementUnlocks": {
-			}
+			"movementUnlocks": {}
 		},
 		"aquaculture": {
 			"techUnlocks": [
@@ -235,6 +236,7 @@
 				"port"
 			],
 			"unitUnlocks": [
+				"-rammership"
 			],
 			"cost": 2
 		},
