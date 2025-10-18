@@ -73,12 +73,12 @@
 		"Russian": "КОНЬКИ"
 	},
 	"tooltip_ability_skate": {
-		"English": "This unit loses all abilities and has reduced movement to 1 tile when not on ice.",
-		"Russian": "Этот отряд теряет все способности и имеет пониженное передвижение до 1 клетки когда не находится на льду."
+		"English": "This unit can not use roads and loses all of its abilities when not on ice.",
+		"Russian": "Этот отряд не может использовать дороги и теряет все свои способности когда не находится на льду."
 	},
 	"tooltip_ability_skate__magma": {
-		"English": "This unit loses all abilities and has reduced movement to 1 tile when not on lava.",
-		"Russian": "Этот отряд теряет все способности и имеет пониженное передвижение до 1 клетки когда не находится на лаве."
+		"English": "This unit can not use roads and loses all of its abilities when not on lava.",
+		"Russian": "Этот отряд не может использовать дороги и теряет все свои способности когда не находится на лаве."
 	},
 	"unit_abilities_slide": {
 		"English": "SLIDE",
@@ -252,11 +252,11 @@
 		"French (France)": "Embarquer",
 		"Spanish (Mexico)": "Embarcar"
 	},
-	"unit_names_boomchi": {
+	"unit_names_boomchiplus": {
 		"English": "Boomchi",
 		"Russian": "Бумчи"
 	},
-	"unit_names_raichi": {
+	"unit_names_raychiplus": {
 		"English": "Raychi",
 		"Russian": "Райчи"
 	}

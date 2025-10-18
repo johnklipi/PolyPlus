@@ -135,7 +135,7 @@ namespace PolyPlus
                             foreach (WorldCoordinates pathTile in path)
                             {
                                 TileData tile = gameState.Map.GetTile(pathTile);
-                                if (hadWater)
+                                if (hadWater || !tile.GetExplored(playerState.Id))
                                     toRemove.Add(tile.coordinates);
                                 if (
                                     tile.terrain == Polytopia.Data.TerrainData.Type.Water
@@ -297,7 +297,7 @@ namespace PolyPlus
         private static void TileData_GetMovementCost(ref int __result, TileData __instance, MapData map, TileData fromTile, PathFinderSettings settings)
         {
             UnitState unit = settings.unit;
-            if (unit != null && __instance.terrain == Polytopia.Data.TerrainData.Type.Ice && settings.unitData.HasAbility(EnumCache<UnitAbility.Type>.GetType("slide")))
+            if (unit != null && __instance.terrain == Polytopia.Data.TerrainData.Type.Ice && settings.unitData.HasAbility(EnumCache<UnitAbility.Type>.GetType("slide")) && !settings.unitData.HasAbility(UnitAbility.Type.Skate))
                 __result = 5;
         }
 

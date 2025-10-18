@@ -2,7 +2,11 @@
 	"tribeData": {
 		"aimo": {
 			"startingUnit": "mindbender",
-			"startingStars": 5
+			"startingStars": 5,
+			"startingTech": [
+				"basic",
+				"meditation"
+			]
 		},
 		"aquarion": {
 			"techOverrides": {
@@ -117,6 +121,20 @@
 				"embarquatism": "aquatism"
 			},
 			"startingUnit": "warrior",
+			"preview": [
+				{
+					"x": -1,
+					"y": -2,
+					"unitType": "raychiplus",
+					"terrainType": "water"
+				},
+				{
+					"x": 2,
+					"y": -1,
+					"unitType": "boomchiplus",
+					"terrainType": "water"
+				}
+			],
 			"startingStars": 5
 		}
 	},
@@ -342,7 +360,7 @@
 		"pescetism": {
 			"unitUnlocks": [
 				"-raychi",
-				"+boomchi"
+				"+boomchiplus"
 			],
 			"movementUnlocks": {
 				"water": 1
@@ -350,7 +368,7 @@
 		},
 		"oceanology": {
 			"unitUnlocks": [
-				"raichi"
+				"raychiplus"
 			],
 			"improvementUnlocks": [
 				"-starfishing"
@@ -463,13 +481,17 @@
 			"unitAbilities": [
 				"-autofreeze",
 				"+staticplus",
-				"+freezearea"
+				"+freezearea",
+				"-skate",
+				"+slide"
 			]
 		},
 		"gaami": {
 			"unitAbilities": [
 				"-static",
-				"+staticplus"
+				"+staticplus",
+				"-skate",
+				"+slide"
 			]
 		},
 		"yuukwi": {
@@ -480,6 +502,7 @@
 			"attack": 0,
 			"cost": 8,
 			"unitAbilities": [
+				"slide",
 				"skate",
 				"freezearea",
 				"autofreeze",
@@ -499,10 +522,16 @@
 			"attack": 40,
 			"cost": 10,
 			"unitAbilities": [
+				"+slide",
 				"-escape",
 				"-static",
 				"+staticplus",
 				"+dash"
+			]
+		},
+		"battlesled": {
+			"unitAbilities": [
+				"+slide"
 			]
 		},
 		"hexapod": {
@@ -607,7 +636,7 @@
 				"+staticplus"
 			]
 		},
-		"boomchi": {
+		"boomchiplus": {
 			"idx": -1,
 			"cost": 5,
 			"health": 100,
@@ -625,9 +654,9 @@
 				"staticplus",
 				"stiff"
 			],
-			"prefab": "boomchi"
+			"prefab": "boomchiplus"
 		},
-		"raichi": {
+		"raychiplus": {
 			"idx": -1,
 			"cost": 8,
 			"health": 150,
@@ -643,7 +672,7 @@
 				"swim",
 				"amphibious"
 			],
-			"prefab": "raichi"
+			"prefab": "raychiplus"
 		}
 	},
 	"improvementData": {
@@ -798,6 +827,36 @@
 				"embarkmanual",
 				"manual",
 				"freelance"
+			]
+		},
+		"windmill": {
+			"terrainRequirements": [
+				{
+					"terrain": "field"
+				},
+				{
+					"terrain": "mountain"
+				}
+			]
+		},
+		"sawmill": {
+			"terrainRequirements": [
+				{
+					"terrain": "field"
+				},
+				{
+					"terrain": "mountain"
+				}
+			]
+		},
+		"forge": {
+			"terrainRequirements": [
+				{
+					"terrain": "field"
+				},
+				{
+					"terrain": "mountain"
+				}
 			]
 		}
 	},
