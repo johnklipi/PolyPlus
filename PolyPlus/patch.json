@@ -490,8 +490,7 @@
 			"unitAbilities": [
 				"-static",
 				"+staticplus",
-				"-skate",
-				"+slide"
+				"+skate"
 			]
 		},
 		"yuukwi": {
@@ -502,7 +501,6 @@
 			"attack": 0,
 			"cost": 8,
 			"unitAbilities": [
-				"slide",
 				"skate",
 				"freezearea",
 				"autofreeze",
@@ -522,16 +520,10 @@
 			"attack": 40,
 			"cost": 10,
 			"unitAbilities": [
-				"+slide",
 				"-escape",
 				"-static",
 				"+staticplus",
 				"+dash"
-			]
-		},
-		"battlesled": {
-			"unitAbilities": [
-				"+slide"
 			]
 		},
 		"hexapod": {

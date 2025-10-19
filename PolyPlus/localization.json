@@ -73,12 +73,12 @@
 		"Russian": "КОНЬКИ"
 	},
 	"tooltip_ability_skate": {
-		"English": "This unit can not use roads and loses all of its abilities when not on ice.",
-		"Russian": "Этот отряд не может использовать дороги и теряет все свои способности когда не находится на льду."
+		"English": "This unit has difficulty moving and cannot use its abilities when on the field.",
+		"Russian": "Этот отряд с трудом передвигается и не может использовать свои способности когда находится на поле."
 	},
 	"tooltip_ability_skate__magma": {
-		"English": "This unit can not use roads and loses all of its abilities when not on lava.",
-		"Russian": "Этот отряд не может использовать дороги и теряет все свои способности когда не находится на лаве."
+		"English": "This unit has difficulty moving and cannot use its abilities when on the field.",
+		"Russian": "Этот отряд с трудом передвигается и не может использовать свои способности когда находится на поле."
 	},
 	"unit_abilities_slide": {
 		"English": "SLIDE",

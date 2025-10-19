@@ -297,7 +297,7 @@ namespace PolyPlus
         private static void TileData_GetMovementCost(ref int __result, TileData __instance, MapData map, TileData fromTile, PathFinderSettings settings)
         {
             UnitState unit = settings.unit;
-            if (unit != null && __instance.terrain == Polytopia.Data.TerrainData.Type.Ice && settings.unitData.HasAbility(EnumCache<UnitAbility.Type>.GetType("slide")) && !settings.unitData.HasAbility(UnitAbility.Type.Skate))
+            if (unit != null && __instance.terrain == Polytopia.Data.TerrainData.Type.Ice && settings.unitData.HasAbility(EnumCache<UnitAbility.Type>.GetType("slide")))
                 __result = 5;
         }
 
