@@ -666,15 +666,6 @@ namespace PolyPlus
             }
         }
 
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(PurchaseManager), nameof(PurchaseManager.IsSkinUnlocked))]
-        [HarmonyPatch(typeof(PurchaseManager), nameof(PurchaseManager.IsSkinUnlockedInternal))]
-        private static bool PurchaseManager_IsSkinUnlockedInternal(ref bool __result, SkinType skinType)
-        {
-            __result = skinType != SkinType.Test;
-            return !__result;
-        }
-
         [HarmonyPostfix]
         [HarmonyPatch(typeof(TerrainRenderer), nameof(TerrainRenderer.UpdateGraphics))]
         private static void TerrainRenderer_UpdateGraphics(TerrainRenderer __instance, Tile tile)
