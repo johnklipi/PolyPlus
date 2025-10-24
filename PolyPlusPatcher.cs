@@ -3,6 +3,7 @@ using HarmonyLib;
 using Polytopia.Data;
 using Steamworks.Data;
 using UnityEngine;
+using PolytopiaBackendBase.Common;
 
 namespace PolyPlus
 {
@@ -135,7 +136,7 @@ namespace PolyPlus
                             foreach (WorldCoordinates pathTile in path)
                             {
                                 TileData tile = gameState.Map.GetTile(pathTile);
-                                if (hadWater)
+                                if (hadWater || !tile.GetExplored(playerState.Id))
                                     toRemove.Add(tile.coordinates);
                                 if (
                                     tile.terrain == Polytopia.Data.TerrainData.Type.Water
@@ -297,8 +298,6 @@ namespace PolyPlus
         private static void TileData_GetMovementCost(ref int __result, TileData __instance, MapData map, TileData fromTile, PathFinderSettings settings)
         {
             UnitState unit = settings.unit;
-            if (unit != null && __result == 5 && settings.unitData.HasAbility(UnitAbility.Type.Skate))
-                __result = 10;
             if (unit != null && __instance.terrain == Polytopia.Data.TerrainData.Type.Ice && settings.unitData.HasAbility(EnumCache<UnitAbility.Type>.GetType("slide")))
                 __result = 5;
         }
@@ -657,7 +656,7 @@ namespace PolyPlus
             {
                 foreach (var playerState in gameState.PlayerStates)
                 {
-                    if (playerState.tribe == TribeData.Type.Aquarion && playerState.startTile != WorldCoordinates.NULL_COORDINATES)
+                    if (playerState.tribe == TribeType.Aquarion && playerState.startTile != WorldCoordinates.NULL_COORDINATES)
                     {
                         TileData startingTile = gameState.Map.GetTile(playerState.startTile);
                         startingTile.Flood(playerState);
@@ -672,26 +671,11 @@ namespace PolyPlus
         {
             if (!gameState.TryGetPlayer(__instance.PlayerId, out PlayerState playerState))
                 return;
-            if (playerState.tribe == TribeData.Type.Aquarion && playerState.startTile != WorldCoordinates.NULL_COORDINATES)
+            if (playerState.tribe == TribeType.Aquarion && playerState.startTile != WorldCoordinates.NULL_COORDINATES)
             {
                 TileData tile = gameState.Map.GetTile(__instance.Coordinates);
                 tile.Flood(playerState);
             }
         }
-
-        // [HarmonyPrefix]
-        // [HarmonyPatch(typeof(StartMatchAction), nameof(StartMatchAction.ExecuteDefault))]
-        // private static bool StartMatchAction_ExecuteDefault(StartMatchAction __instance) // Will be used for changing player currency amount based on the tribe, disabled for now
-        // {
-        //     if (GameManager.Client.clientType == ClientBase.ClientType.Local || GameManager.Client.clientType == ClientBase.ClientType.PassAndPlay)
-        //     {
-        //         foreach (PlayerState playerState in GameManager.GameState.PlayerStates)
-        //         {
-        //             if (playerState.tribe == TribeData.Type.Luxidoor)
-        //                 playerState.Currency = 10;
-        //         }
-        //     }
-        //     return true;
-        // }
     }
 }
