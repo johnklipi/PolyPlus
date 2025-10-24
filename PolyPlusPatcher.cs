@@ -4,6 +4,7 @@ using Polytopia.Data;
 using Steamworks.Data;
 using UnityEngine;
 using PolytopiaBackendBase.Common;
+using System.Reflection;
 
 namespace PolyPlus
 {
@@ -659,8 +660,35 @@ namespace PolyPlus
                     if (playerState.tribe == TribeType.Aquarion && playerState.startTile != WorldCoordinates.NULL_COORDINATES)
                     {
                         TileData startingTile = gameState.Map.GetTile(playerState.startTile);
-                        startingTile.Flood(playerState);
+                        startingTile.AddEffect(TileData.EffectType.Flooded);
                     }
+                }
+            }
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(PurchaseManager), nameof(PurchaseManager.IsSkinUnlocked))]
+        [HarmonyPatch(typeof(PurchaseManager), nameof(PurchaseManager.IsSkinUnlockedInternal))]
+        private static bool PurchaseManager_IsSkinUnlockedInternal(ref bool __result, SkinType skinType)
+        {
+            __result = skinType != SkinType.Test;
+            return !__result;
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(TerrainRenderer), nameof(TerrainRenderer.UpdateGraphics))]
+        private static void TerrainRenderer_UpdateGraphics(TerrainRenderer __instance, Tile tile)
+        {
+            TribeType tribe = GameManager.GameState.GameLogicData.GetTribeTypeFromStyle(tile.data.climate);
+            SkinType skinType = tile.data.Skin;
+
+            if (tribe == TribeType.Aquarion && tile.data.terrain == Polytopia.Data.TerrainData.Type.Mountain)
+            {
+                string style = skinType != SkinType.Default ? EnumCache<SkinType>.GetName(skinType) : EnumCache<TribeType>.GetName(tribe);
+                Sprite? sprite = PolyMod.Registry.GetSprite(EnumCache<Polytopia.Data.TerrainData.Type>.GetName(Polytopia.Data.TerrainData.Type.Field), style);
+                if (sprite != null)
+                {
+                    __instance.spriteRenderer.Sprite = sprite;
                 }
             }
         }
