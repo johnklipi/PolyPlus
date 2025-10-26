@@ -42,7 +42,7 @@
 		"kickoo": {
 			"startingTech": [
 				"basic",
-				"fishingsimple"
+				"fishingplus"
 			],
 			"startingStars": 3
 		},
@@ -104,20 +104,20 @@
 		},
 		"cymanti": {
 			"unitOverrides": {
-				"mindbender": "mindbender"
+				"mindbender": "mindbender",
+				"rammership": "raychi"
 			},
 			"improvementOverrides": {
 				"market": "market",
-				"port": "none",
+				"port": "algae",
 				"customshouse": "clathrus"
 			},
 			"techOverrides": {
 				"roads": "cymroads",
 				"construction": "recycling",
 				"chivalry": "shock",
-				"aquaculture": "hydrology",
-				"embarksailing": "pescetism",
-				"navigation": "oceanology",
+				"embarksailing": "cymsailing",
+				"meditation": "meditation",
 				"embarquatism": "aquatism"
 			},
 			"startingUnit": "warrior",
@@ -125,13 +125,13 @@
 				{
 					"x": -1,
 					"y": -2,
-					"unitType": "raychiplus",
+					"unitType": "raychi",
 					"terrainType": "water"
 				},
 				{
 					"x": 2,
 					"y": -1,
-					"unitType": "boomchiplus",
+					"unitType": "boomchi",
 					"terrainType": "water"
 				}
 			],
@@ -143,7 +143,7 @@
 			"techUnlocks": [
 				"organization",
 				"climbing",
-				"fishingsimple",
+				"fishingplus",
 				"hunting",
 				"freespirit"
 			],
@@ -355,32 +355,38 @@
 			],
 			"improvementUnlocks":[
 				"+harvestaquacrop"
+			],
+			"unitUnlocks": [
+				"-boomchi"
 			]
 		},
-		"pescetism": {
-			"unitUnlocks": [
-				"-raychi",
-				"+boomchiplus"
-			],
-			"movementUnlocks": {
-				"water": 1
-			}
-		},
-		"oceanology": {
-			"unitUnlocks": [
-				"raychiplus"
-			],
-			"improvementUnlocks": [
-				"-starfishing"
-			],
-			"movementUnlocks": {
-				"ocean": 1
-			}
-		},
-		"fishingsimple": {
+		"fishingplus": {
 			"techUnlocks": [
 				"embarksailing",
 				"aquaculture"
+			],
+			"improvementUnlocks": [
+				"fishing"
+			],
+			"cost": 1,
+			"idx": -1
+		},
+		"cymsailing": {
+			"unitUnlocks": [
+				"boomchi"
+			],
+			"techUnlocks": [
+				"navigation"
+			],
+			"movementUnlocks": {
+				"water": 1
+			},
+			"cost": 2,
+			"idx": -1
+		},
+		"recycling": {
+			"abilityUnlocks": [
+				"-microbes"
 			]
 		},
 		"marinelife": {
@@ -628,43 +634,11 @@
 				"+staticplus"
 			]
 		},
-		"boomchiplus": {
-			"idx": -1,
-			"cost": 5,
-			"health": 100,
-			"defence": 20,
-			"movement": 2,
-			"weapon": 7,
-			"range": 0,
-			"attack": 30,
-			"promotionLimit": 0,
+		"raychi": {
 			"unitAbilities": [
-				"dash",
-				"swim",
-				"amphibious",
-				"explode",
-				"staticplus",
-				"stiff"
-			],
-			"prefab": "boomchiplus"
-		},
-		"raychiplus": {
-			"idx": -1,
-			"cost": 8,
-			"health": 150,
-			"defence": 20,
-			"movement": 3,
-			"weapon": 7,
-			"range": 1,
-			"attack": 30,
-			"promotionLimit": 0,
-			"unitAbilities": [
-				"staticplus",
-				"dash",
-				"swim",
-				"amphibious"
-			],
-			"prefab": "raychiplus"
+				"-water",
+				"+amphibious"
+			]
 		}
 	},
 	"improvementData": {
@@ -722,12 +696,8 @@
 				{
 					"resource": "crop"
 				}
-			]
-		},
-		"algae": {
-			"improvementAbilities": [
-				"bridge"
-			]
+			],
+			"maxLevel": 2
 		},
 		"customshouse": {
 			"hidden": false,

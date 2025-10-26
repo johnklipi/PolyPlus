@@ -252,12 +252,61 @@
 		"French (France)": "Embarquer",
 		"Spanish (Mexico)": "Embarcar"
 	},
-	"unit_names_boomchiplus": {
-		"English": "Boomchi",
-		"Russian": "Бумчи"
+	"technology_names_fishingplus": {
+		"English": "Fishing",
+		"Portuguese (Brazil)": "Pesca",
+		"Russian": "Рыбалка",
+		"Italian (Italy)": "Pesca",
+		"French (France)": "Pêche",
+		"Spanish (Mexico)": "Pesca",
+		"German (Germany)": "Fischen",
+		"Japanese": "釣り",
+		"Korean": "낚시",
+		"Hindi": "फिशिंग",
+		"Indonesian": "Memancing",
+		"Malay": "Memancing",
+		"Polish": "Rybołówstwo",
+		"Thai": "ตกปลา",
+		"Turkish": "Balık Tutma",
+		"Vietnamese": "Câu Cá",
+		"Elyrion": "ȓr∑iŋ"
 	},
-	"unit_names_raychiplus": {
-		"English": "Raychi",
-		"Russian": "Райчи"
+	"technology_names_cymsailing": {
+		"English": "Pescetism",
+		"Portuguese (Brazil)": "Pescetismo",
+		"Russian": "Рыбообразие",
+		"Italian (Italy)": "Pescetismo",
+		"French (France)": "Pescétisme",
+		"Spanish (Mexico)": "Pescetismo",
+		"German (Germany)": "Pescetismus",
+		"Japanese": "ペスカティズム",
+		"Korean": "페세티즘",
+		"Hindi": "पेसेटिज्म",
+		"Indonesian": "Pescetism",
+		"Malay": "Pescetisme",
+		"Polish": "Peskatyzm",
+		"Thai": "เพสเซตทิซึม",
+		"Turkish": "Pesketizm",
+		"Vietnamese": "Pescetism",
+		"Elyrion": "Ŧπaa#ţ∫Δ ȓr∑iŋ"
+	},
+	"technology_names_aquaculture__cymanti": {
+		"English": "Hydrology",
+		"Portuguese (Brazil)": "Hidrologia",
+		"Russian": "Гидрология",
+		"Italian (Italy)": "Idrologia",
+		"French (France)": "Hydrologie",
+		"Spanish (Mexico)": "Hidrología",
+		"German (Germany)": "Hydrologie",
+		"Japanese": "水文学",
+		"Korean": "수문학",
+		"Hindi": "जल विज्ञान",
+		"Indonesian": "Hidrologi",
+		"Malay": "Hidrologi",
+		"Polish": "Hydrologia",
+		"Thai": "อุทกวิทยา",
+		"Turkish": "Hidroloji",
+		"Vietnamese": "Thủy văn học",
+		"Elyrion": "₼iŋŋa Ŧπaa#ţ∫Δ"
 	}
 }
