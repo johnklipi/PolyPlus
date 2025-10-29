@@ -1,8 +1,10 @@
 ﻿using System.Globalization;
 using HarmonyLib;
 using Polytopia.Data;
+using Steamworks.Data;
 using UnityEngine;
 using PolytopiaBackendBase.Common;
+using System.Reflection;
 
 namespace PolyPlus
 {
@@ -522,28 +524,27 @@ namespace PolyPlus
             if (!__instance.TryGetData(tile.unit.type, out UnitData tileUnit))
                 return;
 
-            var embarkActionType = EnumCache<ImprovementAbility.Type>.GetType("embarkmanual");
-            if (!improvement.HasAbility(embarkActionType))
-                return;
-
-            bool isLandBound = tileUnit.IsLandBound();
-            bool canWaterEmbark = playerState.HasAbility(EnumCache<PlayerAbility.Type>.GetType("waterembark"), gameState);
-
-            if (__result)
+            if (improvement.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("embarkmanual")))
             {
-                if (!isLandBound || !canWaterEmbark)
+                bool isLandBound = tileUnit.IsLandBound();
+                bool canWaterEmbark = playerState.HasAbility(EnumCache<PlayerAbility.Type>.GetType("waterembark"), gameState);
+
+                if (__result)
                 {
-                    __result = false;
+                    if (!isLandBound || !canWaterEmbark)
+                    {
+                        __result = false;
+                    }
                 }
-            }
-            else if (tile.improvement != null && __instance.TryGetData(tile.improvement.type, out ImprovementData tileImprovement))
-            {
-                bool hasBridge = tileImprovement.HasAbility(ImprovementAbility.Type.Bridge);
-                bool isFlooded = tile.HasEffect(TileData.EffectType.Flooded);
-
-                if (isLandBound && canWaterEmbark && (hasBridge || isFlooded))
+                else if (tile.improvement != null && __instance.TryGetData(tile.improvement.type, out ImprovementData tileImprovement))
                 {
-                    __result = true;
+                    bool hasBridge = tileImprovement.HasAbility(ImprovementAbility.Type.Bridge);
+                    bool isFlooded = tile.HasEffect(TileData.EffectType.Flooded);
+
+                    if (isLandBound && canWaterEmbark && (hasBridge || isFlooded))
+                    {
+                        __result = true;
+                    }
                 }
             }
         }
@@ -581,11 +582,10 @@ namespace PolyPlus
             }
             foreach (ImprovementData improvementData in gameState.GameLogicData.GetUnlockedImprovements(player))
             {
-                if (improvementData.HasAbility(ImprovementAbility.Type.Manual)
-                    && !unit.CanBuild()
-                    && !unit.CanDisembark(gameState)
-                    && gameState.GameLogicData.CanBuild(gameState, tile, player, improvementData)
-                    && improvementData.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("embarkmanual")))
+                if (!gameState.GameLogicData.CanBuild(gameState, tile, player, improvementData))
+                    continue;
+                if (improvementData.HasAbility(ImprovementAbility.Type.Manual) && !unit.CanBuild() && !unit.CanDisembark(gameState)
+                        && improvementData.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("embarkmanual")))
                 {
                     var stack = gameState.CommandStack;
                     for (int i = stack.Count - 1; i >= 0; i--)
@@ -608,6 +608,10 @@ namespace PolyPlus
                             }
                         }
                     }
+                }
+                else if (improvementData.HasAbility(ImprovementAbility.Type.Flood) && tile.unit.moved && !tile.unit.attacked)
+                {
+                    CommandUtils.AddCommand(gameState, __result, new BuildCommand(player.Id, improvementData.type, tile.coordinates), includeUnavailable);
                 }
             }
         }
@@ -642,6 +646,54 @@ namespace PolyPlus
                         return;
                     }
                 }
+            }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(StartMatchAction), nameof(StartMatchAction.ExecuteDefault))]
+        private static void StartMatchAction_ExecuteDefault(GameState gameState)
+        {
+            if (gameState.PlayerStates != null && gameState.PlayerStates.Count > 0)
+            {
+                foreach (var playerState in gameState.PlayerStates)
+                {
+                    if (playerState.tribe == TribeType.Aquarion && playerState.startTile != WorldCoordinates.NULL_COORDINATES)
+                    {
+                        TileData startingTile = gameState.Map.GetTile(playerState.startTile);
+                        startingTile.AddEffect(TileData.EffectType.Flooded);
+                    }
+                }
+            }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(TerrainRenderer), nameof(TerrainRenderer.UpdateGraphics))]
+        private static void TerrainRenderer_UpdateGraphics(TerrainRenderer __instance, Tile tile)
+        {
+            TribeType tribe = GameManager.GameState.GameLogicData.GetTribeTypeFromStyle(tile.data.climate);
+            SkinType skinType = tile.data.Skin;
+
+            if (tribe == TribeType.Aquarion && tile.data.terrain == Polytopia.Data.TerrainData.Type.Mountain)
+            {
+                string style = skinType != SkinType.Default ? EnumCache<SkinType>.GetName(skinType) : EnumCache<TribeType>.GetName(tribe);
+                Sprite? sprite = PolyMod.Registry.GetSprite(EnumCache<Polytopia.Data.TerrainData.Type>.GetName(Polytopia.Data.TerrainData.Type.Field), style);
+                if (sprite != null)
+                {
+                    __instance.spriteRenderer.Sprite = sprite;
+                }
+            }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(CaptureCityAction), nameof(CaptureCityAction.ExecuteDefault))]
+        private static void CaptureCityAction_ExecuteDefault(CaptureCityAction __instance, GameState gameState)
+        {
+            if (!gameState.TryGetPlayer(__instance.PlayerId, out PlayerState playerState))
+                return;
+            if (playerState.tribe == TribeType.Aquarion && playerState.startTile != WorldCoordinates.NULL_COORDINATES)
+            {
+                TileData tile = gameState.Map.GetTile(__instance.Coordinates);
+                tile.Flood(playerState);
             }
         }
     }
