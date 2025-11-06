@@ -103,6 +103,9 @@
 			"startingStars": 5
 		},
 		"cymanti": {
+			"startingTech": [
+				"+cymbase"
+			],
 			"unitOverrides": {
 				"mindbender": "mindbender",
 				"rammership": "raychi"
@@ -139,6 +142,13 @@
 		}
 	},
 	"techData": {
+		"cymbase": {
+			"improvementUnlocks": [
+				"makebloom"
+			],
+			"cost": 0,
+			"idx": -1
+		},
 		"basic": {
 			"techUnlocks": [
 				"organization",
@@ -384,11 +394,6 @@
 			"cost": 2,
 			"idx": -1
 		},
-		"recycling": {
-			"abilityUnlocks": [
-				"-microbes"
-			]
-		},
 		"marinelife": {
 			"movementUnlocks": {
 				"ocean": 2
@@ -539,7 +544,8 @@
 		},
 		"doomux": {
 			"unitAbilities": [
-				"+sneak"
+				"+sneak",
+				"-static"
 			]
 		},
 		"centipede": {
@@ -639,6 +645,24 @@
 				"-water",
 				"+amphibious"
 			]
+		},
+		"island": {
+			"cost": 15
+		},
+		"bugegg": {
+			"movement": 1,
+			"unitAbilities": [
+				"+land"
+			]
+		},
+		"moth": {
+			"health": 50,
+			"unitAbilities": [
+				"+hide"
+			]
+		},
+		"phychi": {
+			"attack": 10
 		}
 	},
 	"improvementData": {
@@ -820,6 +844,60 @@
 					"terrain": "mountain"
 				}
 			]
+		},
+		"algae": {
+			"cost": 3,
+			"creates": [
+				{
+					"effect": "algae"
+				}
+			]
+		},
+		"clathrus": {
+			"terrainRequirements": [
+				{
+					"terrain": "water"
+				},
+				{
+					"terrain": "ocean"
+				}
+			],
+			"adjacencyRequirements": [],
+			"adjacencyImprovements": [
+				{
+					"improvement": "hiddensanctuary"
+				}
+			],
+			"improvementAbilities": [
+				"poison",
+				"limited"
+			]
+		},
+		"makebloom": {
+			"idx": -1,
+			"maxLevel": 0,
+			"cost": 2,
+			"terrainRequirements": [
+				{
+					"terrain": "water"
+				},
+				{
+					"terrain": "ocean"
+				}
+			],
+			"creates": [
+				{
+					"effect": "blooming"
+				}
+			],
+			"rewards": [
+				{
+					"population": 1
+				}
+			],
+			"improvementAbilities": [
+				"discrete"
+			]
 		}
 	},
 	"resourceData": {
@@ -860,6 +938,11 @@
 	},
 	"tribeAbility": {
 		"citypark": {
+			"idx": -1
+		}
+	},
+	"tileEffect": {
+		"blooming": {
 			"idx": -1
 		}
 	}

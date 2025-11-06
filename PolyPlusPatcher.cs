@@ -13,9 +13,11 @@ namespace PolyPlus
         private static bool denyCloakAttackIncome = false;
         private static MoveAction.MoveReason? lastEmbarkReason = null;
         private static bool hasAttackedPrePush = false;
+        private static Color32 bloomColor = new Color32(255, 105, 225, 255);
 
         public static void Load()
         {
+            PolyMod.Loader.AddPatchDataType("tileEffect", typeof(TileData.EffectType));
             Harmony.CreateAndPatchAll(typeof(PolyPlusPatcher));
         }
 
@@ -280,6 +282,19 @@ namespace PolyPlus
                 return;
             if (!gameState.GameLogicData.TryGetData(tile.improvement.type, out ImprovementData improvementData))
                 return;
+            if(improvementData.type == ImprovementData.Type.Clathrus)
+            {
+                int addToLevel = 0;
+                List<TileData> tiles = gameState.Map.GetTileNeighbors(tile.coordinates).ToArray().ToList();
+                foreach (var neighbour in tiles)
+                {
+                    if(neighbour.HasEffect(TileData.EffectType.Algae))
+                    {
+                        addToLevel++;
+                    }
+                }
+                __result += addToLevel;
+            }
             if (improvementData.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("halved")))
                 __result /= 2;
         }
@@ -516,6 +531,26 @@ namespace PolyPlus
         [HarmonyPatch(typeof(GameLogicData), nameof(GameLogicData.CanBuild))]
         private static void GameLogicData_CanBuild(ref bool __result, GameLogicData __instance, GameState gameState, TileData tile, PlayerState playerState, ImprovementData improvement)
         {
+            if(improvement.type == EnumCache<ImprovementData.Type>.GetType("makebloom") && __result)
+            {
+                __result = tile.HasEffect(TileData.EffectType.Algae);
+                return;
+            }
+            if(improvement.type == ImprovementData.Type.Clathrus && __result)
+            {
+                List<TileData> neighbours = gameState.Map.GetTileNeighbors(tile.coordinates).ToArray().ToList();
+                __result = false;
+                foreach (var neighbour in neighbours)
+                {
+                    if(neighbour.HasEffect(TileData.EffectType.Algae))
+                    {
+                        __result = true;
+                        break;
+                    }
+                }
+                return;
+            }
+
             if (tile.unit == null)
                 return;
 
@@ -557,6 +592,11 @@ namespace PolyPlus
                 if (improvementData.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("embarkmanual")))
                 {
                     gameState.ActionStack.Add(new EmbarkAction(__instance.PlayerId, __instance.Coordinates));
+                }
+                if(improvementData.type == EnumCache<ImprovementData.Type>.GetType("makebloom"))
+                {
+                    Tile tile = MapRenderer.instance.GetTileInstance(__instance.Coordinates);
+                    tile.Render();
                 }
             }
         }
@@ -640,6 +680,52 @@ namespace PolyPlus
                     {
                         __result = false;
                         return;
+                    }
+                }
+            }
+        }
+
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(UnitDataExtensions), nameof(UnitDataExtensions.CanExplode))]
+        private static bool UnitDataExtensions_CanExplode(ref bool __result, UnitState unit, GameState gameState)
+        {
+            __result = unit.CanAttack() && unit.owner == gameState.CurrentPlayer && unit.HasAbility(UnitAbility.Type.Explode, gameState);
+            return false;
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(ClearTileEffectAction), nameof(ClearTileEffectAction.Execute))]
+        private static void ClearTileEffectAction_Execute(ClearTileEffectAction __instance, GameState gameState)
+        {
+            TileData tile = gameState.Map.GetTile(__instance.Target);
+            if(__instance.Effect == TileData.EffectType.Algae && tile != null && tile.HasEffect(EnumCache<TileData.EffectType>.GetType("blooming")))
+            {
+                tile.RemoveEffect(EnumCache<TileData.EffectType>.GetType("blooming"));
+                if(tile.owner != 0)
+                {
+                    TileData city = gameState.Map.GetTile(tile.rulingCityCoordinates);
+                    if(city.HasImprovement(ImprovementData.Type.City))
+                    {
+                        gameState.ActionStack.Add(new DecreasePopulationAction(__instance.PlayerId, city.coordinates, 200));
+                    }
+                }
+            }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Tile), nameof(Tile.Render))]
+        private static void Tile_Render(Tile __instance)
+        {
+            if(__instance.data.HasEffect(EnumCache<TileData.EffectType>.GetType("blooming")))
+            {
+                if(__instance.algaeRenderer != null)
+                {
+                    __instance.algaeRenderer.color = bloomColor;
+
+                    if(__instance.algaeRenderer.spriteRenderer != null)
+                    {
+                        __instance.algaeRenderer.spriteRenderer.color = bloomColor;
                     }
                 }
             }

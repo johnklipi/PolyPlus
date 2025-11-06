@@ -308,5 +308,13 @@
 		"Turkish": "Hidroloji",
 		"Vietnamese": "Thủy văn học",
 		"Elyrion": "₼iŋŋa Ŧπaa#ţ∫Δ"
+	},
+	"tile_effect_blooming": {
+		"English": "Blooming",
+		"Russian": "Цветёт"
+	},
+	"building_names_hiddensanctuary": {
+		"English": "Algae",
+		"Russian": "Водоросли"
 	}
 }
