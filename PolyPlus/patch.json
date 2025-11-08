@@ -149,6 +149,14 @@
 			"cost": 0,
 			"idx": -1
 		},
+		"recycling": {
+			"abilityUnlocks": [
+				"-microbes"
+			],
+			"improvementUnlocks": [
+				"+microbe"
+			]
+		},
 		"basic": {
 			"techUnlocks": [
 				"organization",
@@ -715,10 +723,10 @@
 			"cost": 7,
 			"terrainRequirements": [
 				{
-					"resource": "spores"
+					"resource": "crop"
 				},
 				{
-					"resource": "crop"
+					"resource": "spores"
 				}
 			],
 			"maxLevel": 2
@@ -865,7 +873,7 @@
 			"adjacencyRequirements": [],
 			"adjacencyImprovements": [
 				{
-					"improvement": "hiddensanctuary"
+					"improvement": "hiddenalgae"
 				}
 			],
 			"improvementAbilities": [
@@ -898,6 +906,25 @@
 			"improvementAbilities": [
 				"discrete"
 			]
+		},
+		"hiddenalgae": {
+			"idx": -1,
+			"hidden": true,
+			"maxLevel": 0
+		},
+		"microbe": {
+			"idx": -1,
+			"maxLevel": 0,
+			"cost": 2,
+			"improvementAbilities": [
+				"discrete"
+			],
+			"rewards": [
+				{
+					"population": 1
+				}
+			],
+			"terrainRequirements": []
 		}
 	},
 	"resourceData": {
@@ -943,6 +970,9 @@
 	},
 	"tileEffect": {
 		"blooming": {
+			"idx": -1
+		},
+		"microbed": {
 			"idx": -1
 		}
 	}

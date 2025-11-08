@@ -3,6 +3,7 @@ using HarmonyLib;
 using Polytopia.Data;
 using UnityEngine;
 using PolytopiaBackendBase.Common;
+using Steamworks.Data;
 
 namespace PolyPlus
 {
@@ -536,6 +537,11 @@ namespace PolyPlus
                 __result = tile.HasEffect(TileData.EffectType.Algae);
                 return;
             }
+            if(improvement.type == EnumCache<ImprovementData.Type>.GetType("microbe") && __result)
+            {
+                __result = tile.HasImprovement(ImprovementData.Type.Fungi) && !tile.HasEffect(EnumCache<TileData.EffectType>.GetType("microbed"));
+                return;
+            }
             if(improvement.type == ImprovementData.Type.Clathrus && __result)
             {
                 List<TileData> neighbours = gameState.Map.GetTileNeighbors(tile.coordinates).ToArray().ToList();
@@ -597,6 +603,11 @@ namespace PolyPlus
                 {
                     Tile tile = MapRenderer.instance.GetTileInstance(__instance.Coordinates);
                     tile.Render();
+                }
+                if(improvementData.type == EnumCache<ImprovementData.Type>.GetType("microbe"))
+                {
+                    TileData tile = gameState.Map.GetTile(__instance.Coordinates);
+                    tile.AddEffect(EnumCache<TileData.EffectType>.GetType("microbed"));
                 }
             }
         }

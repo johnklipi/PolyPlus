@@ -28,5 +28,9 @@
 	"body_yuukwi_outline_magma_": {
 		"pixelsPerUnit":1950,
         "pivot": [0.5, 0.5]
+	},
+	"algae_blooming__": {
+		"pixelsPerUnit":264,
+        "pivot": [0.5, 0.5]
 	}
 }
