@@ -285,19 +285,6 @@ namespace PolyPlus
                 return;
             if (!gameState.GameLogicData.TryGetData(tile.improvement.type, out ImprovementData improvementData))
                 return;
-            if(improvementData.type == ImprovementData.Type.Clathrus)
-            {
-                int addToLevel = 0;
-                List<TileData> tiles = gameState.Map.GetTileNeighbors(tile.coordinates).ToArray().ToList();
-                foreach (var neighbour in tiles)
-                {
-                    if(neighbour.HasEffect(TileData.EffectType.Algae))
-                    {
-                        addToLevel++;
-                    }
-                }
-                __result += addToLevel;
-            }
             if (improvementData.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("halved")))
                 __result /= 2;
         }

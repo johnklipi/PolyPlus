@@ -10,6 +10,7 @@ namespace PolyPlus
     {
         internal static Dictionary<ImprovementData.Type, List<TerrainRequirementsPlus>> improvementTerrainReq = new();
         internal static Dictionary<ImprovementData.Type, List<AdjacencyRequirementsPlus>> improvementAdjacencyReq = new();
+        internal static Dictionary<ImprovementData.Type, List<AdjacencyImprovementsPlus>> improvementAdjacencyImp = new();
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(GameLogicData), nameof(GameLogicData.AddGameLogicPlaceholders))]
@@ -74,6 +75,37 @@ namespace PolyPlus
                             }
                             int idx = (int)token["idx"];
                             improvementAdjacencyReq[(ImprovementData.Type)idx] = list;
+                        }
+
+                        JToken adjacencyImprovements = token["adjacencyImprovements"];
+                        if(adjacencyImprovements != null && adjacencyImprovements.Type == JTokenType.Array)
+                        {
+                            JArray array = adjacencyImprovements.Cast<JArray>();
+
+                            List<AdjacencyImprovementsPlus> list = new();
+                            foreach (var item in array._values)
+                            {
+                                if(item["effect"] != null)
+                                {
+                                    string effectValue = item["effect"].ToString();
+                                    var requirement = new AdjacencyImprovementsPlus
+                                    {
+                                        effect = EnumCache<TileData.EffectType>.GetType(effectValue)
+                                    };
+                                    list.Add(requirement);
+                                }
+                                if(item["terrain"] != null)
+                                {
+                                    string terrainValue = item["terrain"].ToString();
+                                    var requirement = new AdjacencyImprovementsPlus
+                                    {
+                                        terrain = EnumCache<TerrainData.Type>.GetType(terrainValue)
+                                    };
+                                    list.Add(requirement);
+                                }
+                            }
+                            int idx = (int)token["idx"];
+                            improvementAdjacencyImp[(ImprovementData.Type)idx] = list;
                         }
                     }
                 }

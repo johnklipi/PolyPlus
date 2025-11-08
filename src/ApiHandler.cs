@@ -119,5 +119,89 @@ namespace PolyPlus
 			__result = meetsReq && meetsAdjReq;
             return false;
 		}
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(ActionUtils), nameof(ActionUtils.CheckSurroundingArea))]
+        public static void CheckSurroundingArea(GameState gameState, byte playerId, TileData tile)
+        {
+			List<TileData> area = gameState.Map.GetArea(tile.coordinates, 1, true, true).ToArray().ToList();
+			if (area == null || area.Count == 0)
+			{
+				return;
+			}
+			for (int i = 0; i < area.Count; i++)
+			{
+				TileData tileData = area[i];
+				if (tileData != null && tileData.improvement != null)
+				{
+					ImprovementData.Type type = tileData.improvement.type;
+					if(ApiParser.improvementAdjacencyImp.ContainsKey(type) && ApiParser.improvementAdjacencyImp[type].Count > 0)
+                    {
+                        ActionUtils.UpdateImprovementLevel(gameState, playerId, tileData);
+                    }
+				}
+			}
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(ActionUtils), nameof(ActionUtils.CalculateImprovementLevel))]
+        private static void ActionUtils_CalculateImprovementLevel(ref int __result, GameState gameState, TileData tile)
+        {
+            if (tile.improvement == null)
+                return;
+            if (!gameState.GameLogicData.TryGetData(tile.improvement.type, out ImprovementData improvementData))
+                return;
+
+			ImprovementData.Type type = tile.improvement.type;
+            if (ApiParser.improvementAdjacencyImp.ContainsKey(type) && ApiParser.improvementAdjacencyImp[type].Count > 0)
+            {
+                __result = GetAdjacencyBonusAtPlus(gameState, tile, improvementData);
+            }
+        }
+
+		public static int GetAdjacencyBonusAtPlus(GameState gameState, TileData tile, ImprovementData improvementData)
+		{
+			int calculatedLevel = 0;
+			List<TileData> area = gameState.Map.GetArea(tile.coordinates, 1, true, false).ToArray().ToList();
+			if (area == null || area.Count == 0)
+			{
+				return calculatedLevel;
+			}
+
+			for (int i = 0; i < area.Count; i++)
+			{
+				TileData tileData = area[i];
+				if (tileData != null && tileData.owner == tile.owner)
+				{
+					foreach (AdjacencyImprovementsPlus adjacencyImprovements in ApiParser.improvementAdjacencyImp[improvementData.type])
+					{
+						if (adjacencyImprovements.effect != TileData.EffectType.None && tileData.HasEffect(adjacencyImprovements.effect))
+						{
+							calculatedLevel += 1;
+						}
+						if (adjacencyImprovements.terrain != TerrainData.Type.None && tileData.terrain == adjacencyImprovements.terrain)
+						{
+							calculatedLevel += 1;
+						}
+					}
+				}
+			}
+			return calculatedLevel;
+		}
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(TileDataExtensions), nameof(TileDataExtensions.CalculateRawProduction))]
+		public static void CalculateRawProduction(ref int __result, TileData tile, GameState gameState)
+		{
+			if (tile.improvement != null && gameState.GameLogicData.TryGetData(tile.improvement.type, out ImprovementData improvementData))
+			{
+				if(improvementData.work > 0 && ApiParser.improvementAdjacencyImp.ContainsKey(improvementData.type)
+					&& ApiParser.improvementAdjacencyImp[improvementData.type].Count > 0)
+                {
+                    __result = Math.Max(improvementData.work * tile.improvement.level, 0);
+                }
+			}
+		}
+
     }
 }

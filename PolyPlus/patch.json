@@ -878,7 +878,7 @@
 			],
 			"adjacencyImprovements": [
 				{
-					"improvement": "hiddenalgae"
+					"effect": "algae"
 				}
 			],
 			"improvementAbilities": [
@@ -908,11 +908,6 @@
 			"improvementAbilities": [
 				"discrete"
 			]
-		},
-		"hiddenalgae": {
-			"idx": -1,
-			"hidden": true,
-			"maxLevel": 0
 		},
 		"microbe": {
 			"idx": -1,
