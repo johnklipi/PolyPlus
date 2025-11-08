@@ -686,9 +686,6 @@
 			"terrainRequirements": [
 				{
 					"terrain": "field"
-				},
-				{
-					"terrain": "wetland"
 				}
 			],
 			"creates": [
@@ -697,7 +694,8 @@
 				}
 			],
 			"improvementAbilities": [
-				"consumed"
+				"consumed",
+				"discrete"
 			],
 			"maxLevel": 0
 		},
@@ -705,7 +703,10 @@
 			"cost": 5,
 			"terrainRequirements": [
 				{
-					"terrain": "wetland"
+					"terrain": "field"
+				},
+				{
+					"effect": "flooded"
 				}
 			],
 			"creates": [
@@ -813,7 +814,7 @@
 			"cost": 0,
 			"terrainRequirements": [
 				{
-					"terrain": "wetland"
+					"effect": "flooded"
 				}
 			],
 			"improvementAbilities": [
@@ -870,7 +871,11 @@
 					"terrain": "ocean"
 				}
 			],
-			"adjacencyRequirements": [],
+			"adjacencyRequirements": [
+				{
+					"effect": "algae"
+				}
+			],
 			"adjacencyImprovements": [
 				{
 					"improvement": "hiddenalgae"
@@ -887,10 +892,7 @@
 			"cost": 2,
 			"terrainRequirements": [
 				{
-					"terrain": "water"
-				},
-				{
-					"terrain": "ocean"
+					"effect": "algae"
 				}
 			],
 			"creates": [
@@ -916,6 +918,11 @@
 			"idx": -1,
 			"maxLevel": 0,
 			"cost": 2,
+			"creates": [
+				{
+					"effect": "microbed"
+				}
+			],
 			"improvementAbilities": [
 				"discrete"
 			],
@@ -924,7 +931,11 @@
 					"population": 1
 				}
 			],
-			"terrainRequirements": []
+			"terrainRequirements": [
+				{
+					"improvement": "fungi"
+				}
+			]
 		}
 	},
 	"resourceData": {

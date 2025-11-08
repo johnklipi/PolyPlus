@@ -7,7 +7,7 @@ using Steamworks.Data;
 
 namespace PolyPlus
 {
-    public static class PolyPlusPatcher
+    public static class Main
     {
         private static bool unlockRoutes = false;
         private static bool unrobCity = false;
@@ -19,7 +19,9 @@ namespace PolyPlus
         public static void Load()
         {
             PolyMod.Loader.AddPatchDataType("tileEffect", typeof(TileData.EffectType));
-            Harmony.CreateAndPatchAll(typeof(PolyPlusPatcher));
+            Harmony.CreateAndPatchAll(typeof(Main));
+            Harmony.CreateAndPatchAll(typeof(ApiParser));
+            Harmony.CreateAndPatchAll(typeof(ApiHandler));
         }
 
         [HarmonyPostfix]
@@ -532,31 +534,6 @@ namespace PolyPlus
         [HarmonyPatch(typeof(GameLogicData), nameof(GameLogicData.CanBuild))]
         private static void GameLogicData_CanBuild(ref bool __result, GameLogicData __instance, GameState gameState, TileData tile, PlayerState playerState, ImprovementData improvement)
         {
-            if(improvement.type == EnumCache<ImprovementData.Type>.GetType("makebloom") && __result)
-            {
-                __result = tile.HasEffect(TileData.EffectType.Algae);
-                return;
-            }
-            if(improvement.type == EnumCache<ImprovementData.Type>.GetType("microbe") && __result)
-            {
-                __result = tile.HasImprovement(ImprovementData.Type.Fungi) && !tile.HasEffect(EnumCache<TileData.EffectType>.GetType("microbed"));
-                return;
-            }
-            if(improvement.type == ImprovementData.Type.Clathrus && __result)
-            {
-                List<TileData> neighbours = gameState.Map.GetTileNeighbors(tile.coordinates).ToArray().ToList();
-                __result = false;
-                foreach (var neighbour in neighbours)
-                {
-                    if(neighbour.HasEffect(TileData.EffectType.Algae))
-                    {
-                        __result = true;
-                        break;
-                    }
-                }
-                return;
-            }
-
             if (tile.unit == null)
                 return;
 
@@ -599,15 +576,18 @@ namespace PolyPlus
                 {
                     gameState.ActionStack.Add(new EmbarkAction(__instance.PlayerId, __instance.Coordinates));
                 }
-                if(improvementData.type == EnumCache<ImprovementData.Type>.GetType("makebloom"))
+
+                if(improvementData.creates != null && improvementData.creates.Count > 0)
                 {
-                    Tile tile = MapRenderer.instance.GetTileInstance(__instance.Coordinates);
-                    tile.Render();
-                }
-                if(improvementData.type == EnumCache<ImprovementData.Type>.GetType("microbe"))
-                {
-                    TileData tile = gameState.Map.GetTile(__instance.Coordinates);
-                    tile.AddEffect(EnumCache<TileData.EffectType>.GetType("microbed"));
+                    foreach (var item in improvementData.creates)
+                    {
+                        if(item.effect == EnumCache<TileData.EffectType>.GetType("blooming"))
+                        {
+                            Tile tile = MapRenderer.instance.GetTileInstance(__instance.Coordinates);
+                            tile.Render();
+                            break;
+                        }
+                    }
                 }
             }
         }
