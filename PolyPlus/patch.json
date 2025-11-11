@@ -694,8 +694,7 @@
 				}
 			],
 			"improvementAbilities": [
-				"consumed",
-				"discrete"
+				"consumed"
 			],
 			"maxLevel": 0
 		},
