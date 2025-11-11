@@ -7,48 +7,6 @@ namespace PolyPlus
 {
     public static class Diplomacy
     {
-        private static bool unrobCity = false;
-        private static bool denyCloakAttackIncome = false;
-
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(TileDataExtensions), nameof(TileDataExtensions.CalculateWork), typeof(TileData), typeof(GameState), typeof(int))]
-        public static bool TileDataExtensions_CalculateWork_Prefix(ref int __result, TileData tile, GameState gameState, int improvementLevel)
-        {
-            unrobCity = true;
-            return true;
-        }
-
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(ImprovementState), nameof(ImprovementState.HasEffect))]
-        public static void ImprovementState_HasEffect(ref bool __result, ImprovementState __instance, ImprovementEffect effect)
-        {
-            if (unrobCity)
-            {
-                if (__result && effect == ImprovementEffect.robbed)
-                    __result = false;
-                unrobCity = false;
-            }
-        }
-
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(InfiltrationRewardAction), nameof(InfiltrationRewardAction.ExecuteDefault))]
-        private static bool InfiltrationRewardAction_ExecuteDefault_Prefix(InfiltrationRewardAction __instance, GameState gameState)
-        {
-            denyCloakAttackIncome = true;
-            return true;
-        }
-
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(TileDataExtensions), nameof(TileDataExtensions.CalculateRawProduction))]
-        private static void TileDataExtensions_CalculateRawProduction(ref int __result, TileData tile, GameState gameState)
-        {
-            if (denyCloakAttackIncome)
-            {
-                denyCloakAttackIncome = false;
-                __result = 0;
-            }
-        }
-
         [HarmonyPostfix]
         [HarmonyPatch(typeof(PlayerDiplomacyExtensions), nameof(PlayerDiplomacyExtensions.GetIncomeFromEmbassy))]
         private static void PlayerDiplomacyExtensions_GetIncomeFromEmbassy(ref int __result, PlayerState playerState, PlayerState otherPlayer, GameState gameState)
@@ -65,24 +23,15 @@ namespace PolyPlus
             bool includeHiddenTiles, UnitState customUnitState, bool ignoreDiplomacyRelation
         )
         {
-            Il2CppSystem.Collections.Generic.List<WorldCoordinates> list =
-                new Il2CppSystem.Collections.Generic.List<WorldCoordinates>();
             UnitState unitState = customUnitState ?? gameState.Map.GetTile(position).unit;
-            Il2CppSystem.Collections.Generic.List<TileData> area = gameState.Map.GetArea(
-                position,
-                range,
-                true,
-                false
-            );
-            if (
-                unitState != null
-                && unitState.HasAbility(UnitAbility.Type.Infiltrate, gameState)
-                && gameState.TryGetPlayer(playerId, out PlayerState playerState)
-            )
+            Il2CppSystem.Collections.Generic.List<TileData> area = gameState.Map.GetArea(position, range, true, false);
+
+            if (unitState != null & unitState.HasAbility(EnumCache<UnitAbility.Type>.GetType("revolt"), gameState)
+                && gameState.TryGetPlayer(playerId, out PlayerState playerState))
             {
-                if (area != null && area.Count > 0)
+                Il2CppSystem.Collections.Generic.List<WorldCoordinates> list = new Il2CppSystem.Collections.Generic.List<WorldCoordinates>();
+                if (area != null && area.Count > 0 && (unitState.HasAbility(UnitAbility.Type.Hide) == unitState.HasEffect(UnitEffect.Invisible)))
                 {
-                    list = new Il2CppSystem.Collections.Generic.List<WorldCoordinates>();
                     for (int i = 0; i < area.Count; i++)
                     {
                         TileData tileData = area[i];
@@ -95,25 +44,15 @@ namespace PolyPlus
                             }
                             else
                             {
-                                isInPeace = PlayerDiplomacyExtensions.HasPeaceWith(
-                                    playerState,
-                                    tileData.owner
-                                );
+                                isInPeace = PlayerDiplomacyExtensions.HasPeaceWith(playerState, tileData.owner);
                                 if (!isInPeace)
                                 {
-                                    isInPeace = PlayerDiplomacyExtensions.HasBrokenPeaceWith(
-                                        playerState,
-                                        tileData.owner
-                                    );
+                                    isInPeace = PlayerDiplomacyExtensions.HasBrokenPeaceWith(playerState, tileData.owner);
                                 }
                             }
 
-                            if (
-                                tileData.HasImprovement(ImprovementData.Type.City)
-                                && tileData.owner != 0
-                                && tileData.owner != unitState.owner
-                                && !isInPeace
-                            )
+                            if (tileData.HasImprovement(ImprovementData.Type.City) && tileData.owner != 0
+                                && tileData.owner != unitState.owner && !isInPeace)
                             {
                                 list.Add(tileData.coordinates);
                             }
@@ -125,15 +64,45 @@ namespace PolyPlus
         }
 
         [HarmonyPrefix]
-        [HarmonyPatch(typeof(InfiltrationRewardReaction), nameof(InfiltrationRewardReaction.Execute))]
-        private static bool InfiltrationRewardReaction_Execute(InfiltrationRewardReaction __instance, Il2CppSystem.Action onComplete)
+        [HarmonyPatch(typeof(AttackAction), nameof(AttackAction.Execute))]
+        private static bool AttackAction_Execute(AttackAction __instance, GameState state)
         {
-            TileData tileData = GameManager.GameState.Map.GetTile(__instance.action.Coordinates);
-            Tile tile = MapRenderer.Current.GetTileInstance(__instance.action.Coordinates);
+            TileData unitTile = state.Map.GetTile(__instance.Origin);
+            TileData cityTile = state.Map.GetTile(__instance.Target);
+
+            if(unitTile == null || cityTile == null
+                || unitTile.unit == null || !unitTile.unit.HasAbility(EnumCache<UnitAbility.Type>.GetType("revolt")))
+            {
+                return true;
+            }
+            if(!cityTile.HasImprovement(ImprovementData.Type.City) || !state.TryGetPlayer(unitTile.unit.owner, out PlayerState playerState))
+            {
+                return true;
+            }
+
+            List<TileData> list = new List<TileData>();
+            foreach (TileData tileData in state.Map.GetArea(cityTile.coordinates, (int)cityTile.improvement.borderSize, true, false))
+            {
+                if (tileData.rulingCityCoordinates == cityTile.coordinates && tileData.unit == null && tileData.CanBeAccessedByPlayer(state, playerState))
+                {
+                    list.Add(tileData);
+                }
+            }
+            list = GetRandomTiles(list, Math.Min(Math.Min((int)cityTile.improvement.level, 5), list.Count), state.Seed, (int)state.CurrentTurn, cityTile.coordinates.x, cityTile.coordinates.y);
+            foreach (var item in list)
+            {
+                state.ActionStack.Add(new TrainAction(playerState.Id, UnitData.Type.Dagger, item.coordinates, 0, cityTile.coordinates));
+            }
+            VisualRebellion(cityTile, playerState);
+            return true;
+        }
+
+        public static void VisualRebellion(TileData tileData, PlayerState playerState)
+        {
+            Tile tile = MapRenderer.Current.GetTileInstance(tileData.coordinates);
             if (tile.IsHidden)
             {
-                onComplete?.Invoke();
-                return false;
+                return;
             }
             AudioManager.PlaySFX(SFXTypes.Explode, SkinType.Default, 1f, 1f, 0f);
             tile.SpawnExplosion();
@@ -146,12 +115,8 @@ namespace PolyPlus
                 tile.Unit.UpdateObject();
             }
             TextInfo myTI = new CultureInfo("en-US", false).TextInfo;
-            GameManager.GameState.TryGetPlayer(
-                __instance.action.PlayerId,
-                out PlayerState playerState
-            );
             string rebellionDescription = string.Empty;
-            if (GameManager.LocalPlayer.Id == __instance.action.PlayerId)
+            if (GameManager.LocalPlayer.Id == playerState.Id)
             {
                 rebellionDescription = Localization.Get(
                     "world.rebellion.attackerdescription",
@@ -164,9 +129,6 @@ namespace PolyPlus
                     "world.rebellion.description",
                     new Il2CppSystem.Object[]
                     {
-                        myTI.ToTitleCase(
-                            EnumCache<UnitData.Type>.GetName(__instance.action.UnitType)
-                        ),
                         myTI.ToTitleCase(playerState.GetLocalizedTribeName(GameManager.GameState)),
                         tileData.improvement.name,
                     }
@@ -179,8 +141,30 @@ namespace PolyPlus
                     new Il2CppSystem.Object[] { tileData.improvement.name }
                 ), null, GameManager.LocalPlayer);
             }
-            onComplete?.Invoke();
-            return false;
+        }
+        public static List<TileData> GetRandomTiles(List<TileData> tiles, int count, int seed, int turnCount, int x, int y)
+        {
+            int combinedSeed = SafeHash(seed, turnCount, x, y);
+            Random rng = new Random(combinedSeed);
+            var shuffled = new List<TileData>(tiles);
+            for (int i = shuffled.Count - 1; i > 0; i--)
+            {
+                int j = rng.Next(i + 1);
+                (shuffled[i], shuffled[j]) = (shuffled[j], shuffled[i]);
+            }
+
+            return shuffled.Take(count).ToList();
+        }
+
+        private static int SafeHash(int seed, int turnCount, int x, int y)
+        {
+            long hash = 17;
+            hash = (hash * 31 + seed) % int.MaxValue;
+            hash = (hash * 31 + turnCount) % int.MaxValue;
+            hash = (hash * 31 + x) % int.MaxValue;
+            hash = (hash * 31 + y) % int.MaxValue;
+
+            return (int)Math.Abs(hash);
         }
     }
 }

@@ -586,20 +586,29 @@
 		},
 		"cloak": {
 			"unitAbilities": [
-				"+staticplus"
+				"+staticplus",
+				"-infiltrate",
+				"+revolt",
+				"+consumed"
 			],
 			"cost": 5
 		},
 		"mermaidcloak": {
 			"unitAbilities": [
-				"+staticplus"
+				"+staticplus",
+				"-infiltrate",
+				"+revolt",
+				"+consumed"
 			],
 			"cost": 5
 		},
 		"cloak_boat": {
 			"unitAbilities": [
 				"-static",
-				"+staticplus"
+				"+staticplus",
+				"-infiltrate",
+				"+revolt",
+				"+consumed"
 			]
 		},
 		"pirate": {
@@ -666,7 +675,10 @@
 		"moth": {
 			"health": 50,
 			"unitAbilities": [
-				"+hide"
+				"+hide",
+				"-infiltrate",
+				"+revolt",
+				"+consumed"
 			]
 		},
 		"phychi": {
@@ -965,6 +977,9 @@
 			"idx": -1
 		},
 		"slide": {
+			"idx": -1
+		},
+		"revolt": {
 			"idx": -1
 		}
 	},
