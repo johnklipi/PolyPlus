@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using HarmonyLib;
 using Polytopia.Data;
 
@@ -9,9 +5,6 @@ namespace PolyPlus
 {
     public class Movement
     {
-        private static MoveAction.MoveReason? lastEmbarkReason = null;
-        private static bool hasAttackedPrePush = false;
-
         [HarmonyPostfix]
         [HarmonyPatch(typeof(PathFinder), nameof(PathFinder.IsTileAccessible))]
         private static void PathFinder_IsTileAccessible(ref bool __result, TileData tile, TileData origin, PathFinderSettings settings)
@@ -39,13 +32,8 @@ namespace PolyPlus
             List<WorldCoordinates> toRemove = new List<WorldCoordinates>();
             if (gameState.TryGetPlayer(unit.owner, out playerState))
             {
-                if (
-                    PlayerExtensions.HasAbility(
-                        playerState,
-                        EnumCache<PlayerAbility.Type>.GetType("waterembark"),
-                        gameState
-                    ) && !unit.HasAbility(UnitAbility.Type.Fly, gameState)
-                )
+                if (PlayerExtensions.HasAbility(playerState, EnumCache<PlayerAbility.Type>.GetType("waterembark"), gameState)
+                    && !unit.HasAbility(UnitAbility.Type.Fly, gameState))
                 {
                     foreach (WorldCoordinates destination in options)
                     {
@@ -114,36 +102,12 @@ namespace PolyPlus
                             hasNoBridge = false;
                     }
                 }
-                if (
-                    hasNoBridge
-                    && !unitData.IsAquatic()
-                    && !unitState.HasAbility(UnitAbility.Type.Fly, gameState)
-                    && tile2.IsWater
-                    && PlayerExtensions.HasAbility(
-                        playerState,
-                        EnumCache<PlayerAbility.Type>.GetType("waterembark"),
-                        gameState
-                    )
-                )
+                if (hasNoBridge && !unitData.IsAquatic() && !unitState.HasAbility(UnitAbility.Type.Fly, gameState) && tile2.IsWater
+                    && PlayerExtensions.HasAbility(playerState, EnumCache<PlayerAbility.Type>.GetType("waterembark"),gameState))
                 {
-                    lastEmbarkReason = __instance.Reason;
                     gameState.ActionStack.Add(new EmbarkAction(__instance.PlayerId, worldCoordinates));
                 }
             }
-        }
-
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(EmbarkAction), nameof(EmbarkAction.Execute))]
-        private static bool EmbarkAction_ExecuteDefault_Prefix(EmbarkAction __instance, GameState gameState)
-        {
-            PlayerState playerState;
-            if (gameState.TryGetPlayer(__instance.PlayerId, out playerState))
-            {
-                TileData tile = gameState.Map.GetTile(__instance.Coordinates);
-                UnitState unitState = tile.unit;
-                hasAttackedPrePush = unitState.attacked;
-            }
-            return true;
         }
 
         [HarmonyPostfix]
@@ -155,16 +119,10 @@ namespace PolyPlus
             {
                 TileData tile = gameState.Map.GetTile(__instance.Coordinates);
                 UnitState unitState = tile.unit;
-                if (PlayerExtensions.HasAbility(playerState, EnumCache<PlayerAbility.Type>.GetType("dashembark"), gameState)
-                    && lastEmbarkReason != MoveAction.MoveReason.Attack && lastEmbarkReason != null)
+                if (PlayerExtensions.HasAbility(playerState, EnumCache<PlayerAbility.Type>.GetType("dashembark"), gameState))
                 {
-                    if (!(lastEmbarkReason == MoveAction.MoveReason.Push && hasAttackedPrePush))
-                    {
-                        lastEmbarkReason = null;
-                        hasAttackedPrePush = false;
-                        unitState.moved = false;
-                        unitState.attacked = false;
-                    }
+                    unitState.moved = false;
+                    unitState.attacked = false;
                 }
             }
         }
@@ -185,5 +143,8 @@ namespace PolyPlus
             __result = unit.CanAttack() && unit.owner == gameState.CurrentPlayer && unit.HasAbility(UnitAbility.Type.Explode, gameState);
             return false;
         }
+
+        // I removed logic which was checking whether unit has attacked before being pushed on water tile. Too complicated.
+        // I will fix other stuff and then come up with better solution.
     }
 }

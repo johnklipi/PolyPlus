@@ -1,9 +1,6 @@
-﻿using System.Globalization;
-using HarmonyLib;
+﻿using HarmonyLib;
 using Polytopia.Data;
 using UnityEngine;
-using PolytopiaBackendBase.Common;
-using Steamworks.Data;
 
 namespace PolyPlus
 {

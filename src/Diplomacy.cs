@@ -1,18 +1,22 @@
 using System.Globalization;
 using HarmonyLib;
 using Polytopia.Data;
-using PolytopiaBackendBase.Common;
 
 namespace PolyPlus
 {
     public static class Diplomacy
     {
-        [HarmonyPostfix]
+        [HarmonyPrefix]
         [HarmonyPatch(typeof(PlayerDiplomacyExtensions), nameof(PlayerDiplomacyExtensions.GetIncomeFromEmbassy))]
-        private static void PlayerDiplomacyExtensions_GetIncomeFromEmbassy(ref int __result, PlayerState playerState, PlayerState otherPlayer, GameState gameState)
+        private static bool PlayerDiplomacyExtensions_GetIncomeFromEmbassy(ref int __result, PlayerState playerState, PlayerState otherPlayer, GameState gameState)
         {
-            if (playerState.HasPeaceWith(otherPlayer.Id))
-                __result /= 2;
+            int multiplier = playerState.HasPeaceWith(otherPlayer.Id) ? ApiParser.diplomacyDataPlus.peaceMultiplier : 1;
+            __result = 0;
+            if (otherPlayer.HasActiveEmbassyWith(playerState, gameState))
+            {
+                __result += gameState.GameLogicData.DiplomacyData.embassyIncome * otherPlayer.GetEmbassyLevel(playerState) * multiplier;
+            }
+            return false;
         }
 
         [HarmonyPostfix]
@@ -30,7 +34,7 @@ namespace PolyPlus
                 && gameState.TryGetPlayer(playerId, out PlayerState playerState))
             {
                 Il2CppSystem.Collections.Generic.List<WorldCoordinates> list = new Il2CppSystem.Collections.Generic.List<WorldCoordinates>();
-                if (area != null && area.Count > 0 && (unitState.HasAbility(UnitAbility.Type.Hide) == unitState.HasEffect(UnitEffect.Invisible)))
+                if (area != null && area.Count > 0 && (unitState.HasAbility(UnitAbility.Type.Hide) == unitState!.HasEffect(UnitEffect.Invisible)))
                 {
                     for (int i = 0; i < area.Count; i++)
                     {
@@ -88,7 +92,8 @@ namespace PolyPlus
                     list.Add(tileData);
                 }
             }
-            list = GetRandomTiles(list, Math.Min(Math.Min((int)cityTile.improvement.level, 5), list.Count), state.Seed, (int)state.CurrentTurn, cityTile.coordinates.x, cityTile.coordinates.y);
+            list = GetRandomTiles(list, Math.Min(Math.Min((int)cityTile.improvement.level, ApiParser.diplomacyDataPlus.maxRebelCount), list.Count), state.Seed,
+                (int)state.CurrentTurn, cityTile.coordinates);
             foreach (var item in list)
             {
                 state.ActionStack.Add(new TrainAction(playerState.Id, UnitData.Type.Dagger, item.coordinates, 0, cityTile.coordinates));
@@ -104,7 +109,7 @@ namespace PolyPlus
             {
                 return;
             }
-            AudioManager.PlaySFX(SFXTypes.Explode, SkinType.Default, 1f, 1f, 0f);
+            AudioManager.PlaySFX(SFXTypes.Explode, playerState.skinType, 1f, 1f, 0f);
             tile.SpawnExplosion();
             tile.SpawnDarkPuff();
             tile.SpawnEmbers(1f);
@@ -142,9 +147,9 @@ namespace PolyPlus
                 ), null, GameManager.LocalPlayer);
             }
         }
-        public static List<TileData> GetRandomTiles(List<TileData> tiles, int count, int seed, int turnCount, int x, int y)
+        public static List<TileData> GetRandomTiles(List<TileData> tiles, int count, int seed, int turnCount, WorldCoordinates coordinates)
         {
-            int combinedSeed = SafeHash(seed, turnCount, x, y);
+            int combinedSeed = SafeHash(seed, turnCount, coordinates);
             Random rng = new Random(combinedSeed);
             var shuffled = new List<TileData>(tiles);
             for (int i = shuffled.Count - 1; i > 0; i--)
@@ -156,13 +161,13 @@ namespace PolyPlus
             return shuffled.Take(count).ToList();
         }
 
-        private static int SafeHash(int seed, int turnCount, int x, int y)
+        private static int SafeHash(int seed, int turnCount, WorldCoordinates coordinates)
         {
             long hash = 17;
             hash = (hash * 31 + seed) % int.MaxValue;
             hash = (hash * 31 + turnCount) % int.MaxValue;
-            hash = (hash * 31 + x) % int.MaxValue;
-            hash = (hash * 31 + y) % int.MaxValue;
+            hash = (hash * 31 + coordinates.x) % int.MaxValue;
+            hash = (hash * 31 + coordinates.y) % int.MaxValue;
 
             return (int)Math.Abs(hash);
         }

@@ -11,6 +11,7 @@ namespace PolyPlus
         internal static Dictionary<ImprovementData.Type, List<TerrainRequirementsPlus>> improvementTerrainReq = new();
         internal static Dictionary<ImprovementData.Type, List<AdjacencyRequirementsPlus>> improvementAdjacencyReq = new();
         internal static Dictionary<ImprovementData.Type, List<AdjacencyImprovementsPlus>> improvementAdjacencyImp = new();
+        internal static DiplomacyDataPlus diplomacyDataPlus = new DiplomacyDataPlus();
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(GameLogicData), nameof(GameLogicData.AddGameLogicPlaceholders))]
