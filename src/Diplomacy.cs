@@ -1,5 +1,6 @@
 using System.Globalization;
 using HarmonyLib;
+using PolyPlus.Utils;
 using Polytopia.Data;
 
 namespace PolyPlus
@@ -10,12 +11,39 @@ namespace PolyPlus
         [HarmonyPatch(typeof(PlayerDiplomacyExtensions), nameof(PlayerDiplomacyExtensions.GetIncomeFromEmbassy))]
         private static bool PlayerDiplomacyExtensions_GetIncomeFromEmbassy(ref int __result, PlayerState playerState, PlayerState otherPlayer, GameState gameState)
         {
-            int multiplier = playerState.HasPeaceWith(otherPlayer.Id) ? ApiParser.diplomacyDataPlus.peaceMultiplier : 1;
+            int multiplier = playerState.HasPeaceWith(otherPlayer.Id) ? Parser.diplomacyDataPlus.peaceMultiplier : 1;
             __result = 0;
             if (otherPlayer.HasActiveEmbassyWith(playerState, gameState))
             {
                 __result += gameState.GameLogicData.DiplomacyData.embassyIncome * otherPlayer.GetEmbassyLevel(playerState) * multiplier;
             }
+            return false;
+        }
+
+        public static List<byte> GetEstablishedEmbassiesByPlayer(PlayerState player, GameState gameState)
+        {
+            List<byte> list = new List<byte>(gameState.PlayerStates.Count);
+            foreach (PlayerState playerState in gameState.PlayerStates)
+            {
+                if (player.HasEmbassyWith(playerState))
+                {
+                    list.Add(playerState.Id);
+                }
+            }
+            return list;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(DiplomacyData), nameof(DiplomacyData.GetEmbassyCostForPlayer))]
+        private static bool DiplomacyData_GetEmbassyCostForPlayer(ref int __result, byte playerId, GameState gameState)
+        {
+            if(!gameState.TryGetPlayer(playerId, out PlayerState playerState))
+                return true;
+
+            Console.Write("GetEmbassyCostForPlayer");
+            int amountOfEmbassies = GetEstablishedEmbassiesByPlayer(playerState, gameState).Count;
+            Console.Write(amountOfEmbassies);
+            __result = gameState.GameLogicData.DiplomacyData.embassyCost + (amountOfEmbassies * Parser.diplomacyDataPlus.embassyCostModifierPerEmbassy);
             return false;
         }
 
@@ -27,14 +55,22 @@ namespace PolyPlus
             bool includeHiddenTiles, UnitState customUnitState, bool ignoreDiplomacyRelation
         )
         {
-            UnitState unitState = customUnitState ?? gameState.Map.GetTile(position).unit;
+            TileData unitTile = gameState.Map.GetTile(position);
+            if(unitTile == null)
+                return;
+
+            UnitState unitState = customUnitState ?? unitTile.unit;
+
+            if(unitState == null)
+                return;
+
             Il2CppSystem.Collections.Generic.List<TileData> area = gameState.Map.GetArea(position, range, true, false);
 
-            if (unitState != null & unitState.HasAbility(EnumCache<UnitAbility.Type>.GetType("revolt"), gameState)
+            if (unitState.HasAbility(EnumCache<UnitAbility.Type>.GetType("revolt"), gameState)
                 && gameState.TryGetPlayer(playerId, out PlayerState playerState))
             {
                 Il2CppSystem.Collections.Generic.List<WorldCoordinates> list = new Il2CppSystem.Collections.Generic.List<WorldCoordinates>();
-                if (area != null && area.Count > 0 && (unitState.HasAbility(UnitAbility.Type.Hide) == unitState!.HasEffect(UnitEffect.Invisible)))
+                if (area != null && area.Count > 0 && (unitState.HasAbility(UnitAbility.Type.Hide) == unitState.HasEffect(UnitEffect.Invisible)))
                 {
                     for (int i = 0; i < area.Count; i++)
                     {
@@ -75,7 +111,8 @@ namespace PolyPlus
             TileData cityTile = state.Map.GetTile(__instance.Target);
 
             if(unitTile == null || cityTile == null
-                || unitTile.unit == null || !unitTile.unit.HasAbility(EnumCache<UnitAbility.Type>.GetType("revolt")))
+                || unitTile.unit == null || !unitTile.unit.HasAbility(EnumCache<UnitAbility.Type>.GetType("revolt"))
+                || !Parser.rebellionUnits.ContainsKey(unitTile.unit.type))
             {
                 return true;
             }
@@ -92,17 +129,36 @@ namespace PolyPlus
                     list.Add(tileData);
                 }
             }
-            list = GetRandomTiles(list, Math.Min(Math.Min((int)cityTile.improvement.level, ApiParser.diplomacyDataPlus.maxRebelCount), list.Count), state.Seed,
+            list = GetRandomTiles(list, Math.Min(Math.Min((int)cityTile.improvement.level, Parser.diplomacyDataPlus.maxRebelCount), list.Count), state.Seed,
                 (int)state.CurrentTurn, cityTile.coordinates);
-            foreach (var item in list)
+            Console.Write(0);
+            if(EnumCache<UnitData.Type>.TryGetType(Parser.rebellionUnits[unitTile.unit.type], out UnitData.Type rebelType)
+                && state.GameLogicData.TryGetData(rebelType, out UnitData rebelData))
             {
-                state.ActionStack.Add(new TrainAction(playerState.Id, UnitData.Type.Dagger, item.coordinates, 0, cityTile.coordinates));
+                Console.Write(1);
+                bool hasEmbarkOverride = Parser.embarkUnits.ContainsKey(rebelType);
+                Console.Write(2);
+                foreach (var item in list)
+                {
+                    Console.Write(3);
+                    state.ActionStack.Add(new TrainAction(playerState.Id, rebelType, item.coordinates, 0, cityTile.coordinates));
+                    Console.Write(4);
+                    if(hasEmbarkOverride && item.IsWater && rebelData.unitAbilities.Contains(UnitAbility.Type.Land))
+                    {
+                        Console.Write(5);
+                        state.ActionStack.Add(new EmbarkAction(playerState.Id, item.coordinates));
+                        Console.Write(6);
+                    }
+                    Console.Write(7);
+                }
+                Console.Write(8);
+                VisualizeRebellion(cityTile, playerState);
+                Console.Write(9);
             }
-            VisualRebellion(cityTile, playerState);
             return true;
         }
 
-        public static void VisualRebellion(TileData tileData, PlayerState playerState)
+        public static void VisualizeRebellion(TileData tileData, PlayerState playerState)
         {
             Tile tile = MapRenderer.Current.GetTileInstance(tileData.coordinates);
             if (tile.IsHidden)

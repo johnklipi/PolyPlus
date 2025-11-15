@@ -1,4 +1,6 @@
 ﻿using HarmonyLib;
+using Newtonsoft.Json.Linq;
+using PolyPlus.Utils;
 using Polytopia.Data;
 using UnityEngine;
 
@@ -6,7 +8,6 @@ namespace PolyPlus
 {
     public static class Main
     {
-        private static bool unlockRoutes = false;
         private static Color32 bloomColor = new Color32(255, 105, 225, 255);
 
         public static void Load()
@@ -14,10 +15,17 @@ namespace PolyPlus
             PolyMod.Loader.AddPatchDataType("tileEffect", typeof(TileData.EffectType));
             Harmony.CreateAndPatchAll(typeof(Main));
             Harmony.CreateAndPatchAll(typeof(ApiHandler));
-            Harmony.CreateAndPatchAll(typeof(ApiParser));
             Harmony.CreateAndPatchAll(typeof(Diplomacy));
             Harmony.CreateAndPatchAll(typeof(Generation));
             Harmony.CreateAndPatchAll(typeof(Movement));
+            Harmony.CreateAndPatchAll(typeof(Routes));
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(GameLogicData), nameof(GameLogicData.AddGameLogicPlaceholders))]
+        private static void GameLogicData_AddGameLogicPlaceholders(GameLogicData __instance, JObject rootObject)
+        {
+            Parser.Parse(rootObject);
         }
 
         [HarmonyPostfix]
@@ -92,42 +100,6 @@ namespace PolyPlus
                 __result /= 2;
         }
 
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(MapDataExtensions), nameof(MapDataExtensions.UpdateRoutes))]
-        private static bool MapDataExtensions_UpdateRoutes_Prefix(GameState gameState, Il2CppSystem.Collections.Generic.List<TileData> changedTiles)
-        {
-            unlockRoutes = true;
-            return true;
-        }
-
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(GameLogicData), nameof(GameLogicData.GetMovementsWithUnlockedTeck))]
-        private static void GameLogicData_GetMovementsWithUnlockedTeck(
-            ref Il2CppSystem.Collections.Generic.List<Polytopia.Data.TerrainData> __result, GameLogicData __instance, Il2CppSystem.Collections.Generic.List<TechData> tech
-        )
-        {
-            if (unlockRoutes)
-            {
-                Array values = Enum.GetValues(typeof(Polytopia.Data.TerrainData.Type));
-                Il2CppSystem.Collections.Generic.List<Polytopia.Data.TerrainData> terrains =
-                    new Il2CppSystem.Collections.Generic.List<Polytopia.Data.TerrainData>();
-                foreach (var item in values)
-                {
-                    if (
-                        __instance.TryGetData(
-                            (Polytopia.Data.TerrainData.Type)item,
-                            out Polytopia.Data.TerrainData data
-                        )
-                    )
-                    {
-                        terrains.Add(data);
-                    }
-                }
-                unlockRoutes = false;
-                __result = terrains;
-            }
-        }
-
         [HarmonyPostfix]
         [HarmonyPatch(typeof(UnitDataExtensions), nameof(UnitDataExtensions.GetDefenceBonus))]
         private static void UnitDataExtensions_GetDefenceBonus(ref int __result, UnitState unit, GameState gameState)
@@ -136,6 +108,37 @@ namespace PolyPlus
             {
                 __result = 10;
             }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(EndTurnCommand), nameof(EndTurnCommand.ExecuteDefault))]
+        public static void EndTurnCommand_ExecuteDefault(EndTurnCommand __instance, GameState state)
+        {
+            List<TileData> healOptions = new();
+            for (int i = 0; i < state.Map.Tiles.Length; i++)
+            {
+                TileData tileData = state.Map.Tiles[i];
+                if (tileData.owner == __instance.PlayerId && tileData.improvement != null)
+                {
+                    ImprovementData improvementData;
+                    state.GameLogicData.TryGetData(tileData.improvement.type, out improvementData);
+                    if (improvementData.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("healplus")))
+                    {
+                        healOptions.AddRange(tileData.GetHealOptions(__instance.PlayerId, state, true).ToArray().ToList());
+                    }
+                }
+            }
+
+            healOptions = healOptions
+                .GroupBy(t => t.coordinates)
+                .Select(g => g.First())
+                .ToList();
+
+            foreach (TileData option in healOptions)
+            {
+                state.ActionStack.Add(new HealAction(__instance.PlayerId, option.coordinates, 40));
+            }
+
         }
 
         [HarmonyPostfix]
@@ -226,26 +229,10 @@ namespace PolyPlus
                     && gameState.GameLogicData.CanBuild(gameState, tile, player, improvementData)
                     && improvementData.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("embarkmanual")))
                 {
-                    var stack = gameState.CommandStack;
-                    for (int i = stack.Count - 1; i >= 0; i--)
+                    CommandBase? disembarkCommand = Utils.CommandsUtils.GetCommandOnCoordinate(gameState.CommandStack, CommandType.Disembark, tile.coordinates, Utils.CommandsUtils.CheckType.Turn);
+                    if(disembarkCommand == null)
                     {
-                        var command = stack[i];
-                        var commandType = command.GetCommandType();
-
-                        if (commandType == CommandType.EndTurn)
-                        {
-                            CommandUtils.AddCommand(gameState, __result, new BuildCommand(player.Id, improvementData.type, tile.coordinates), includeUnavailable);
-                            return;
-                        }
-
-                        if (command.GetCommandType() == CommandType.Disembark)
-                        {
-                            DisembarkCommand disembarkCommand = command.Cast<DisembarkCommand>();
-                            if (disembarkCommand.Coordinates == tile.coordinates)
-                            {
-                                return;
-                            }
-                        }
+                        CommandUtils.AddCommand(gameState, __result, new BuildCommand(player.Id, improvementData.type, tile.coordinates), includeUnavailable);
                     }
                 }
             }
@@ -257,29 +244,14 @@ namespace PolyPlus
         {
             if (!__result) return;
 
-            var stack = state.CommandStack;
-            for (int i = stack.Count - 1; i >= 0; i--)
+            CommandBase? command = Utils.CommandsUtils.GetCommandOnCoordinate(state.CommandStack, CommandType.Build, unitState.coordinates, Utils.CommandsUtils.CheckType.Turn);
+            if(command != null)
             {
-                var command = stack[i];
-                var commandType = command.GetCommandType();
-
-                if (commandType == CommandType.EndTurn)
+                BuildCommand buildCommand = command.Cast<BuildCommand>();
+                if (state.GameLogicData.TryGetData(buildCommand.Type, out var improvementData) &&
+                    improvementData.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("embarkmanual")))
                 {
-                    return;
-                }
-
-                if (commandType == CommandType.Build)
-                {
-                    var buildCommand = command.Cast<BuildCommand>();
-
-                    if (buildCommand.Coordinates != unitState.coordinates) continue;
-
-                    if (state.GameLogicData.TryGetData(buildCommand.Type, out var improvementData) &&
-                        improvementData.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("embarkmanual")))
-                    {
-                        __result = false;
-                        return;
-                    }
+                    __result = false;
                 }
             }
         }

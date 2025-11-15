@@ -119,7 +119,7 @@ namespace PolyPlus
             {
                 TileData tile = gameState.Map.GetTile(__instance.Coordinates);
                 UnitState unitState = tile.unit;
-                if (PlayerExtensions.HasAbility(playerState, EnumCache<PlayerAbility.Type>.GetType("dashembark"), gameState))
+                if (unitState != null && playerState.HasAbility(EnumCache<PlayerAbility.Type>.GetType("dashembark"), gameState))
                 {
                     unitState.moved = false;
                     unitState.attacked = false;

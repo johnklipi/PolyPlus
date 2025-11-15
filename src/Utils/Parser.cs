@@ -4,18 +4,18 @@ using Il2CppSystem.IO;
 using Newtonsoft.Json.Linq;
 using Polytopia.Data;
 using PolyPlus.Data;
-namespace PolyPlus
+namespace PolyPlus.Utils
 {
-    public static class ApiParser
+    public static class Parser
     {
         internal static Dictionary<ImprovementData.Type, List<TerrainRequirementsPlus>> improvementTerrainReq = new();
         internal static Dictionary<ImprovementData.Type, List<AdjacencyRequirementsPlus>> improvementAdjacencyReq = new();
         internal static Dictionary<ImprovementData.Type, List<AdjacencyImprovementsPlus>> improvementAdjacencyImp = new();
-        internal static DiplomacyDataPlus diplomacyDataPlus = new DiplomacyDataPlus();
+        internal static Dictionary<UnitData.Type, string> rebellionUnits = new();
+        internal static Dictionary<UnitData.Type, string> embarkUnits = new(); // I have to duplicate the embarking code from original PolyMod until we decide to make it part of API
+        internal static DiplomacyDataPlus diplomacyDataPlus = new DiplomacyDataPlus(); // TODO: ADD ACTUAL PARSING LOGIC
 
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(GameLogicData), nameof(GameLogicData.AddGameLogicPlaceholders))]
-        private static void GameLogicData_AddGameLogicPlaceholders(GameLogicData __instance, JObject rootObject)
+        public static void Parse(JObject rootObject)
         {
             foreach (JToken jtoken in rootObject.SelectTokens("$.*.*").ToArray())
             {
@@ -23,6 +23,22 @@ namespace PolyPlus
                 if (token != null)
                 {
                     string dataType = GetJTokenName(token, 2);
+                    if(dataType == "unitData")
+                    {
+                        int idx = (int)token["idx"];
+                        JToken rebelUnit = token["rebelUnit"];
+                        if(rebelUnit != null && rebelUnit.Type == JTokenType.String)
+                        {
+                            string rebelValue = rebelUnit.ToString();
+                            rebellionUnits[(UnitData.Type)idx] = rebelValue;
+                        }
+                        JToken embarksTo = token["embarksTo"];
+                        if (embarksTo != null && embarksTo.Type == JTokenType.String)
+                        {
+                            string embarkUnitId = embarksTo.ToString();
+                            embarkUnits[(UnitData.Type)idx] = embarkUnitId;
+                        }
+                    }
                     if(dataType == "improvementData")
                     {
                         JToken terrainRequirements = token["terrainRequirements"];

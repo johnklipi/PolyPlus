@@ -578,12 +578,6 @@
 				"-static"
 			]
 		},
-		"dagger": {
-			"unitAbilities": [
-				"-static",
-				"+staticplus"
-			]
-		},
 		"cloak": {
 			"unitAbilities": [
 				"+staticplus",
@@ -591,15 +585,7 @@
 				"+revolt",
 				"+consumed"
 			],
-			"cost": 5
-		},
-		"mermaidcloak": {
-			"unitAbilities": [
-				"+staticplus",
-				"-infiltrate",
-				"+revolt",
-				"+consumed"
-			],
+			"rebelUnit": "dagger",
 			"cost": 5
 		},
 		"cloak_boat": {
@@ -609,12 +595,52 @@
 				"-infiltrate",
 				"+revolt",
 				"+consumed"
-			]
+			],
+			"rebelUnit": "dagger"
+		},
+		"dagger": {
+			"unitAbilities": [
+				"-static",
+				"+staticplus"
+			],
+			"embarksTo": "pirate"
 		},
 		"pirate": {
 			"unitAbilities": [
 				"-static",
 				"+staticplus"
+			]
+		},
+		"mermaidcloak": {
+			"unitAbilities": [
+				"+staticplus",
+				"-infiltrate",
+				"+revolt",
+				"+consumed"
+			],
+			"rebelUnit": "mermaiddagger",
+			"cost": 5
+		},
+		"mermaiddagger": {
+			"unitAbilities": [
+				"-static",
+				"+staticplus"
+			]
+		},
+		"moth": {
+			"health": 50,
+			"unitAbilities": [
+				"+hide",
+				"-infiltrate",
+				"+revolt",
+				"+consumed"
+			],
+			"rebelUnit": "bugegg"
+		},
+		"bugegg": {
+			"movement": 1,
+			"unitAbilities": [
+				"+land"
 			]
 		},
 		"bombership": {
@@ -665,21 +691,6 @@
 		},
 		"island": {
 			"cost": 15
-		},
-		"bugegg": {
-			"movement": 1,
-			"unitAbilities": [
-				"+land"
-			]
-		},
-		"moth": {
-			"health": 50,
-			"unitAbilities": [
-				"+hide",
-				"-infiltrate",
-				"+revolt",
-				"+consumed"
-			]
 		},
 		"phychi": {
 			"attack": 10
@@ -942,6 +953,13 @@
 					"improvement": "fungi"
 				}
 			]
+		},
+		"mycelium": {
+			"improvementAbilities": [
+				"-limited",
+				"-heal",
+				"+healplus"
+			]
 		}
 	},
 	"resourceData": {
@@ -961,6 +979,9 @@
 			"idx": -1
 		},
 		"embarkmanual": {
+			"idx": -1
+		},
+		"healplus": {
 			"idx": -1
 		}
 	},
