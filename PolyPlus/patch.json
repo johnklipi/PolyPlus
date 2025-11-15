@@ -583,7 +583,8 @@
 				"+staticplus",
 				"-infiltrate",
 				"+revolt",
-				"+consumed"
+				"+kamikadze",
+				"+surprise"
 			],
 			"rebelUnit": "dagger",
 			"cost": 5
@@ -594,7 +595,8 @@
 				"+staticplus",
 				"-infiltrate",
 				"+revolt",
-				"+consumed"
+				"+kamikadze",
+				"+surprise"
 			],
 			"rebelUnit": "dagger"
 		},
@@ -616,7 +618,8 @@
 				"+staticplus",
 				"-infiltrate",
 				"+revolt",
-				"+consumed"
+				"+kamikadze",
+				"+surprise"
 			],
 			"rebelUnit": "mermaiddagger",
 			"cost": 5
@@ -633,7 +636,8 @@
 				"+hide",
 				"-infiltrate",
 				"+revolt",
-				"+consumed"
+				"+kamikadze",
+				"+surprise"
 			],
 			"rebelUnit": "bugegg"
 		},
@@ -1002,6 +1006,9 @@
 		},
 		"revolt": {
 			"idx": -1
+		},
+		"kamikadze": {
+			"idx": -1
 		}
 	},
 	"tribeAbility": {
@@ -1014,6 +1021,9 @@
 			"idx": -1
 		},
 		"microbed": {
+			"idx": -1
+		},
+		"rebellion": {
 			"idx": -1
 		}
 	}

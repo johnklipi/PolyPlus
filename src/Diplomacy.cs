@@ -103,59 +103,74 @@ namespace PolyPlus
             }
         }
 
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(AttackAction), nameof(AttackAction.Execute))]
-        private static bool AttackAction_Execute(AttackAction __instance, GameState state)
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(ActionUtils), nameof(ActionUtils.PerformAttackDefault))]
+        private static void ActionUtils_PerformAttack(GameState gameState, byte playerId, WorldCoordinates origin, WorldCoordinates target, int damage)
         {
-            TileData unitTile = state.Map.GetTile(__instance.Origin);
-            TileData cityTile = state.Map.GetTile(__instance.Target);
+            TileData unitTile = gameState.Map.GetTile(origin);
+            UnitState unitState = unitTile.unit;
 
-            if(unitTile == null || cityTile == null
-                || unitTile.unit == null || !unitTile.unit.HasAbility(EnumCache<UnitAbility.Type>.GetType("revolt"))
-                || !Parser.rebellionUnits.ContainsKey(unitTile.unit.type))
+            if(unitState != null)
             {
-                return true;
-            }
-            if(!cityTile.HasImprovement(ImprovementData.Type.City) || !state.TryGetPlayer(unitTile.unit.owner, out PlayerState playerState))
-            {
-                return true;
-            }
+                UnitData.Type unitType = unitState.type;
+                bool shouldStartRebellion = unitState.HasAbility(EnumCache<UnitAbility.Type>.GetType("revolt"));
+                if(unitState.HasAbility(EnumCache<UnitAbility.Type>.GetType("kamikadze")))
+                    ActionUtils.KillUnit(gameState, unitTile);
 
-            List<TileData> list = new List<TileData>();
-            foreach (TileData tileData in state.Map.GetArea(cityTile.coordinates, (int)cityTile.improvement.borderSize, true, false))
-            {
-                if (tileData.rulingCityCoordinates == cityTile.coordinates && tileData.unit == null && tileData.CanBeAccessedByPlayer(state, playerState))
+                if(shouldStartRebellion)
                 {
-                    list.Add(tileData);
-                }
-            }
-            list = GetRandomTiles(list, Math.Min(Math.Min((int)cityTile.improvement.level, Parser.diplomacyDataPlus.maxRebelCount), list.Count), state.Seed,
-                (int)state.CurrentTurn, cityTile.coordinates);
-            Console.Write(0);
-            if(EnumCache<UnitData.Type>.TryGetType(Parser.rebellionUnits[unitTile.unit.type], out UnitData.Type rebelType)
-                && state.GameLogicData.TryGetData(rebelType, out UnitData rebelData))
-            {
-                Console.Write(1);
-                bool hasEmbarkOverride = Parser.embarkUnits.ContainsKey(rebelType);
-                Console.Write(2);
-                foreach (var item in list)
-                {
-                    Console.Write(3);
-                    state.ActionStack.Add(new TrainAction(playerState.Id, rebelType, item.coordinates, 0, cityTile.coordinates));
-                    Console.Write(4);
-                    if(hasEmbarkOverride && item.IsWater && rebelData.unitAbilities.Contains(UnitAbility.Type.Land))
+                    if(gameState.TryGetPlayer(playerId, out PlayerState playerState))
                     {
-                        Console.Write(5);
-                        state.ActionStack.Add(new EmbarkAction(playerState.Id, item.coordinates));
-                        Console.Write(6);
+                        InactRebellion(gameState, target, playerState, unitType);
                     }
-                    Console.Write(7);
                 }
-                Console.Write(8);
-                VisualizeRebellion(cityTile, playerState);
-                Console.Write(9);
             }
-            return true;
+        }
+
+        public static void InactRebellion(GameState state, WorldCoordinates target, PlayerState playerState, UnitData.Type unitType)
+        {
+            TileData cityTile = state.Map.GetTile(target);
+            Parser.rebellionUnits.ContainsKey(unitType);
+
+            if(cityTile != null && cityTile.HasImprovement(ImprovementData.Type.City))
+            {
+                List<TileData> list = new List<TileData>();
+
+                foreach (TileData tileData in state.Map.GetArea(cityTile.coordinates, (int)cityTile.improvement.borderSize, true, false)) // I do know that there is a param which handles center including.
+                {
+                    if (tileData.rulingCityCoordinates == cityTile.coordinates && tileData.unit == null && tileData.CanBeAccessedByPlayer(state, playerState))
+                    {
+                        list.Add(tileData);
+                    }
+                }
+
+                list = GetRandomTiles(list, Math.Min(Math.Min((int)cityTile.improvement.level, Parser.diplomacyDataPlus.maxRebelCount), list.Count), state.Seed,
+                    (int)state.CurrentTurn, cityTile.coordinates);
+
+                if(cityTile.unit == null)
+                {
+                    list.Insert(0, cityTile);
+                }
+                if(EnumCache<UnitData.Type>.TryGetType(Parser.rebellionUnits[unitType], out UnitData.Type rebelType)
+                    && state.GameLogicData.TryGetData(rebelType, out UnitData rebelData))
+                {
+                    UnitData.Type waterVar = UnitData.Type.None;
+
+                    if(Parser.embarkUnits.ContainsKey(rebelType) && rebelData.unitAbilities.Contains(UnitAbility.Type.Land))
+                        waterVar = EnumCache<UnitData.Type>.GetType(Parser.embarkUnits[rebelType]);
+
+                    foreach (var item in list)
+                    {
+                        TrainAction action = new TrainAction(playerState.Id, rebelType, item.coordinates, 0, cityTile.coordinates);
+                        if(item.IsWater && waterVar != UnitData.Type.None)
+                        {
+                            action.Type = waterVar;
+                        }
+                        state.ActionStack.Add(action);
+                    }
+                    VisualizeRebellion(cityTile, playerState);
+                }
+            }
         }
 
         public static void VisualizeRebellion(TileData tileData, PlayerState playerState)
