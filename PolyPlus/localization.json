@@ -211,7 +211,7 @@
 		"Russian": "Гильдия"
 	},
 	"world_rebellion_description": {
-		"English": "A unit from the {1} tribe has infiltrated the city of {2} and incited a revolt against you!"
+		"English": "A unit from the {0} tribe has infiltrated the city of {1} and incited a revolt against you!"
 	},
 	"world_rebellion_attackerdescription": {
 		"English": "You started a riot in {0}!",
