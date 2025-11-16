@@ -9,14 +9,25 @@ namespace PolyPlus
         [HarmonyPatch(typeof(PathFinder), nameof(PathFinder.IsTileAccessible))]
         private static void PathFinder_IsTileAccessible(ref bool __result, TileData tile, TileData origin, PathFinderSettings settings)
         {
-            if (
-                PlayerExtensions.HasAbility(settings.playerState, EnumCache<PlayerAbility.Type>.GetType("waterembark"), settings.gameState)
-                && tile.IsWater && !origin.IsWater && settings.unit != null
-            )
+            if(settings.unit != null)
             {
-                if ((tile.terrain == Polytopia.Data.TerrainData.Type.Water && settings.allowedTerrain.Contains(Polytopia.Data.TerrainData.Type.Water))
-                    || (tile.terrain == Polytopia.Data.TerrainData.Type.Ocean && settings.allowedTerrain.Contains(Polytopia.Data.TerrainData.Type.Ocean)))
-                    __result = true;
+                if(settings.unit.HasAbility(EnumCache<UnitAbility.Type>.GetType("revolt")))
+                {
+                    if(tile.HasImprovement(ImprovementData.Type.City))
+                    {
+                        __result = false;
+                        return;
+                    }
+                }
+                if (
+                    PlayerExtensions.HasAbility(settings.playerState, EnumCache<PlayerAbility.Type>.GetType("waterembark"), settings.gameState)
+                    && tile.IsWater && !origin.IsWater
+                )
+                {
+                    if ((tile.terrain == Polytopia.Data.TerrainData.Type.Water && settings.allowedTerrain.Contains(Polytopia.Data.TerrainData.Type.Water))
+                        || (tile.terrain == Polytopia.Data.TerrainData.Type.Ocean && settings.allowedTerrain.Contains(Polytopia.Data.TerrainData.Type.Ocean)))
+                        __result = true;
+                } 
             }
         }
 
@@ -40,7 +51,7 @@ namespace PolyPlus
                         if (!startTile.IsWater)
                         {
                             Il2CppSystem.Collections.Generic.List<WorldCoordinates> path =
-                                PathFinder.GetPath(gameState, start, destination, maxCost, unit);
+                                PathFinder.GetPath(gameState, start, destination, maxCost, unit); // That seems insanely unoptimized; I have to take a closer look.
                             path.Reverse();
                             bool hadWater = false;
                             foreach (WorldCoordinates pathTile in path)
