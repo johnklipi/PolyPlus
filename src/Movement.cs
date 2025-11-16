@@ -6,8 +6,8 @@ namespace PolyPlus
     public class Movement
     {
         [HarmonyPostfix]
-        [HarmonyPatch(typeof(PathFinder), nameof(PathFinder.IsTileAccessible))]
-        private static void PathFinder_IsTileAccessible(ref bool __result, TileData tile, TileData origin, PathFinderSettings settings)
+        [HarmonyPatch(typeof(PathFinder), nameof(PathFinder.IsTileAccessible))] // PROPERLY TEST THE CHANGE AS IT MAY BREAK WHOLE MOVEMENT.
+        private static void PathFinder_IsTileAccessible(ref bool __result, TileData tile, TileData origin, PathFinderSettings settings) // if it works correctly its gonna be perfect optimisation!
         {
             if(settings.unit != null)
             {
@@ -19,74 +19,21 @@ namespace PolyPlus
                         return;
                     }
                 }
-                if (
-                    PlayerExtensions.HasAbility(settings.playerState, EnumCache<PlayerAbility.Type>.GetType("waterembark"), settings.gameState)
-                    && tile.IsWater && !origin.IsWater
-                )
+                if (PlayerExtensions.HasAbility(settings.playerState, EnumCache<PlayerAbility.Type>.GetType("waterembark"), settings.gameState)
+                    && settings.allowedTerrain.Contains(tile.terrain) && tile.GetExplored(settings.playerState.Id))
                 {
-                    if ((tile.terrain == Polytopia.Data.TerrainData.Type.Water && settings.allowedTerrain.Contains(Polytopia.Data.TerrainData.Type.Water))
-                        || (tile.terrain == Polytopia.Data.TerrainData.Type.Ocean && settings.allowedTerrain.Contains(Polytopia.Data.TerrainData.Type.Ocean)))
-                        __result = true;
-                } 
-            }
-        }
-
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(PathFinder), nameof(PathFinder.GetMoveOptions))]
-        private static void PathFinder_GetMoveOptions(
-            ref Il2CppSystem.Collections.Generic.List<WorldCoordinates> __result, GameState gameState, WorldCoordinates start, int maxCost, UnitState unit
-        )
-        {
-            PlayerState playerState;
-            TileData startTile = GameManager.GameState.Map.GetTile(start);
-            Il2CppSystem.Collections.Generic.List<WorldCoordinates> options = __result;
-            List<WorldCoordinates> toRemove = new List<WorldCoordinates>();
-            if (gameState.TryGetPlayer(unit.owner, out playerState))
-            {
-                if (PlayerExtensions.HasAbility(playerState, EnumCache<PlayerAbility.Type>.GetType("waterembark"), gameState)
-                    && !unit.HasAbility(UnitAbility.Type.Fly, gameState))
-                {
-                    foreach (WorldCoordinates destination in options)
+                    if(tile.IsWater && !origin.IsWater)
                     {
-                        if (!startTile.IsWater)
-                        {
-                            Il2CppSystem.Collections.Generic.List<WorldCoordinates> path =
-                                PathFinder.GetPath(gameState, start, destination, maxCost, unit); // That seems insanely unoptimized; I have to take a closer look.
-                            path.Reverse();
-                            bool hadWater = false;
-                            foreach (WorldCoordinates pathTile in path)
-                            {
-                                TileData tile = gameState.Map.GetTile(pathTile);
-                                if (hadWater || !tile.GetExplored(playerState.Id))
-                                    toRemove.Add(tile.coordinates);
-                                if (
-                                    tile.terrain == Polytopia.Data.TerrainData.Type.Water
-                                    || tile.terrain == Polytopia.Data.TerrainData.Type.Ocean
-                                )
-                                {
-                                    if (tile.improvement != null)
-                                    {
-                                        if (gameState.GameLogicData.TryGetData(tile.improvement.type, out ImprovementData imrovementData))
-                                        {
-                                            if (!imrovementData.HasAbility(ImprovementAbility.Type.Bridge))
-                                                hadWater = true;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        hadWater = true;
-                                    }
-                                }
-                            }
-                        }
+                        __result = !origin.IsWater || origin.HasImprovement(ImprovementData.Type.Bridge);
+                        return;
+                    }
+                    if(origin.IsWater && !tile.IsWater && settings.unit.HasAbility(UnitAbility.Type.Land))
+                    {
+                        __result = false;
+                        return;
                     }
                 }
             }
-            foreach (var item in toRemove)
-            {
-                options.Remove(item);
-            }
-            __result = options;
         }
 
         [HarmonyPostfix]
