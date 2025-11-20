@@ -40,9 +40,7 @@ namespace PolyPlus
             if(!gameState.TryGetPlayer(playerId, out PlayerState playerState))
                 return true;
 
-            Console.Write("GetEmbassyCostForPlayer");
             int amountOfEmbassies = GetEstablishedEmbassiesByPlayer(playerState, gameState).Count;
-            Console.Write(amountOfEmbassies);
             __result = gameState.GameLogicData.DiplomacyData.embassyCost + (amountOfEmbassies * Parser.diplomacyDataPlus.embassyCostModifierPerEmbassy);
             return false;
         }
@@ -147,32 +145,36 @@ namespace PolyPlus
                 list = GetRandomTiles(list, Math.Min(Math.Min((int)cityTile.improvement.level, Parser.diplomacyDataPlus.maxRebelCount), list.Count), state.Seed,
                     (int)state.CurrentTurn, cityTile.coordinates);
 
-                if(cityTile.unit == null)
-                {
-                    list.Insert(0, cityTile);
-                }
                 if(EnumCache<UnitData.Type>.TryGetType(Parser.rebellionUnits[unitType], out UnitData.Type rebelType)
                     && state.GameLogicData.TryGetData(rebelType, out UnitData rebelData))
                 {
-                    UnitData.Type waterVar = UnitData.Type.None;
+                    UnitData.Type waterType = UnitData.Type.None;
 
                     if(Parser.embarkUnits.ContainsKey(rebelType) && rebelData.unitAbilities.Contains(UnitAbility.Type.Land))
-                        waterVar = EnumCache<UnitData.Type>.GetType(Parser.embarkUnits[rebelType]);
+                        waterType = EnumCache<UnitData.Type>.GetType(Parser.embarkUnits[rebelType]);
 
+                    if(cityTile.unit == null)
+                    {
+                        SpawnRebel(state, cityTile, cityTile.coordinates, playerState, rebelType, waterType);
+                    }
                     foreach (var item in list)
                     {
-                        TrainAction action = new TrainAction(playerState.Id, rebelType, item.coordinates, 0, cityTile.coordinates);
-                        if(item.IsWater && waterVar != UnitData.Type.None)
-                        {
-                            action.Type = waterVar;
-                        }
-                        state.ActionStack.Add(action);
+                        SpawnRebel(state, item, cityTile.coordinates, playerState, rebelType, waterType);
                     }
                     VisualizeRebellion(cityTile, playerState);
                 }
             }
         }
 
+        public static void SpawnRebel(GameState state, TileData tile, WorldCoordinates cityTileCoordinates, PlayerState playerState, UnitData.Type rebelType, UnitData.Type waterType)
+        {
+            TrainAction action = new TrainAction(playerState.Id, rebelType, tile.coordinates, 0, cityTileCoordinates);
+            if(tile.IsWater && waterType != UnitData.Type.None)
+            {
+                action.Type = waterType;
+            }
+            state.ActionStack.Add(action);
+        }
         public static void VisualizeRebellion(TileData tileData, PlayerState playerState)
         {
             Tile tile = MapRenderer.Current.GetTileInstance(tileData.coordinates);

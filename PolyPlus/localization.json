@@ -313,16 +313,8 @@
 		"English": "Blooming",
 		"Russian": "Цветёт"
 	},
-	"tile_effect_microbes": {
-		"English": "Microbes",
-		"Russian": "Микробы"
-	},
-	"building_names_inoculate": {
-		"English": "Inoculate",
-		"Russian": "Инокулировать"
-	},
-	"building_names_hiddenalgae": {
-		"English": "Algae",
-		"Russian": "Водоросли"
+	"building_names_mycogrove": {
+		"English": "Mycogrove",
+		"Russian": "Грибная роща"
 	}
 }

@@ -154,7 +154,7 @@
 				"-microbes"
 			],
 			"improvementUnlocks": [
-				"+microbe"
+				"+mycogrove"
 			]
 		},
 		"basic": {
@@ -571,7 +571,7 @@
 		"shaman": {
 			"health": 100,
 			"defence": 10,
-			"attack": 15,
+			"attack": 30,
 			"promotionLimit": 3,
 			"unitAbilities": [
 				"-convert",
@@ -935,21 +935,16 @@
 				"discrete"
 			]
 		},
-		"microbe": {
+		"mycogrove": {
 			"idx": -1,
 			"maxLevel": 0,
 			"cost": 2,
-			"creates": [
-				{
-					"effect": "microbed"
-				}
-			],
 			"improvementAbilities": [
-				"discrete"
+				"progresser"
 			],
 			"rewards": [
 				{
-					"population": 1
+					"population": 4
 				}
 			],
 			"terrainRequirements": [
@@ -987,6 +982,9 @@
 		},
 		"healplus": {
 			"idx": -1
+		},
+		"progresser": {
+			"idx": -1
 		}
 	},
 	"playerAbility": {
@@ -1018,9 +1016,6 @@
 	},
 	"tileEffect": {
 		"blooming": {
-			"idx": -1
-		},
-		"microbed": {
 			"idx": -1
 		},
 		"rebellion": {

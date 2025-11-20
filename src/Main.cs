@@ -145,6 +145,28 @@ namespace PolyPlus
         [HarmonyPatch(typeof(GameLogicData), nameof(GameLogicData.CanBuild))]
         private static void GameLogicData_CanBuild(ref bool __result, GameLogicData __instance, GameState gameState, TileData tile, PlayerState playerState, ImprovementData improvement)
         {
+            if(improvement.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("progresser")) && tile.improvement != null)
+            {
+                if(Parser.improvementTerrainReq.ContainsKey(improvement.type))
+                {
+                    List<Data.TerrainRequirementsPlus> list = Parser.improvementTerrainReq[improvement.type];
+                    foreach (Data.TerrainRequirementsPlus req in list)
+                    {
+                        if(req.improvement != ImprovementData.Type.None && tile.HasImprovement(req.improvement) && __instance.TryGetData(req.improvement, out ImprovementData requirementData))
+                        {
+                            if(tile.improvement.level == requirementData.MaxLevel(playerState, gameState))
+                            {
+                                __result = true;
+                            }
+                            else
+                            {
+                                __result = false;
+                            }
+                        }
+                    }
+                }
+            }
+
             if (tile.unit == null)
                 return;
 
@@ -183,6 +205,18 @@ namespace PolyPlus
         {
             if (gameState.GameLogicData.TryGetData(__instance.Type, out ImprovementData improvementData))
             {
+                if(improvementData.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("progresser")))
+                {
+                    TileData tile = gameState.Map.GetTile(__instance.Coordinates);
+                    TileData cityTile = gameState.Map.GetTile(tile.rulingCityCoordinates);
+                    if (cityTile.HasImprovement(ImprovementData.Type.City))
+                    {
+                        gameState.TryGetPlayer(cityTile.owner, out PlayerState playerState);
+                        ActionUtils.RemoveScore(playerState, ScoreSheet.cityXPScore * 3);
+                        cityTile.improvement.AddPopulation(-3);
+                    }
+                }
+
                 if (improvementData.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("embarkmanual")))
                 {
                     gameState.ActionStack.Add(new EmbarkAction(__instance.PlayerId, __instance.Coordinates));

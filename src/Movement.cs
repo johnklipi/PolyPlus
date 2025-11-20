@@ -5,6 +5,7 @@ namespace PolyPlus
 {
     public class Movement
     {
+        //TODO: ADD A METHOD WHICH RETURN ALL IMPROVEMENTS WITH BRIDGE ABILITY
         [HarmonyPostfix]
         [HarmonyPatch(typeof(PathFinder), nameof(PathFinder.IsTileAccessible))] // PROPERLY TEST THE CHANGE AS IT MAY BREAK WHOLE MOVEMENT.
         private static void PathFinder_IsTileAccessible(ref bool __result, TileData tile, TileData origin, PathFinderSettings settings) // if it works correctly its gonna be perfect optimisation!
@@ -22,12 +23,12 @@ namespace PolyPlus
                 if (PlayerExtensions.HasAbility(settings.playerState, EnumCache<PlayerAbility.Type>.GetType("waterembark"), settings.gameState)
                     && settings.allowedTerrain.Contains(tile.terrain) && tile.GetExplored(settings.playerState.Id))
                 {
-                    if(tile.IsWater && !origin.IsWater)
+                    if(tile.IsWater && !tile.HasImprovement(ImprovementData.Type.Bridge) && (!origin.IsWater || origin.HasImprovement(ImprovementData.Type.Bridge))) // I NEED TO CHECK BRIDGE ABIL INSTEAD
                     {
-                        __result = !origin.IsWater || origin.HasImprovement(ImprovementData.Type.Bridge);
+                        __result = true;
                         return;
                     }
-                    if(origin.IsWater && !tile.IsWater && settings.unit.HasAbility(UnitAbility.Type.Land))
+                    if(origin.IsWater && !origin.HasImprovement(ImprovementData.Type.Bridge) && !tile.IsWater && settings.unit.HasAbility(UnitAbility.Type.Land)) // I NEED TO CHECK BRIDGE ABIL INSTEAD
                     {
                         __result = false;
                         return;
@@ -52,13 +53,17 @@ namespace PolyPlus
                 tile2.SetUnit(unitState);
                 unitState.coordinates = worldCoordinates;
                 bool hasNoBridge = true;
-                if (tile2.improvement != null)
+                // if (tile2.improvement != null)
+                // {
+                //     if (gameState.GameLogicData.TryGetData(tile2.improvement.type, out ImprovementData improvementData))
+                //     {
+                //         if (improvementData.HasAbility(ImprovementAbility.Type.Bridge))
+                //             hasNoBridge = false;
+                //     }
+                // }
+                if(tile2.HasImprovement(ImprovementData.Type.Bridge) || tile2.HasEffect(TileData.EffectType.Algae)) // I NEED TO CHECK BRIDGE ABIL INSTEAD
                 {
-                    if (gameState.GameLogicData.TryGetData(tile2.improvement.type, out ImprovementData imrovementData))
-                    {
-                        if (imrovementData.HasAbility(ImprovementAbility.Type.Bridge))
-                            hasNoBridge = false;
-                    }
+                    hasNoBridge = false;
                 }
                 if (hasNoBridge && !unitData.IsAquatic() && !unitState.HasAbility(UnitAbility.Type.Fly, gameState) && tile2.IsWater
                     && PlayerExtensions.HasAbility(playerState, EnumCache<PlayerAbility.Type>.GetType("waterembark"),gameState))
