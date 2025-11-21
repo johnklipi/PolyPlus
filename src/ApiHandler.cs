@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using HarmonyLib;
 using Polytopia.Data;
 using PolyPlus.Data;
+using PolyPlus.Utils;
 
 namespace PolyPlus
 {
@@ -27,9 +24,9 @@ namespace PolyPlus
 			bool meetsEffectRequirement = false;
 
             List<TerrainRequirementsPlus> terrainRequirementsPlus= new();
-            if(ApiParser.improvementTerrainReq.ContainsKey(improvement.type))
+            if(Parser.improvementTerrainReq.ContainsKey(improvement.type))
             {
-                terrainRequirementsPlus = ApiParser.improvementTerrainReq[improvement.type];
+                terrainRequirementsPlus = Parser.improvementTerrainReq[improvement.type];
             }
 			if (improvement.terrainRequirements != null && improvement.terrainRequirements.Count > 0)
 			{
@@ -91,9 +88,9 @@ namespace PolyPlus
 
 			bool meetsAdjReq = true;
 
-			if(ApiParser.improvementAdjacencyReq.ContainsKey(improvement.type))
+			if(Parser.improvementAdjacencyReq.ContainsKey(improvement.type))
 			{
-				List<AdjacencyRequirementsPlus> adjacencyRequirementsPlus = ApiParser.improvementAdjacencyReq[improvement.type];
+				List<AdjacencyRequirementsPlus> adjacencyRequirementsPlus = Parser.improvementAdjacencyReq[improvement.type];
 				if(adjacencyRequirementsPlus.Count > 0)
                 {
 					meetsAdjReq = false;
@@ -135,7 +132,7 @@ namespace PolyPlus
 				if (tileData != null && tileData.improvement != null)
 				{
 					ImprovementData.Type type = tileData.improvement.type;
-					if(ApiParser.improvementAdjacencyImp.ContainsKey(type) && ApiParser.improvementAdjacencyImp[type].Count > 0)
+					if(Parser.improvementAdjacencyImp.ContainsKey(type) && Parser.improvementAdjacencyImp[type].Count > 0)
                     {
                         ActionUtils.UpdateImprovementLevel(gameState, playerId, tileData);
                     }
@@ -153,7 +150,7 @@ namespace PolyPlus
                 return;
 
 			ImprovementData.Type type = tile.improvement.type;
-            if (ApiParser.improvementAdjacencyImp.ContainsKey(type) && ApiParser.improvementAdjacencyImp[type].Count > 0)
+            if (Parser.improvementAdjacencyImp.ContainsKey(type) && Parser.improvementAdjacencyImp[type].Count > 0)
             {
                 __result = GetAdjacencyBonusAtPlus(gameState, tile, improvementData);
             }
@@ -173,7 +170,7 @@ namespace PolyPlus
 				TileData tileData = area[i];
 				if (tileData != null && tileData.owner == tile.owner)
 				{
-					foreach (AdjacencyImprovementsPlus adjacencyImprovements in ApiParser.improvementAdjacencyImp[improvementData.type])
+					foreach (AdjacencyImprovementsPlus adjacencyImprovements in Parser.improvementAdjacencyImp[improvementData.type])
 					{
 						if (adjacencyImprovements.effect != TileData.EffectType.None && tileData.HasEffect(adjacencyImprovements.effect))
 						{
@@ -195,8 +192,8 @@ namespace PolyPlus
 		{
 			if (tile.improvement != null && gameState.GameLogicData.TryGetData(tile.improvement.type, out ImprovementData improvementData))
 			{
-				if(improvementData.work > 0 && ApiParser.improvementAdjacencyImp.ContainsKey(improvementData.type)
-					&& ApiParser.improvementAdjacencyImp[improvementData.type].Count > 0)
+				if(improvementData.work > 0 && Parser.improvementAdjacencyImp.ContainsKey(improvementData.type)
+					&& Parser.improvementAdjacencyImp[improvementData.type].Count > 0)
                 {
                     __result = Math.Max(improvementData.work * tile.improvement.level, 0);
                 }

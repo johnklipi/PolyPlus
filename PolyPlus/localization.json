@@ -211,7 +211,7 @@
 		"Russian": "Гильдия"
 	},
 	"world_rebellion_description": {
-		"English": "{0} from the {1} tribe has infiltrated the city of {2} and incited a revolt against you!"
+		"English": "A unit from the {0} tribe has infiltrated the city of {1} and incited a revolt against you!"
 	},
 	"world_rebellion_attackerdescription": {
 		"English": "You started a riot in {0}!",
@@ -313,16 +313,8 @@
 		"English": "Blooming",
 		"Russian": "Цветёт"
 	},
-	"tile_effect_microbes": {
-		"English": "Microbes",
-		"Russian": "Микробы"
-	},
-	"building_names_inoculate": {
-		"English": "Inoculate",
-		"Russian": "Инокулировать"
-	},
-	"building_names_hiddenalgae": {
-		"English": "Algae",
-		"Russian": "Водоросли"
+	"building_names_mycogrove": {
+		"English": "Mycogrove",
+		"Russian": "Грибная роща"
 	}
 }

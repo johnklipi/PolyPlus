@@ -154,7 +154,7 @@
 				"-microbes"
 			],
 			"improvementUnlocks": [
-				"+microbe"
+				"+mycogrove"
 			]
 		},
 		"basic": {
@@ -571,41 +571,80 @@
 		"shaman": {
 			"health": 100,
 			"defence": 10,
-			"attack": 15,
+			"attack": 30,
 			"promotionLimit": 3,
 			"unitAbilities": [
 				"-convert",
 				"-static"
 			]
 		},
-		"dagger": {
-			"unitAbilities": [
-				"-static",
-				"+staticplus"
-			]
-		},
 		"cloak": {
 			"unitAbilities": [
-				"+staticplus"
+				"+staticplus",
+				"-infiltrate",
+				"+revolt",
+				"+kamikadze",
+				"+surprise"
 			],
-			"cost": 5
-		},
-		"mermaidcloak": {
-			"unitAbilities": [
-				"+staticplus"
-			],
+			"rebelUnit": "dagger",
 			"cost": 5
 		},
 		"cloak_boat": {
 			"unitAbilities": [
 				"-static",
+				"+staticplus",
+				"-infiltrate",
+				"+revolt",
+				"+kamikadze",
+				"+surprise"
+			],
+			"rebelUnit": "dagger"
+		},
+		"dagger": {
+			"unitAbilities": [
+				"-static",
 				"+staticplus"
-			]
+			],
+			"embarksTo": "pirate"
 		},
 		"pirate": {
 			"unitAbilities": [
 				"-static",
 				"+staticplus"
+			]
+		},
+		"mermaidcloak": {
+			"unitAbilities": [
+				"+staticplus",
+				"-infiltrate",
+				"+revolt",
+				"+kamikadze",
+				"+surprise"
+			],
+			"rebelUnit": "mermaiddagger",
+			"cost": 5
+		},
+		"mermaiddagger": {
+			"unitAbilities": [
+				"-static",
+				"+staticplus"
+			]
+		},
+		"moth": {
+			"health": 50,
+			"unitAbilities": [
+				"+hide",
+				"-infiltrate",
+				"+revolt",
+				"+kamikadze",
+				"+surprise"
+			],
+			"rebelUnit": "bugegg"
+		},
+		"bugegg": {
+			"movement": 1,
+			"unitAbilities": [
+				"+land"
 			]
 		},
 		"bombership": {
@@ -657,18 +696,6 @@
 		"island": {
 			"cost": 15
 		},
-		"bugegg": {
-			"movement": 1,
-			"unitAbilities": [
-				"+land"
-			]
-		},
-		"moth": {
-			"health": 50,
-			"unitAbilities": [
-				"+hide"
-			]
-		},
 		"phychi": {
 			"attack": 10
 		}
@@ -694,8 +721,7 @@
 				}
 			],
 			"improvementAbilities": [
-				"consumed",
-				"discrete"
+				"consumed"
 			],
 			"maxLevel": 0
 		},
@@ -909,27 +935,29 @@
 				"discrete"
 			]
 		},
-		"microbe": {
+		"mycogrove": {
 			"idx": -1,
 			"maxLevel": 0,
 			"cost": 2,
-			"creates": [
-				{
-					"effect": "microbed"
-				}
-			],
 			"improvementAbilities": [
-				"discrete"
+				"progresser"
 			],
 			"rewards": [
 				{
-					"population": 1
+					"population": 4
 				}
 			],
 			"terrainRequirements": [
 				{
 					"improvement": "fungi"
 				}
+			]
+		},
+		"mycelium": {
+			"improvementAbilities": [
+				"-limited",
+				"-heal",
+				"+healplus"
 			]
 		}
 	},
@@ -951,6 +979,12 @@
 		},
 		"embarkmanual": {
 			"idx": -1
+		},
+		"healplus": {
+			"idx": -1
+		},
+		"progresser": {
+			"idx": -1
 		}
 	},
 	"playerAbility": {
@@ -967,6 +1001,12 @@
 		},
 		"slide": {
 			"idx": -1
+		},
+		"revolt": {
+			"idx": -1
+		},
+		"kamikadze": {
+			"idx": -1
 		}
 	},
 	"tribeAbility": {
@@ -978,7 +1018,7 @@
 		"blooming": {
 			"idx": -1
 		},
-		"microbed": {
+		"rebellion": {
 			"idx": -1
 		}
 	}
