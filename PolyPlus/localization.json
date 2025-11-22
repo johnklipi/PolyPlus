@@ -316,5 +316,25 @@
 	"building_names_mycogrove": {
 		"English": "Mycogrove",
 		"Russian": "Грибная роща"
+	},
+	"building_names_makebloom": {
+		"English": "Blossom",
+		"Russian": "Расцвести"
+	},
+	"unit_abilities_kamikadze": {
+		"English": "CONSUMED",
+		"Russian": "ИСПОЛЬЗОВАНЫЙ"
+	},
+	"tooltip_ability_kamikadze": {
+		"English": "This unit dies after attacking.",
+		"Russian": "Этот отряд погибает после того как атакует."
+	},
+	"unit_abilities_revolt": {
+		"English": "INFILTRATE",
+		"Russian": "ВНЕДРЕНИЕ"
+	},
+	"tooltip_ability_revolt": {
+		"English": "This unit can enter enemy cities to incite revolts.",
+		"Russian": "Этот отряд может заходить во вражеские города и устраивать восстания."
 	}
 }
