@@ -32,5 +32,9 @@
 	"algae_blooming__": {
 		"pixelsPerUnit":264,
         "pivot": [0.5, 0.5]
+	},
+	"mycogrove__": {
+		"pixelsPerUnit": 976,
+        "pivot": [0.5, 0.3]
 	}
 }
